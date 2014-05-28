@@ -15,10 +15,13 @@
 
 namespace hpp
 {
-  namespace corbaServer
+  namespace corbaserver
   {
     namespace motionprior
     {
+      namespace impl{
+        struct ProjectedCapsulePoint;
+      }
       namespace convexhull
       {
         /// \brief Implementation of Andrew's monotone chain 2D convex hull algorithm.
@@ -27,7 +30,8 @@ namespace hpp
         /// Original source code from
         /// http://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain#C.2B.2B
 
-        using hpp::corbaServer::impl::ProjectedCapsulePoint;
+        using hpp::corbaserver::motionprior::impl::ProjectedCapsulePoint;
+
         double cross(const ProjectedCapsulePoint &O, const ProjectedCapsulePoint &A, const ProjectedCapsulePoint &B);
          
         // \brief Returns a list of points on the convex hull in counter-clockwise order.

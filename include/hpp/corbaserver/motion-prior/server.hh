@@ -1,3 +1,13 @@
+// Copyright (c) 2014 CNRS
+// Author: Andreas Orthey
+//
+// This file is part of the hpp-motion-prior.
+//
+// This software is provided "as is" without warranty of any kind,
+// either expressed or implied, including but not limited to the
+// implied warranties of fitness for a particular purpose.
+//
+// See the COPYING file for more information.
 #ifndef HPP_PRIOR_CORBA_SERVER_HH
 # define HPP_PRIOR_CORBA_SERVER_HH
 
@@ -15,7 +25,7 @@ namespace hpp
         class Precomputation;
       }// namespace impl
             
-      class HPP_MOTION_PRIOR_DLLAPI Server
+      class Server
       {
       public:
         Server (int argc, char *argv[], bool multiThread = false,

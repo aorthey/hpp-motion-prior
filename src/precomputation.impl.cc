@@ -25,9 +25,9 @@
 #include <hpp/corbaserver/server.hh>
 #include <hpp/core/basic-configuration-shooter.hh>
 #include <hpp/core/differentiable-function.hh>
+#include <hpp/corbaserver/motion-prior/fwd.hh>
+#include <hpp/corbaserver/fwd.hh>
 
-#include "robot.impl.hh"
-#include "tools.hh"
 #include "precomputation.impl.hh"
 #include "precomputation-utils.hh"
 
@@ -40,9 +40,15 @@ namespace hpp
     {
       namespace impl
       {
-        Precomputation::Precomputation(corbaServer::Server* server) :
-          server_(server), problemSolver_(server->problemSolver ())
+        //Precomputation::Precomputation(corbaServer::Server* server) :
+        //  server_(server), problemSolver_(server->problemSolver ())
+        //{
+        //}
+        Precomputation::Precomputation () : problemSolver_ (0x0) {}
+        void Precomputation::setProblemSolver
+        (const ProblemSolverPtr_t& problemSolver)
         {
+          problemSolver_ = problemSolver;
         }
 
         hpp::floatSeq* Precomputation::getConvexHullCapsules () throw (hpp::Error)
@@ -254,8 +260,7 @@ namespace hpp
 
         std::vector<ProjectedCapsulePoint> Precomputation::computeConvexHullFromProjectedCapsulePoints (const std::vector<ProjectedCapsulePoint> &capsVec) 
         {
-          using namespace hpp::corbaServer::motionprior::convexhull;
-          return convex_hull(capsVec);
+          return ::hpp::corbaserver::motionprior::convexhull::convex_hull(capsVec);
         }
 
         std::vector<ProjectedCapsulePoint> Precomputation::projectCapsulePointsOnYZPlane (const std::vector<CapsulePoint> &capsVec) 

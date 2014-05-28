@@ -19,6 +19,7 @@
 # include <hpp/core/config-projector.hh>
 # include <hpp/core/deprecated.hh>
 # include <hpp/core/problem.hh>
+# include <hpp/corbaserver/motion-prior/fwd.hh>
 
 # include "natural-constraints.hh"
 # include "precomputation.hh"
@@ -62,7 +63,9 @@ namespace hpp
         {
         public:
 
-          Precomputation (corbaServer::Server* server);
+          //Precomputation (corbaServer::Server* server);
+          Precomputation ();
+	  void setProblemSolver (const ProblemSolverPtr_t& problemSolver);
 
           /// \brief returns the points of the convex hull of the projected
           /// capsules

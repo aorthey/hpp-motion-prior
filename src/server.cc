@@ -1,6 +1,6 @@
 #include <hpp/util/exception.hh>
-#include "hpp/corbaserver/motion-prior/server.hh"
 #include "precomputation.impl.hh"
+#include "hpp/corbaserver/motion-prior/server.hh"
 
 namespace hpp {
   namespace corbaserver {

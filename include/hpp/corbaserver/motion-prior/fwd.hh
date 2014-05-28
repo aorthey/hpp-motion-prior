@@ -1,3 +1,13 @@
+// Copyright (c) 2014 CNRS
+// Author: Andreas Orthey
+//
+// This file is part of the hpp-motion-prior.
+//
+// This software is provided "as is" without warranty of any kind,
+// either expressed or implied, including but not limited to the
+// implied warranties of fitness for a particular purpose.
+//
+// See the COPYING file for more information.
 #pragma once
 # include <hpp/core/fwd.hh>
 
@@ -13,9 +23,30 @@ namespace hpp {
       typedef model::HumanoidRobotPtr_t HumanoidRobotPtr_t;
       typedef model::HumanoidRobot HumanoidRobot;
 
+      typedef model::Transform3f Transform3f;
+      typedef model::matrix3_t matrix3_t;
+      typedef model::vector3_t vector3_t;
+      typedef model::vector_t vector_t;
+
+      typedef model::JointPtr_t JointPtr_t;
+      typedef model::JointVector_t JointVector_t;
+
+      typedef model::Body* BodyPtr_t;
+      typedef model::ObjectVector_t ObjectVector_t;
+      typedef model::ObjectIterator ObjectIterator;
+      typedef model::Joint Joint_t;
+      typedef model::Device Device_t;
+      typedef model::DevicePtr_t DevicePtr_t;
+
+      typedef fcl::CollisionGeometry CollisionGeometry_t;
+      typedef boost::shared_ptr <CollisionGeometry_t> CollisionGeometryPtr_t;
+      typedef model::CollisionObject CollisionObject_t;
+      typedef model::CollisionObjectPtr_t CollisionObjectPtr_t;
+      typedef model::Configuration_t Configuration_t;
+      typedef core::ConfigurationPtr_t ConfigurationPtr_t;
+      typedef core::ConfigIterator_t ConfigIterator_t;
+
       class Server;
     } // namespace motionprior
   } // namespace corbaserver
 } // namespace hpp
-  
-

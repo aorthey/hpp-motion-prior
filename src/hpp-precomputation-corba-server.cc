@@ -1,10 +1,21 @@
+// Copyright (C) 2014 LAAS-CNRS
+// Author: Andreas Orthey
+//
+// This file is part of the hpp-motion-prior
+//
+// This software is provided "as is" without warranty of any kind,
+// either expressed or implied, including but not limited to the
+// implied warranties of fitness for a particular purpose.
+//
+// See the COPYING file for more information.
+
 #include <iostream>
 #include <hpp/util/debug.hh>
 #include <hpp/core/problem-solver.hh>
 #include <hpp/corbaserver/server.hh>
 #include <hpp/corbaserver/motion-prior/server.hh>
 
-typedef hpp::motion-prior::Server PrecomputationServer;
+typedef hpp::corbaserver::motionprior::Server PrecomputationServer;
 typedef hpp::corbaServer::Server CorbaServer;
 typedef hpp::core::ProblemSolverPtr_t ProblemSolverPtr_t;
 typedef hpp::core::ProblemSolver ProblemSolver;
@@ -26,9 +37,9 @@ main (int argc, char* argv[])
   }
   try {
     pServer.startCorbaServer ("hpp", "corbaserver",
-				"motion-prior", "problem");
+				"motion-prior", "precomputation");
 
-    hppDout (info, "Successfully started corba server for precomputation server");
+    hppDout (notice, "Successfully started corba server for motion-prior precomputation server");
   } catch (const std::exception& exc) {
     hppDout (error, "failed to start corba server for precomputation server");
   }

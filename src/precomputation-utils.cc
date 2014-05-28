@@ -28,7 +28,6 @@ namespace hpp
       namespace convexhull
       {
         using namespace std;
-         
         double cross(const ProjectedCapsulePoint &O, const ProjectedCapsulePoint &A, const ProjectedCapsulePoint &B)
         {
           return (A.y - O.y) * (B.z - O.z) - (A.z - O.z) * (B.y - O.y);
@@ -36,7 +35,8 @@ namespace hpp
          
         // Returns a list of points on the convex hull in counter-clockwise order.
         // Note: the last point in the returned list is the same as the first one.
-        std::vector<ProjectedCapsulePoint> convex_hull(std::vector<ProjectedCapsulePoint> P)
+
+        std::vector<ProjectedCapsulePoint> convex_hull(std::vector<ProjectedCapsulePoint> P)//no by-reference, we need to sort P!
         {
           uint n = P.size();
           uint k = 0;
