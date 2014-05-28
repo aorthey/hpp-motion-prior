@@ -8,4 +8,4 @@ information about a given mechanical system or about a given set of environments
 information, the goal is to lower the complexity of the motion planning problem.
 
 Ideally, one would provide an environment, a mechanical system, and the module
-provides a simplified motion planning problem, which can be faster solved.
+provides a simplified motion planning problem, which can be solved faster.
