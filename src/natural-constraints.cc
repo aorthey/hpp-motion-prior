@@ -18,6 +18,8 @@
 #include <hpp/constraints/relative-com.hh>
 #include <hpp/constraints/relative-orientation.hh>
 #include <hpp/constraints/relative-position.hh>
+#include <Eigen/Geometry>
+
 #include "natural-constraints.hh"
 
 namespace hpp
@@ -55,7 +57,8 @@ namespace hpp
 
         vector3_t zero; zero.setZero ();
         matrix3_t I3; I3.setIdentity ();
-        //AngleAxis<float> RZ90(M_PI/2, Vector3f(0,0,1));
+        //Eigen::Matrix<double, 3, 3> RZ90;
+        //RZ90 = Eigen::AngleAxisf(M_PI/2, Eigen::Vector3f::UnitZ());
 
         // --------------------------------------------------------------------
         // position of center of mass in left ankle frame
@@ -87,7 +90,6 @@ namespace hpp
         // --------------------------------------------------------------------
         // Position of right foot constraint to be above x-y plane
         // --------------------------------------------------------------------
-
         // --------------------------------------------------------------------
         // Orientation of the left foot
         // --------------------------------------------------------------------
