@@ -1,0 +1,45 @@
+// Copyright (c) 2014 CNRS
+// Author: Andreas Orthey
+//
+// This file is part of the hpp-motion-prior.
+//
+// This software is provided "as is" without warranty of any kind,
+// either expressed or implied, including but not limited to the
+// implied warranties of fitness for a particular purpose.
+//
+// See the COPYING file for more information.
+
+#ifndef HPP_CORBASERVER_PRECOMPUTATION_SERVER_IDL
+# define HPP_CORBASERVER_PRECOMPUTATION_SERVER_IDL
+
+module hpp
+{
+  exception Error
+  {
+    string msg;
+  };
+  typedef sequence<double> floatSeq;
+
+  module corbaserver {
+    module motion_prior {
+
+      interface Precomputation{
+
+        short getNumberDof () raises (Error);
+         //void setCurrentConfiguration(in floatSeq dofArray) raises (Error);
+         //floatSeq getConvexHullCapsules () raises (Error);
+         //floatSeq getGradient () raises (Error);
+         //double getVolume () raises (Error);
+         //floatSeq projectUntilIrreducible () raises (Error);
+         //floatSeq projectUntilIrreducibleOneStep () raises (Error);
+
+         //Names_t addNaturalConstraints (in string prefix,
+                                //in floatSeq dofArray, in string leftAnkle,
+                                //in string rightAnkle) raises (Error);
+
+      };//interface precomputation
+    }; //motion_prior module
+  }; //corbaserver module
+};//hpp module
+
+#endif //! HPP_CORBASERVER_PRECOMPUTATION_SERVER_IDL

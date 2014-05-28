@@ -21,9 +21,9 @@
 // Optimized for HPP framework
 namespace hpp
 {
-  namespace corbaServer
+  namespace corbaserver
   {
-    namespace precomputation
+    namespace motionprior
     {
       namespace convexhull
       {

@@ -17,7 +17,7 @@ namespace hpp
 {
   namespace corbaServer
   {
-    namespace precomputation
+    namespace motionprior
     {
       namespace convexhull
       {
