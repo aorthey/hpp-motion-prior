@@ -13,6 +13,7 @@
 #include <hpp/model/humanoid-robot.hh>
 #include <hpp/model/joint.hh>
 #include <hpp/core/config-projector.hh>
+#include <hpp/util/debug.hh>
 #include <hpp/constraints/orientation.hh>
 #include <hpp/constraints/position.hh>
 #include <hpp/constraints/relative-com.hh>
@@ -57,8 +58,16 @@ namespace hpp
 
         vector3_t zero; zero.setZero ();
         matrix3_t I3; I3.setIdentity ();
-        //Eigen::Matrix<double, 3, 3> RZ90;
-        //RZ90 = Eigen::AngleAxisf(M_PI/2, Eigen::Vector3f::UnitZ());
+
+        hpp::model::matrix3_t RZ90;
+        RZ90.setEulerZYX(M_PI/2,0,0);
+
+
+
+        //hpp::model::matrix3_t rotation;
+        //fcl::Quaternion3f quat;
+        //quat.fromAxisAngle(fcl::Vec3f(0,0,1), M_PI);
+        //quat.toRotation(rotation);
 
         // --------------------------------------------------------------------
         // position of center of mass in left ankle frame
@@ -70,9 +79,6 @@ namespace hpp
         // --------------------------------------------------------------------
         // Relative orientation of the feet
         // --------------------------------------------------------------------
-        //matrix3_t reference = R1T * M2.getRotation ();
-        //result.push_back(RelativeOrientation::create
-        //  	       (robot, joint1, joint2, reference));
 
         // --------------------------------------------------------------------
         // Relative position of the feet
@@ -87,18 +93,34 @@ namespace hpp
         //  		(robot, joint1, joint2, local1, local2));
 
 
+        std::vector< bool > zmask = boost::assign::list_of(true )(true )(false);
+        std::vector< bool > xmask = boost::assign::list_of(true )(false)(true );
+        std::vector< bool > ymask = boost::assign::list_of(false)(true )(true );
+        std::vector< bool > default_mask = boost::assign::list_of(true)(true )(true );
+
+        //stay on floor
+        //result.push_back(Orientation::create (robot, joint1, I3, zmask));
+
+      // Position of the left foot
+        /*
+        result.push_back (Position::create
+			(robot, joint1, zero, zero, I3,
+			 boost::assign::list_of (true)(true)(true)));
+                         */
+
         // --------------------------------------------------------------------
         // Position of right foot constraint to be above x-y plane
         // --------------------------------------------------------------------
+
         // --------------------------------------------------------------------
         // Orientation of the left foot
         // --------------------------------------------------------------------
-        result.push_back (Orientation::create (robot, joint1, I3));
+        //result.push_back (Orientation::create (robot, joint1, RZ90, default_mask));
         // --------------------------------------------------------------------
         // Position of the left foot
         // --------------------------------------------------------------------
         result.push_back
-          (Position::create (robot, joint1, zero, M1.getTranslation (), I3));
+          (Position::create (robot, joint1, zero, zero, I3));
         // --------------------------------------------------------------------
         return result;
       }
