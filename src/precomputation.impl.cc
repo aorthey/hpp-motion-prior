@@ -53,6 +53,9 @@ namespace hpp
 
         hpp::floatSeq* Precomputation::getConvexHullCapsules () throw (hpp::Error)
         {
+          if(cvxCaps_.empty()){
+            computeProjectedConvexHullFromCurrentConfiguration ();
+          }
           return capsulePointsToFloatSeq(cvxCaps_);
         }
         hpp::floatSeq* Precomputation::vectorToFloatSeq(const vector_t& q){
