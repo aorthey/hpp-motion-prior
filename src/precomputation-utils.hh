@@ -19,6 +19,13 @@ namespace hpp
   {
     namespace motionprior
     {
+
+      vector_t floatSeqToVector(const hpp::floatSeq &q);
+
+      hpp::floatSeq* vectorToFloatSeq(const vector_t& q);
+
+      hpp::Names_t* stringToNamesT(std::vector<std::string> &str);
+
       namespace impl{
         struct ProjectedCapsulePoint;
       }

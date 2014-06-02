@@ -25,6 +25,35 @@ namespace hpp
   {
     namespace motionprior
     {
+      hpp::floatSeq* vectorToFloatSeq(const vector_t& q){
+        hpp::floatSeq* p = new hpp::floatSeq;
+        p->length (q.size());
+        for(uint i=0;i<q.size();i++){
+          (*p)[i] = q[i];
+        }
+        return p;
+      }
+      vector_t floatSeqToVector(const hpp::floatSeq &q){
+        std::size_t length = (std::size_t)q.length();
+        vector_t p; p.resize(length);
+        for (std::size_t i = 0; i < length; i++) {
+          p[i] = q[i];
+        }
+        return p;
+      }
+
+      hpp::Names_t* stringToNamesT(std::vector<std::string> &str){
+        uint size = str.size();
+        char** nameList = Names_t::allocbuf(size);
+        Names_t *names = new Names_t (size, size, nameList);
+        for(std::size_t i = 0; i < str.size (); ++i) {
+          std::string it = str.at(i);
+          nameList[i] = (char*) malloc (sizeof(char)*(it.length()+1));
+          strcpy (nameList[i], it.c_str ());
+        }
+        return names;
+      }
+
       namespace convexhull
       {
         using namespace std;

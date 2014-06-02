@@ -58,22 +58,6 @@ namespace hpp
           }
           return capsulePointsToFloatSeq(cvxCaps_);
         }
-        hpp::floatSeq* Precomputation::vectorToFloatSeq(const vector_t& q){
-          hpp::floatSeq* p = new hpp::floatSeq;
-          p->length (q.size());
-          for(uint i=0;i<q.size();i++){
-            (*p)[i] = q[i];
-          }
-          return p;
-        }
-        vector_t Precomputation::floatSeqToVector(const hpp::floatSeq &q){
-          std::size_t length = (std::size_t)q.length();
-          vector_t p; p.resize(length);
-          for (std::size_t i = 0; i < length; i++) {
-            p[i] = q[i];
-          }
-          return p;
-        }
 
         void Precomputation::setCurrentConfiguration(const hpp::floatSeq &dofArray) throw (hpp::Error)
         {
@@ -84,6 +68,8 @@ namespace hpp
             throw hpp::Error (exc.what ());
           }
         }
+
+
         void Precomputation::setCurrentConfiguration(const vector_t& q) throw (hpp::Error)
         {
           try {
@@ -100,7 +86,7 @@ namespace hpp
           }
         }
 
-        vector_t Precomputation::updateConfiguration (const vector_t &qq, double lambda) throw (hpp::Error){
+        vector_t Precomputation::step (const vector_t &qq, double lambda) throw (hpp::Error){
           try {
             vector_t q = problemSolver_->robot ()->currentConfiguration ();
             vector_t q_new; q_new.resize (qq.size()+1);
@@ -125,7 +111,7 @@ namespace hpp
             this->computeProjectedConvexHullFromCurrentConfiguration ();
 
             vector_t qq = this->getGradientVector();
-            vector_t q_new = this->updateConfiguration(qq, lambda);
+            vector_t q_new = this->step(qq, lambda);
 
             this->setCurrentConfiguration(q_new);
             this->computeProjectedConvexHullFromCurrentConfiguration ();
@@ -140,6 +126,7 @@ namespace hpp
 
 
         }
+
         hpp::floatSeq* Precomputation::projectUntilIrreducible () throw (hpp::Error)
         {
           try {
@@ -151,7 +138,7 @@ namespace hpp
             this->computeProjectedConvexHullFromCurrentConfiguration ();
             while(error > epsilon){
               vector_t qq = this->getGradientVector();
-              vector_t q = this->updateConfiguration(qq, lambda);
+              vector_t q = this->step(qq, lambda);
               this->setCurrentConfiguration(q);
               this->computeProjectedConvexHullFromCurrentConfiguration ();
               double C = this->getVolume();
@@ -423,17 +410,6 @@ namespace hpp
           }
           return config;
         }
-        hpp::Names_t* Precomputation::stringToNamesT(std::vector<std::string> &str){
-          uint size = str.size();
-          char** nameList = Names_t::allocbuf(size);
-          Names_t *names = new Names_t (size, size, nameList);
-          for(std::size_t i = 0; i < str.size (); ++i) {
-            std::string it = str.at(i);
-            nameList[i] = (char*) malloc (sizeof(char)*(it.length()+1));
-            strcpy (nameList[i], it.c_str ());
-          }
-          return names;
-        }
 
         hpp::Names_t* Precomputation::addNaturalConstraints
                 (const char* prefix, const hpp::floatSeq& dofArray,
@@ -470,6 +446,32 @@ namespace hpp
           } catch (const std::exception& exc) {
             throw Error (exc.what ());
           }
+        }
+
+        bool ProjectedCapsulePoint::isInsideConvexHull(const std::vector<ProjectedCapsulePoint> &cvxHullPts) const
+        {
+          for(uint i=0 ; i < cvxHullPts.size() ; ++i ){
+            ProjectedCapsulePoint v = cvxHullPts.at(i);
+            ProjectedCapsulePoint vn;
+
+            if(i==cvxHullPts.size()-1){
+              vn = cvxHullPts.at(0);
+            }else{
+              vn = cvxHullPts.at(i+1);
+            }
+
+            double ey = vn.y - v.y;
+            double ez = vn.z - v.z;
+
+            double dy = this->y - v.y;
+            double dz = this->z - v.z;
+
+            double dist = ey*dz - ez*dy;
+            if(dist < 0){
+                    return false;
+            }
+          } 
+          return true;
         }
 
       } // end of namespace impl.
