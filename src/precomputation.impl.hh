@@ -11,10 +11,10 @@
 
 #pragma once
 
+# include <iostream>
+# include <cmath>
 # include <vector>
-# include <hpp/model/fwd.hh>
-# include <hpp/core/fwd.hh>
-# include <hpp/corbaserver/fwd.hh>
+
 # include <hpp/core/config.hh>
 # include <hpp/core/config-projector.hh>
 # include <hpp/core/deprecated.hh>
@@ -23,6 +23,7 @@
 
 # include "natural-constraints.hh"
 # include "precomputation.hh"
+# include "capsule-parser.hh"
 
 namespace hpp
 {
@@ -30,33 +31,9 @@ namespace hpp
   {
     namespace motionprior
     {
+
       namespace impl
       {
-        /// \brief A capsule point represents the center of the top or bottom
-        ///  part of the cylinder included in the capsule representation. 
-        ///
-        /// It contains R^3 coordinates, the length of the cylinder and the radius
-        /// of the halfspheres, which are located at the top and bottom of the
-        /// cylinder, with the capsule point being its center. Given the two capsule
-        /// points of a capsule, we can compute every other point on the capsule
-        /// surface. Additionally, we save the jacobian of the associated joint,
-        /// such that we can use it for optimization purposes.
-
-        struct CapsulePoint {
-          double x,y,z;
-          double radius;
-          double length;
-          hpp::model::JointJacobian_t J;
-        };
-
-        struct ProjectedCapsulePoint {
-          double y,z;
-          hpp::model::JointJacobian_t J;
-          uint idx;
-          bool operator <(const ProjectedCapsulePoint &rhs) const {
-                  return y < rhs.y || (y == rhs.y && z < rhs.z);
-          }
-        };
 
         /// \brief Implement CORBA interface ``Precomputation''.
         class Precomputation : public virtual POA_hpp::corbaserver::motion_prior::Precomputation
@@ -90,9 +67,6 @@ namespace hpp
           virtual void setCurrentConfiguration (const hpp::floatSeq& dofArray) throw (hpp::Error);
           virtual void setCurrentConfiguration (const vector_t& q) throw (hpp::Error);
 
-          vector_t floatSeqToVector(const hpp::floatSeq &q);
-          hpp::floatSeq* vectorToFloatSeq(const vector_t& q);
-
           //---------------------------------------------------------------------
           // NATURAL CONSTRAINTS
           //---------------------------------------------------------------------
@@ -105,26 +79,9 @@ namespace hpp
           // descent
           virtual vector_t updateConfiguration(const vector_t &qq, double lambda) throw (hpp::Error);
 
-          hpp::Names_t* stringToNamesT(std::vector<std::string> &str);
-
           virtual vector_t getGradientVector();
 
-          /// \brief Parse capsule points from the robot geometry and return them
-          ///  in a vector
-          virtual std::vector<CapsulePoint> parseCapsulePoints () throw (hpp::Error);
-
-          /// \brief Project Capsule Points onto ZY Plane including outer points
-          virtual std::vector<ProjectedCapsulePoint> projectCapsulePointsOnYZPlane (const std::vector<CapsulePoint> &capsVec);
-          virtual std::vector<ProjectedCapsulePoint> computeConvexHullFromProjectedCapsulePoints (const std::vector<ProjectedCapsulePoint> &capsVec);
-
-          virtual void computeProjectedConvexHullFromCurrentConfiguration () throw (hpp::Error);
-
-          //
-          /// \brief Convert capsule point vector to hpp::floatSeq 
-          virtual hpp::floatSeq* capsulePointsToFloatSeq (const std::vector<CapsulePoint> &capsVector) 
-           throw (hpp::Error);
-          virtual hpp::floatSeq* capsulePointsToFloatSeq (const std::vector<ProjectedCapsulePoint> &capsVector) 
-           throw (hpp::Error);
+          void computeProjectedConvexHullFromCurrentConfiguration() throw (hpp::Error);
 
         private:
           /// \brief Pointer to the Server owning this object

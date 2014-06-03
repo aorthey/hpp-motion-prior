@@ -11,6 +11,7 @@
 
 #pragma once
 
+# include "precomputation.hh"
 # include "precomputation.impl.hh"
 
 namespace hpp
@@ -19,9 +20,15 @@ namespace hpp
   {
     namespace motionprior
     {
-      namespace impl{
-        struct ProjectedCapsulePoint;
-      }
+
+      struct ProjectedCapsulePoint;
+
+      vector_t floatSeqToVector(const hpp::floatSeq &q);
+
+      hpp::floatSeq* vectorToFloatSeq(const vector_t& q);
+
+      hpp::Names_t* stringToNamesT(std::vector<std::string> &str);
+
       namespace convexhull
       {
         /// \brief Implementation of Andrew's monotone chain 2D convex hull algorithm.
@@ -29,8 +36,6 @@ namespace hpp
         /// Practical performance: 0.5-1.0 seconds for n=1000000 on a 1GHz machine.
         /// Original source code from
         /// http://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain#C.2B.2B
-
-        using hpp::corbaserver::motionprior::impl::ProjectedCapsulePoint;
 
         double cross(const ProjectedCapsulePoint &O, const ProjectedCapsulePoint &A, const ProjectedCapsulePoint &B);
          

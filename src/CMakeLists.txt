@@ -30,6 +30,8 @@ SET(LIBRARY_NAME ${PROJECT_NAME})
 ADD_LIBRARY(${LIBRARY_NAME}
   SHARED
   server.cc
+  capsule-parser.cc
+  capsule-parser.hh
   natural-constraints.cc
   natural-constraints.hh
   precomputation.impl.cc
