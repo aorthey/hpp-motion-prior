@@ -67,9 +67,7 @@ namespace hpp
           virtual void setCurrentConfiguration (const hpp::floatSeq& dofArray) throw (hpp::Error);
           virtual void setCurrentConfiguration (const vector_t& q) throw (hpp::Error);
 
-          //---------------------------------------------------------------------
-          // NATURAL CONSTRAINTS
-          //---------------------------------------------------------------------
+          /// \brief Add natural constraints to the problemSolver
           virtual hpp::Names_t* addNaturalConstraints
                 (const char* prefix, const hpp::floatSeq& dofArray,
                  const char* leftAnkle, const char* rightAnkle) throw (hpp::Error);
@@ -77,7 +75,7 @@ namespace hpp
         private:
           /// \brief Compute q = q + lambda*q', i.e. one update step of gradient
           // descent
-          virtual vector_t updateConfiguration(const vector_t &qq, double lambda) throw (hpp::Error);
+          virtual vector_t step(const vector_t &qq, double lambda) throw (hpp::Error);
 
           virtual vector_t getGradientVector();
 

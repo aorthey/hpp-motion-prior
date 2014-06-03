@@ -54,74 +54,44 @@ namespace hpp
         JointPtr_t joint2 = rightAnkle;
         const Transform3f& M1 = joint1->currentTransformation ();
         const Transform3f& M2 = joint2->currentTransformation ();
-        const vector3_t& x = robot->positionCenterOfMass ();
 
         vector3_t zero; zero.setZero ();
         matrix3_t I3; I3.setIdentity ();
+        //const vector3_t& com = robot->positionCenterOfMass ();
+        vector3_t com(0,0,0.75);
 
         hpp::model::matrix3_t RZ90;
-        RZ90.setEulerZYX(M_PI/2,0,0);
-
-
-
-        //hpp::model::matrix3_t rotation;
-        //fcl::Quaternion3f quat;
-        //quat.fromAxisAngle(fcl::Vec3f(0,0,1), M_PI);
-        //quat.toRotation(rotation);
-
-        // --------------------------------------------------------------------
-        // position of center of mass in left ankle frame
-        // --------------------------------------------------------------------
-        //matrix3_t R1T (M1.getRotation ()); R1T.transpose ();
-        //vector3_t xloc = R1T * (x - M1.getTranslation ());
-        //result.push_back (RelativeCom::create (robot, joint1, xloc));
-
-        // --------------------------------------------------------------------
-        // Relative orientation of the feet
-        // --------------------------------------------------------------------
-
-        // --------------------------------------------------------------------
-        // Relative position of the feet
-        // --------------------------------------------------------------------
-        //vector3_t local1; local1.setZero ();
-        //vector3_t global1 = M1.getTranslation ();
-        //// global1 = R2 local2 + t2
-        //// local2  = R2^T (global1 - t2)
-        //matrix3_t R2T (M2.getRotation ()); R2T.transpose ();
-        //vector3_t local2 = R2T * (global1 - M2.getTranslation ());
-        //result.push_back (RelativePosition::create
-        //  		(robot, joint1, joint2, local1, local2));
-
+        RZ90.setEulerZYX(0,0,-M_PI/2);
 
         std::vector< bool > zmask = boost::assign::list_of(true )(true )(false);
         std::vector< bool > xmask = boost::assign::list_of(true )(false)(true );
         std::vector< bool > ymask = boost::assign::list_of(false)(true )(true );
+        std::vector< bool > xy_translation = boost::assign::list_of(false)(false )(true );
         std::vector< bool > default_mask = boost::assign::list_of(true)(true )(true );
 
-        //stay on floor
-        //result.push_back(Orientation::create (robot, joint1, I3, zmask));
-
-      // Position of the left foot
-        /*
-        result.push_back (Position::create
-			(robot, joint1, zero, zero, I3,
-			 boost::assign::list_of (true)(true)(true)));
-                         */
+        // --------------------------------------------------------------------
+        // position of center of mass in left ankle frame
+        // --------------------------------------------------------------------
+        matrix3_t R1T (M1.getRotation ()); R1T.transpose ();
+        vector3_t xloc = R1T * (com - M1.getTranslation ());
+        result.push_back (RelativeCom::create (robot, joint1, xloc));
 
         // --------------------------------------------------------------------
-        // Position of right foot constraint to be above x-y plane
+        // Left Foot Constraints 
+        // (Orientation fixed 90 degree z-axis, Position at origin)
         // --------------------------------------------------------------------
+        result.push_back (Orientation::create (robot, joint1, RZ90));
+        result.push_back (Position::create (robot, joint1, zero, zero, I3));
 
         // --------------------------------------------------------------------
-        // Orientation of the left foot
+        // Right Foot Constraints 
+        // (Orientation variable around z-axis, 
+        // translation variable in xy-plane at z=0)
         // --------------------------------------------------------------------
-        //result.push_back (Orientation::create (robot, joint1, RZ90, default_mask));
-        // --------------------------------------------------------------------
-        // Position of the left foot
-        // --------------------------------------------------------------------
-        result.push_back
-          (Position::create (robot, joint1, zero, zero, I3));
-        // --------------------------------------------------------------------
+        result.push_back (Position::create (robot, joint2, zero, zero, I3, xy_translation));
+        result.push_back (Orientation::create (robot, joint2, RZ90, zmask));
+
+
         return result;
       }
     } // end of namespace precomputation

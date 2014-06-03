@@ -64,7 +64,7 @@ namespace hpp
           }
         }
 
-        vector_t Precomputation::updateConfiguration (const vector_t &qq, double lambda) throw (hpp::Error){
+        vector_t Precomputation::step (const vector_t &qq, double lambda) throw (hpp::Error){
           try {
             vector_t q = problemSolver_->robot ()->currentConfiguration ();
             vector_t q_new; q_new.resize (qq.size()+1);
@@ -89,7 +89,7 @@ namespace hpp
             computeProjectedConvexHullFromCurrentConfiguration ();
 
             vector_t qq = this->getGradientVector();
-            vector_t q_new = this->updateConfiguration(qq, lambda);
+            vector_t q_new = this->step(qq, lambda);
 
             this->setCurrentConfiguration(q_new);
             computeProjectedConvexHullFromCurrentConfiguration ();
@@ -115,7 +115,7 @@ namespace hpp
             computeProjectedConvexHullFromCurrentConfiguration ();
             while(error > epsilon){
               vector_t qq = this->getGradientVector();
-              vector_t q = this->updateConfiguration(qq, lambda);
+              vector_t q = this->step(qq, lambda);
               this->setCurrentConfiguration(q);
               computeProjectedConvexHullFromCurrentConfiguration ();
               double C = this->getVolume();
@@ -220,6 +220,7 @@ namespace hpp
           return config;
         }
 
+
         hpp::Names_t* Precomputation::addNaturalConstraints
                 (const char* prefix, const hpp::floatSeq& dofArray,
                  const char* leftAnkle, const char* rightAnkle) throw (hpp::Error)
@@ -250,6 +251,7 @@ namespace hpp
               cnames.push_back(p+slash+id+dfp->name());
               problemSolver_->addNumericalConstraint(cnames.at(i), constraints.at(i));
             }
+
             return stringToNamesT(cnames);
 
           } catch (const std::exception& exc) {
