@@ -42,6 +42,7 @@ namespace hpp
 
         const DevicePtr_t& robot (problemSolver_->robot ());
 
+        const char* constraintSetName = "mv-irr-constraint-set";
         const char* leftAnkle = "LLEG_JOINT5";
         const char* rightAnkle = "RLEG_JOINT5";
         JointPtr_t joint1 = robot->getJointByName (leftAnkle);
@@ -129,7 +130,7 @@ namespace hpp
         throw (hpp::Error)
       {
 	try {
-	  bool success = problemSolver_->constraints ()->apply (*q);
+	  success_ = problemSolver_->constraints ()->apply (*q);
 	  if (hpp::core::ConfigProjectorPtr_t configProjector =
 	      problemSolver_->constraints ()->configProjector ()) {
 	    double residualError = configProjector->residualError ();
@@ -151,6 +152,9 @@ namespace hpp
 	}
       }
 
+      bool ConstraintManifoldOperator::success(){
+        return success_;
+      }
     } // end of namespace motionprior.
   } // end of namespace corbaServer.
 } // end of namespace hpp.

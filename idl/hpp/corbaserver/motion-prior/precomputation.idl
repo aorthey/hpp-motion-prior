@@ -32,6 +32,7 @@ module hpp
          double getVolume () raises (Error);
          floatSeq projectUntilIrreducible () raises (Error);
          floatSeq projectUntilIrreducibleOneStep () raises (Error);
+         floatSeq projectUntilIrreducibleConstraint () raises (Error);
 
          Names_t addNaturalConstraints (in string prefix,
                                 in floatSeq dofArray, in string leftAnkle,

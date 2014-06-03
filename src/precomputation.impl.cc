@@ -11,6 +11,7 @@
 
 #include "precomputation.impl.hh"
 #include "precomputation-utils.hh"
+#include "constraint-manifold-operator.hh"
 
 
 namespace hpp
@@ -83,7 +84,7 @@ namespace hpp
           }
         }
 
-        virtual hpp::floatSeq* projectUntilIrreducibleConstraint () throw (hpp::Error)
+        hpp::floatSeq* Precomputation::projectUntilIrreducibleConstraint () throw (hpp::Error)
         {
           try {
             double epsilon = 0.001; //convergence threshold
@@ -92,15 +93,27 @@ namespace hpp
             double oldC = 10000;
             double lambda = 0.1; //update value
             computeProjectedConvexHullFromCurrentConfiguration ();
+
+            ConstraintManifoldOperator Cop(problemSolver_);
+            Cop.reset();
+            Cop.init();
+
             while(error > epsilon){
               vector_t qq = this->getGradientVector();
               vector_t q = this->step(qq, lambda);
-              this->setCurrentConfiguration(q);
-              computeProjectedConvexHullFromCurrentConfiguration ();
-              double C = this->getVolume();
-              error = fabs(C-oldC);
-              oldC = C;
-              iterations++;
+              ConfigurationPtr_t p(&q);
+
+              Cop.apply(p);
+              if(Cop.success()){
+                this->setCurrentConfiguration(q);
+                computeProjectedConvexHullFromCurrentConfiguration ();
+                double C = this->getVolume();
+                error = fabs(C-oldC);
+                oldC = C;
+                iterations++;
+              }else{
+                break;
+              }
             }
             hppDout(notice, "projection onto irreducible manifold converged after " << iterations << " iterations." );
 

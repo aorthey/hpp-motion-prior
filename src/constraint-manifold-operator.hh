@@ -24,8 +24,6 @@ namespace hpp
   {
     namespace motionprior
     {
-      const char* constraintSetName = "mv-irr-constraint-set";
-
       class ConstraintManifoldOperator{
 
       public:
@@ -38,7 +36,11 @@ namespace hpp
 
         void reset() throw (hpp::Error);
 
+        bool success();
+
       private:
+
+        bool success_;
 
         core::ProblemSolverPtr_t problemSolver_;
 
