@@ -15,10 +15,6 @@
 # include <cmath>
 # include <vector>
 
-# include <hpp/core/config.hh>
-# include <hpp/core/config-projector.hh>
-# include <hpp/core/deprecated.hh>
-# include <hpp/core/problem.hh>
 # include <hpp/corbaserver/motion-prior/fwd.hh>
 
 # include "natural-constraints.hh"
@@ -59,6 +55,7 @@ namespace hpp
           /// \brief Use the current configuration and project it down until it is
           ///  irreducible up to a threshold
           virtual hpp::floatSeq* projectUntilIrreducible () throw (hpp::Error);
+          virtual hpp::floatSeq* projectUntilIrreducibleConstraint () throw (hpp::Error);
 
           /// \brief Perform one step of the gradient descent projection onto the
           ///  irreducible manifold

@@ -10,6 +10,7 @@
 // See the COPYING file for more information.
 #pragma once
 # include <hpp/core/fwd.hh>
+# include <hpp/constraints/fwd.hh>
 
 namespace hpp {
   namespace corbaserver {
@@ -30,6 +31,7 @@ namespace hpp {
 
       typedef model::JointPtr_t JointPtr_t;
       typedef model::JointVector_t JointVector_t;
+      typedef hpp::core::DifferentiableFunctionPtr_t DifferentiableFunctionPtr_t;
 
       typedef model::Body* BodyPtr_t;
       typedef model::ObjectVector_t ObjectVector_t;
@@ -45,6 +47,17 @@ namespace hpp {
       typedef model::Configuration_t Configuration_t;
       typedef core::ConfigurationPtr_t ConfigurationPtr_t;
       typedef core::ConfigIterator_t ConfigIterator_t;
+
+      typedef constraints::Orientation Orientation;
+      typedef constraints::OrientationPtr_t OrientationPtr_t;
+      typedef constraints::Position Position;
+      typedef constraints::PositionPtr_t PositionPtr_t;
+      typedef constraints::RelativeOrientation RelativeOrientation;
+      typedef constraints::RelativeComPtr_t RelativeComPtr_t;
+      typedef constraints::RelativeCom RelativeCom;
+      typedef constraints::RelativeOrientationPtr_t RelativeOrientationPtr_t;
+      typedef constraints::RelativePosition RelativePosition;
+      typedef constraints::RelativePositionPtr_t RelativePositionPtr_t;
 
       class Server;
     } // namespace motionprior

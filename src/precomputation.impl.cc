@@ -32,6 +32,7 @@ namespace hpp
           problemSolver_ = problemSolver;
         }
 
+
         hpp::floatSeq* Precomputation::getConvexHullCapsules () throw (hpp::Error)
         {
           cvxCaps_.clear();
@@ -81,6 +82,38 @@ namespace hpp
             throw hpp::Error (exc.what ());
           }
         }
+
+        virtual hpp::floatSeq* projectUntilIrreducibleConstraint () throw (hpp::Error)
+        {
+          try {
+            double epsilon = 0.001; //convergence threshold
+            uint iterations = 0;
+            double error = 1;
+            double oldC = 10000;
+            double lambda = 0.1; //update value
+            computeProjectedConvexHullFromCurrentConfiguration ();
+            while(error > epsilon){
+              vector_t qq = this->getGradientVector();
+              vector_t q = this->step(qq, lambda);
+              this->setCurrentConfiguration(q);
+              computeProjectedConvexHullFromCurrentConfiguration ();
+              double C = this->getVolume();
+              error = fabs(C-oldC);
+              oldC = C;
+              iterations++;
+            }
+            hppDout(notice, "projection onto irreducible manifold converged after " << iterations << " iterations." );
+
+            DevicePtr_t robot = problemSolver_->robot ();
+            vector_t q = robot->currentConfiguration();
+            return vectorToFloatSeq(q);
+
+          } catch (const std::exception& exc) {
+            throw hpp::Error (exc.what ());
+          }
+        }
+
+
 
         hpp::floatSeq* Precomputation::projectUntilIrreducibleOneStep () throw (hpp::Error)
         {
