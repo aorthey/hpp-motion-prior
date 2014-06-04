@@ -62,7 +62,7 @@ namespace hpp
           virtual hpp::floatSeq* projectUntilIrreducibleOneStep () throw (hpp::Error);
 
           virtual void setCurrentConfiguration (const hpp::floatSeq& dofArray) throw (hpp::Error);
-          virtual void setCurrentConfiguration (const vector_t& q) throw (hpp::Error);
+          virtual void setCurrentConfiguration (const Configuration_t& q) throw (hpp::Error);
 
           /// \brief Add natural constraints to the problemSolver
           virtual hpp::Names_t* addNaturalConstraints
@@ -72,9 +72,9 @@ namespace hpp
         private:
           /// \brief Compute q = q + lambda*q', i.e. one update step of gradient
           // descent
-          virtual vector_t step(const vector_t &qq, double lambda) throw (hpp::Error);
+          virtual Configuration_t step(const Configuration_t &qq, double lambda) throw (hpp::Error);
 
-          virtual vector_t getGradientVector();
+          virtual Configuration_t getGradientVector();
 
           void computeProjectedConvexHullFromCurrentConfiguration() throw (hpp::Error);
 

@@ -58,6 +58,7 @@ namespace hpp
           bool operator <(const ProjectedCapsulePoint &rhs) const {
                   return y < rhs.y || (y == rhs.y && z < rhs.z);
           }
+          bool isInsideConvexHull(const std::vector<ProjectedCapsulePoint> &cvxHullPts) const;
         };
 
         /// \brief Parse capsule points from the robot geometry and return them

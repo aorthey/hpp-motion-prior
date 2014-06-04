@@ -32,7 +32,7 @@ namespace hpp
 
         void init() throw (hpp::Error);
         
-        double apply( ConfigurationPtr_t &q ) throw (hpp::Error);
+        double apply( Configuration_t &q ) throw (hpp::Error);
 
         void reset() throw (hpp::Error);
 

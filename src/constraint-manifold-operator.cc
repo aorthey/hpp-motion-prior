@@ -126,11 +126,11 @@ namespace hpp
 	}
       }
 
-      double ConstraintManifoldOperator::apply( ConfigurationPtr_t &q )
+      double ConstraintManifoldOperator::apply( Configuration_t &q )
         throw (hpp::Error)
       {
 	try {
-	  success_ = problemSolver_->constraints ()->apply (*q);
+	  success_ = problemSolver_->constraints ()->apply (q);
 	  if (hpp::core::ConfigProjectorPtr_t configProjector =
 	      problemSolver_->constraints ()->configProjector ()) {
 	    double residualError = configProjector->residualError ();

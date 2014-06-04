@@ -50,7 +50,7 @@ namespace hpp
             throw hpp::Error (exc.what ());
           }
         }
-        void Precomputation::setCurrentConfiguration(const vector_t& q) throw (hpp::Error)
+        void Precomputation::setCurrentConfiguration(const Configuration_t& q) throw (hpp::Error)
         {
           try {
             DevicePtr_t robot = problemSolver_->robot ();
@@ -66,10 +66,10 @@ namespace hpp
           }
         }
 
-        vector_t Precomputation::step (const vector_t &qq, double lambda) throw (hpp::Error){
+        Configuration_t Precomputation::step (const Configuration_t &qq, double lambda) throw (hpp::Error){
           try {
-            vector_t q = problemSolver_->robot ()->currentConfiguration ();
-            vector_t q_new; q_new.resize (qq.size()+1);
+            Configuration_t q = problemSolver_->robot ()->currentConfiguration ();
+            Configuration_t q_new; q_new.resize (qq.size()+1);
             //fill in CoM
             for(uint i=0; i<7; i++){
               q_new[i] = q[i];//- lambda*qq[i];
@@ -98,13 +98,18 @@ namespace hpp
             Cop.reset();
             Cop.init();
 
-            while(error > epsilon){
-              vector_t qq = this->getGradientVector();
-              vector_t q = this->step(qq, lambda);
-              ConfigurationPtr_t p(&q);
+            std::vector<ProjectedCapsulePoint> cvxCapsOld;
+            cvxCapsOld = cvxCaps_;
 
-              Cop.apply(p);
+            while(error > epsilon){
+              Configuration_t qq = this->getGradientVector();
+              Configuration_t q = this->step(qq, lambda);
+
+              Cop.apply(q);
+
               if(Cop.success()){
+                //new configuration was successfully projected back on the given
+                //contraint manifold
                 this->setCurrentConfiguration(q);
                 computeProjectedConvexHullFromCurrentConfiguration ();
                 double C = this->getVolume();
@@ -118,7 +123,7 @@ namespace hpp
             hppDout(notice, "projection onto irreducible manifold converged after " << iterations << " iterations." );
 
             DevicePtr_t robot = problemSolver_->robot ();
-            vector_t q = robot->currentConfiguration();
+            Configuration_t q = robot->currentConfiguration();
             return vectorToFloatSeq(q);
 
           } catch (const std::exception& exc) {
@@ -134,7 +139,7 @@ namespace hpp
             double lambda = 0.1; //update value
             computeProjectedConvexHullFromCurrentConfiguration ();
 
-            vector_t qq = this->getGradientVector();
+            Configuration_t qq = this->getGradientVector();
             vector_t q_new = this->step(qq, lambda);
 
             this->setCurrentConfiguration(q_new);
@@ -160,8 +165,8 @@ namespace hpp
             double lambda = 0.1; //update value
             computeProjectedConvexHullFromCurrentConfiguration ();
             while(error > epsilon){
-              vector_t qq = this->getGradientVector();
-              vector_t q = this->step(qq, lambda);
+              Configuration_t qq = this->getGradientVector();
+              Configuration_t q = this->step(qq, lambda);
               this->setCurrentConfiguration(q);
               computeProjectedConvexHullFromCurrentConfiguration ();
               double C = this->getVolume();
@@ -213,17 +218,17 @@ namespace hpp
           cvxCaps_ = computeConvexHullFromProjectedCapsulePoints(projCaps);
         }
 
-        vector_t Precomputation::getGradientVector(){
+        Configuration_t Precomputation::getGradientVector(){
           //Compute gradient wrt outer jacobians
           DevicePtr_t robot = problemSolver_->robot ();
           //JointJacobian_t is Eigen::Matrix<double, 6, Eigen::Dynamic> 
-          vector_t qgrad(robot->numberDof());
+          Configuration_t qgrad(robot->numberDof());
           qgrad.setZero();
 
           for(uint i=0; i<cvxCaps_.size(); i++){
-            vector_t cvx_pt_eigen(6);
+            Configuration_t cvx_pt_eigen(6);
             cvx_pt_eigen << 0,cvxCaps_.at(i).y,cvxCaps_.at(i).z,0,0,0;
-            vector_t qi = cvxCaps_.at(i).J.transpose()*cvx_pt_eigen;
+            Configuration_t qi = cvxCaps_.at(i).J.transpose()*cvx_pt_eigen;
             qgrad = qgrad + qi;
           }
           return qgrad;
