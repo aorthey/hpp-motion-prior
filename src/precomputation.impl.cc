@@ -112,11 +112,19 @@ namespace hpp
                 //contraint manifold
                 this->setCurrentConfiguration(q);
                 computeProjectedConvexHullFromCurrentConfiguration ();
-                double C = this->getVolume();
-                error = fabs(C-oldC);
-                oldC = C;
-                iterations++;
+
+                if(isSubsetOf(cvxCaps_, cvxCapsOld)){
+                  double C = this->getVolume();
+                  error = fabs(C-oldC);
+                  oldC = C;
+                  iterations++;
+                  cvxCapsOld = cvxCaps_;
+                }else{
+                  hppDout(notice, "projection terminated because new volume is not a subset of the last step" );
+                  break;
+                }
               }else{
+                hppDout(notice, "projection terminated due to non-successful projection onto constraint manifold" );
                 break;
               }
             }

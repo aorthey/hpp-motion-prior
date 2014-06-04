@@ -12,6 +12,43 @@ namespace hpp
           return ::hpp::corbaserver::motionprior::convexhull::convex_hull(capsVec);
         }
 
+        bool isSubsetOf(const std::vector<ProjectedCapsulePoint> &lhs, const std::vector<ProjectedCapsulePoint> &rhs) 
+        {
+          for(uint i=0 ; i < lhs.size() ; ++i ){
+            if(!lhs.at(i).isInsideConvexHull(rhs)){
+              return false;
+            }
+          }
+          return true;
+        }
+
+        bool ProjectedCapsulePoint::isInsideConvexHull(const std::vector<ProjectedCapsulePoint> &ptsOnCvxHullCounterClockwise) const
+        {
+          for(uint i=0 ; i < ptsOnCvxHullCounterClockwise.size() ; ++i ){
+            ProjectedCapsulePoint v = ptsOnCvxHullCounterClockwise.at(i);
+            ProjectedCapsulePoint vn;
+        
+            if(i==ptsOnCvxHullCounterClockwise.size()-1){
+              vn = ptsOnCvxHullCounterClockwise.at(0);
+            }else{
+              vn = ptsOnCvxHullCounterClockwise.at(i+1);
+            }
+            double ey = vn.y - v.y;
+            double ez = vn.z - v.z;
+        
+            double dy = this->y - v.y;
+            double dz = this->z - v.z;
+        
+            double dist = ey*dz - ez*dy;
+            //hppDout(notice, "cvx v=[" << v.y << " " << v.z << "] vn=[" << vn.y << "," << vn.z << "]" 
+                            //<< " pt [" << this->y << "," << this->z << "]" << " dist " << dist );
+            if(dist < -0.05){ //allow small uncertainty
+              return false;
+            }
+          } 
+          return true;
+        }
+
         hpp::floatSeq* capsulePointsToFloatSeq (const std::vector<ProjectedCapsulePoint> &capsVector) 
            throw (hpp::Error)
         {

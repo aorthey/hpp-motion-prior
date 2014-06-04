@@ -58,8 +58,14 @@ namespace hpp
           bool operator <(const ProjectedCapsulePoint &rhs) const {
                   return y < rhs.y || (y == rhs.y && z < rhs.z);
           }
-          bool isInsideConvexHull(const std::vector<ProjectedCapsulePoint> &cvxHullPts) const;
+          /// \brief Checks if the point is inside a given convex hull, 
+          ///  whereby we assume that the points are ordered counter-clockwise
+          bool isInsideConvexHull(const std::vector<ProjectedCapsulePoint> &ptsOnCvxHullCounterClockwise) const;
         };
+
+        /// \brief Checks if lhs < rhs, i.e. if the projected volume lhs 
+        /// is inside of the projected volume rhs
+        bool isSubsetOf(const std::vector<ProjectedCapsulePoint> &lhs, const std::vector<ProjectedCapsulePoint> &rhs);
 
         /// \brief Parse capsule points from the robot geometry and return them
         ///  in a vector
