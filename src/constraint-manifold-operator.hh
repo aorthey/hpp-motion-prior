@@ -38,16 +38,22 @@ namespace hpp
 
         bool success();
 
+        std::vector< DifferentiableFunctionPtr_t > 
+        getConstraintSet( 
+                        const DevicePtr_t &robot,
+                        const JointPtr_t& joint1,
+                        const JointPtr_t& joint2)
+          throw (hpp::Error);
+
       private:
 
         bool success_;
 
         core::ProblemSolverPtr_t problemSolver_;
 
-        std::vector <DifferentiableFunctionPtr_t> constraintSet;
+        std::vector <DifferentiableFunctionPtr_t> constraintSet_;
 
       };
     } // end of namespace motionprior.
   } // end of namespace corbaServer.
 } // end of namespace hpp.
-

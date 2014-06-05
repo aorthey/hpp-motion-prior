@@ -36,20 +36,15 @@ namespace hpp
       {
       }
 
-      void ConstraintManifoldOperator::init()
+      std::vector< DifferentiableFunctionPtr_t > 
+      ConstraintManifoldOperator::getConstraintSet( 
+                        const DevicePtr_t &robot,
+                        const JointPtr_t& joint1,
+                        const JointPtr_t& joint2)
         throw (hpp::Error)
       {
+        std::vector< DifferentiableFunctionPtr_t > constraintSet;
 
-        const DevicePtr_t& robot (problemSolver_->robot ());
-
-        const char* constraintSetName = "mv-irr-constraint-set";
-        const char* leftAnkle = "LLEG_JOINT5";
-        const char* rightAnkle = "RLEG_JOINT5";
-        JointPtr_t joint1 = robot->getJointByName (leftAnkle);
-        JointPtr_t joint2 = robot->getJointByName (rightAnkle);
-
-        //robot->currentConfiguration (configuration);
-        //robot->computeForwardKinematics ();
         const Transform3f& M1 = joint1->currentTransformation ();
         const Transform3f& M2 = joint2->currentTransformation ();
 
@@ -67,7 +62,6 @@ namespace hpp
         std::vector< bool > xy_translation = boost::assign::list_of(false)(false )(true );
         std::vector< bool > default_mask = boost::assign::list_of(true)(true )(true );
 
-        constraintSet.clear();
         // --------------------------------------------------------------------
         // position of center of mass in left ankle frame
         // --------------------------------------------------------------------
@@ -89,17 +83,34 @@ namespace hpp
         // --------------------------------------------------------------------
         constraintSet.push_back (Position::create (robot, joint2, zero, zero, I3, xy_translation));
         constraintSet.push_back (Orientation::create (robot, joint2, RZ90, zmask));
+        return constraintSet;
+      }
+
+      void ConstraintManifoldOperator::init()
+        throw (hpp::Error)
+      {
+
+        const DevicePtr_t& robot (problemSolver_->robot ());
+
+        const char* constraintSetName = "mv-irr-constraint-set";
+        const char* leftAnkle = "LLEG_JOINT5";
+        const char* rightAnkle = "RLEG_JOINT5";
+
+        JointPtr_t joint1 = robot->getJointByName (leftAnkle);
+        JointPtr_t joint2 = robot->getJointByName (rightAnkle);
+
+        constraintSet_ = getConstraintSet(robot, joint1, joint2);
 
         std::vector<std::string> cnames;
 
         std::string p (constraintSetName);
         std::string slash ("/");
 
-        for(uint i=0;i<constraintSet.size();i++){
-          DifferentiableFunctionPtr_t dfp = constraintSet.at(i);
+        for(uint i=0;i<constraintSet_.size();i++){
+          DifferentiableFunctionPtr_t dfp = constraintSet_.at(i);
           std::stringstream ss; ss << i; std::string id = ss.str();
           cnames.push_back(p+slash+id+dfp->name());
-          problemSolver_->addNumericalConstraint(cnames.at(i), constraintSet.at(i));
+          problemSolver_->addNumericalConstraint(cnames.at(i), constraintSet_.at(i));
         }
 
 	using core::ConstraintSetPtr_t;

@@ -299,8 +299,8 @@ namespace hpp
             JointPtr_t ra = robot->getJointByName (rightAnkle);
 
             std::vector<std::string> cnames;
-            std::vector <DifferentiableFunctionPtr_t> constraints =
-              createNaturalConstraintsManifold (robot, la, ra, *config);
+            ConstraintManifoldOperator M (problemSolver_);
+            std::vector <DifferentiableFunctionPtr_t> constraints = M.getConstraintSet( robot, la, ra);
 
             std::string p (prefix);
             std::string slash ("/");
