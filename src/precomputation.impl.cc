@@ -55,8 +55,6 @@ namespace hpp
 
         hpp::floatSeq* Precomputation::getConvexHullCapsules () throw (hpp::Error)
         {
-          cvxCaps_.clear();
-          computeProjectedConvexHullFromCurrentConfiguration ();
           return capsulePointsToFloatSeq(cvxCaps_);
         }
 
@@ -103,22 +101,26 @@ namespace hpp
           }
         }
 
-        hpp::floatSeq* Precomputation::getApproximateIrreducibleConfiguration () throw (hpp::Error)
+        hpp::floatSeq* Precomputation::getRandomIrreducibleConfiguration () throw (hpp::Error)
         {
           DevicePtr_t robot = problemSolver_->robot ();
+          uint ctr = 0;
           while(true){
             Configuration_t q = shootRandomConfigVector();
             Configuration_t q_proj;
             if(projectOntoConstraintManifold(q,q_proj)){
               Configuration_t q_irr;
               if(projectOntoIrreducibleManifold(q_proj,q_irr)){
+                hppDout(notice, "successful projection after " << ctr << " iterations.");
                 return vectorToFloatSeq(q_irr);
               }
             }
+            ctr++;
           }
         }
 
-        bool Precomputation::projectOntoConstraintManifold (vector_t &q) throw (hpp::Error){
+        bool Precomputation::projectOntoConstraintManifold (vector_t &q) throw (hpp::Error)
+        {
           if(!cnstrOp_){
             cnstrOp_.reset( new ConstraintManifoldOperator(problemSolver_) );
           }
@@ -128,7 +130,8 @@ namespace hpp
           return cnstrOp_->success();
         }
 
-        bool Precomputation::projectOntoIrreducibleManifold (const Configuration_t &q, Configuration_t &q_proj) throw (hpp::Error){
+        bool Precomputation::projectOntoIrreducibleManifold (const Configuration_t &q, Configuration_t &q_proj) throw (hpp::Error)
+        {
           const double lambda = 0.1; //gradient step size
 
           Configuration_t qq = this->getGradientVector(q);
@@ -143,116 +146,6 @@ namespace hpp
             return false;
           }
         }
-
-        /*
-        hpp::floatSeq* Precomputation::projectUntilIrreducibleConstraint () throw (hpp::Error)
-        {
-          try {
-            double epsilon = 0.001; //convergence threshold
-            uint iterations = 0;
-            double error = 1;
-            double oldC = 10000;
-            double lambda = 0.1; //update value
-            computeProjectedConvexHullFromCurrentConfiguration ();
-
-            cnstrOp_.reset( new ConstraintManifoldOperator(problemSolver_) );
-            cnstrOp_->deleteConstraints();
-            cnstrOp_->init();
-
-            std::vector<ProjectedCapsulePoint> cvxCapsOld;
-            cvxCapsOld = cvxCaps_;
-
-            while(error > epsilon){
-              Configuration_t qq = this->getGradientVector();
-              Configuration_t q = this->step(qq, lambda);
-
-              cnstrOp_->apply(q);
-
-              if(cnstrOp_->success()){
-                //new configuration was successfully projected back on the given
-                //contraint manifold
-                this->setCurrentConfiguration(q);
-                computeProjectedConvexHullFromCurrentConfiguration ();
-
-                if(isSmallerVolume(cvxCaps_, cvxCapsOld)){
-                  double C = this->getVolume();
-                  error = fabs(C-oldC);
-                  oldC = C;
-                  iterations++;
-                  cvxCapsOld = cvxCaps_;
-                }else{
-                  hppDout(notice, "projection terminated because new volume is not a subset of the last step" );
-                  break;
-                }
-              }else{
-                hppDout(notice, "projection terminated due to non-successful projection onto constraint manifold" );
-                break;
-              }
-            }
-            hppDout(notice, "projection onto irreducible manifold converged after " << iterations << " iterations." );
-
-            DevicePtr_t robot = problemSolver_->robot ();
-            Configuration_t q = robot->currentConfiguration();
-            return vectorToFloatSeq(q);
-
-          } catch (const std::exception& exc) {
-            throw hpp::Error (exc.what ());
-          }
-        }
-
-
-        hpp::floatSeq* Precomputation::projectUntilIrreducibleOneStep () throw (hpp::Error)
-        {
-          try {
-            double lambda = 0.1; //update value
-            computeProjectedConvexHullFromCurrentConfiguration ();
-
-            Configuration_t qq = this->getGradientVector();
-            vector_t q_new = this->step(qq, lambda);
-
-            this->setCurrentConfiguration(q_new);
-            computeProjectedConvexHullFromCurrentConfiguration ();
-
-            DevicePtr_t robot = problemSolver_->robot ();
-            vector_t q = robot->currentConfiguration();
-            return vectorToFloatSeq(q);
-
-          } catch (const std::exception& exc) {
-            throw hpp::Error (exc.what ());
-          }
-
-
-        }
-        hpp::floatSeq* Precomputation::projectUntilIrreducible () throw (hpp::Error)
-        {
-          try {
-            double epsilon = 0.001; //convergence threshold
-            uint iterations = 0;
-            double error = 1;
-            double oldC = 10000;
-            double lambda = 0.1; //update value
-            computeProjectedConvexHullFromCurrentConfiguration ();
-            while(error > epsilon){
-              Configuration_t qq = this->getGradientVector();
-              Configuration_t q = this->step(qq, lambda);
-              this->setCurrentConfiguration(q);
-              computeProjectedConvexHullFromCurrentConfiguration ();
-              double C = this->getVolume();
-              error = fabs(C-oldC);
-              oldC = C;
-              iterations++;
-            }
-            hppDout(notice, "projection onto irreducible manifold converged after " << iterations << " iterations." );
-
-            DevicePtr_t robot = problemSolver_->robot ();
-            vector_t q = robot->currentConfiguration();
-            return vectorToFloatSeq(q);
-
-          } catch (const std::exception& exc) {
-            throw hpp::Error (exc.what ());
-          }
-        }
-        */
 
         double Precomputation::getVolume () throw (hpp::Error)
         {
@@ -331,45 +224,6 @@ namespace hpp
             (*config) [iDof] = dofArray [iDof];
           }
           return config;
-        }
-
-
-        hpp::Names_t* Precomputation::addNaturalConstraints
-                (const char* prefix, const hpp::floatSeq& dofArray,
-                 const char* leftAnkle, const char* rightAnkle) throw (hpp::Error)
-        {
-          using core::DifferentiableFunctionPtr_t;
-          using std::string;
-          try {
-
-            using namespace hpp::corbaserver::motionprior;
-            ConfigurationPtr_t config = dofSeqToConfig (problemSolver_, dofArray);
-            const DevicePtr_t& robot (problemSolver_->robot ());
-            if (!robot) {
-              throw Error ("Robot has to be set before applying constraints");
-            }
-
-            JointPtr_t la = robot->getJointByName (leftAnkle);
-            JointPtr_t ra = robot->getJointByName (rightAnkle);
-
-            std::vector<std::string> cnames;
-            ConstraintManifoldOperator M (problemSolver_);
-            std::vector <DifferentiableFunctionPtr_t> constraints = M.getConstraintSet( robot, la, ra);
-
-            std::string p (prefix);
-            std::string slash ("/");
-            for(uint i=0;i<constraints.size();i++){
-              DifferentiableFunctionPtr_t dfp = constraints.at(i);
-              std::stringstream ss; ss << i; std::string id = ss.str();
-              cnames.push_back(p+slash+id+dfp->name());
-              problemSolver_->addNumericalConstraint(cnames.at(i), constraints.at(i));
-            }
-
-            return stringToNamesT(cnames);
-
-          } catch (const std::exception& exc) {
-            throw Error (exc.what ());
-          }
         }
 
       } // end of namespace impl.

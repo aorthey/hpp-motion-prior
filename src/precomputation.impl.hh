@@ -30,7 +30,6 @@ namespace hpp
       namespace impl
       {
 
-        using hpp::corbaserver::motionprior::capsules::ProjectedCapsulePoint;
         /// \brief Implement CORBA interface ``Precomputation''.
         class Precomputation : public virtual POA_hpp::corbaserver::motion_prior::Precomputation
         {
@@ -44,36 +43,23 @@ namespace hpp
           /// capsules
           virtual hpp::floatSeq* getConvexHullCapsules () throw (hpp::Error);
 
-          /// \brief compute the gradient wrt to the outer convex hull points and
-          /// its associated jacobians
-          virtual hpp::floatSeq* getGradient () throw (hpp::Error);
-
           /// \brief get volume of the surface area, inscribed in the convex hull
           /// of the projected capsule points
           double getVolume () throw (hpp::Error);
 
-          /// \brief Use the current configuration and project it down until it is
-          ///  irreducible up to a threshold
-          virtual hpp::floatSeq* projectUntilIrreducible () throw (hpp::Error);
-          virtual hpp::floatSeq* projectUntilIrreducibleConstraint () throw (hpp::Error);
-
-          /// \brief Perform one step of the gradient descent projection onto the
-          ///  irreducible manifold
-          virtual hpp::floatSeq* projectUntilIrreducibleOneStep () throw (hpp::Error);
-
           virtual void setCurrentConfiguration (const hpp::floatSeq& dofArray) throw (hpp::Error);
           virtual void setCurrentConfiguration (const Configuration_t& q) throw (hpp::Error);
 
-          /// \brief Add natural constraints to the problemSolver
-          virtual hpp::Names_t* addNaturalConstraints
-                (const char* prefix, const hpp::floatSeq& dofArray,
-                 const char* leftAnkle, const char* rightAnkle) throw (hpp::Error);
-
           virtual hpp::floatSeq* shootRandomConfig() throw (hpp::Error);
           virtual vector_t shootRandomConfigVector() throw (hpp::Error);
-          hpp::floatSeq* getApproximateIrreducibleConfiguration () throw (hpp::Error);
+
+          hpp::floatSeq* getRandomIrreducibleConfiguration () throw (hpp::Error);
 
         private:
+
+          /// \brief compute the gradient wrt to the outer convex hull points and
+          /// its associated jacobians
+          virtual hpp::floatSeq* getGradient () throw (hpp::Error);
           /// \brief Compute q = q + lambda*q', i.e. one update step of gradient
           // descent
           virtual Configuration_t step(const Configuration_t &qq, double lambda) throw (hpp::Error);
@@ -85,11 +71,12 @@ namespace hpp
 
           void computeProjectedConvexHullFromConfiguration(vector_t &q) throw (hpp::Error);
 
-          ProjectedCapsulePointVectorPtr getProjectedConvexHullFromConfiguration (vector_t &q);
+          ProjectedCapsulePointVectorPtr_t getProjectedConvexHullFromConfiguration (vector_t &q);
           bool projectOntoConstraintManifold(vector_t &q) throw (hpp::Error);
           bool projectOntoIrreducibleManifold(vector_t &q) throw (hpp::Error);
 
         private:
+
           /// \brief Pointer to the Server owning this object
           corbaServer::Server* server_;
 
@@ -97,7 +84,7 @@ namespace hpp
           /// Instantiated at construction.
           core::ProblemSolverPtr_t problemSolver_;
 
-          ProjectedCapsulePointVectorPtr cvxCaps_;
+          ProjectedCapsulePointVectorPtr_t cvxCaps_;
           
           ConstraintManifoldOperatorPtr_t cnstrOp_;
         };

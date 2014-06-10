@@ -62,7 +62,9 @@ namespace hpp {
       class ConstraintManifoldOperator;
       typedef boost::shared_ptr<ConstraintManifoldOperator> ConstraintManifoldOperatorPtr_t;
 
-      class capsules::ProjectedCapsulePoint;
+      namespace capsules{
+        class ProjectedCapsulePoint;
+      }
       typedef capsules::ProjectedCapsulePoint ProjectedCapsulePoint_t;
       typedef boost::shared_ptr<ProjectedCapsulePoint_t> ProjectedCapsulePointPtr_t;
       typedef std::vector<ProjectedCapsulePointPtr_t> ProjectedCapsulePointVectorPtr_t;
