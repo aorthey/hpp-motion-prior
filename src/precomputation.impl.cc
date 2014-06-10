@@ -12,6 +12,7 @@
 # include "precomputation.impl.hh"
 # include "precomputation-utils.hh"
 # include "constraint-manifold-operator.hh"
+# include "capsule-parser.hh"
 
 
 namespace hpp
@@ -22,19 +23,20 @@ namespace hpp
     {
       namespace impl
       {
+        using namespace hpp::corbaserver::motionprior::capsules;
         //Precomputation::Precomputation(corbaServer::Server* server) :
         //  server_(server), problemSolver_(server->problemSolver ())
         //{
         //}
-        Precomputation::Precomputation () : problemSolver_ (0x0) {}
+        Precomputation::Precomputation () : problemSolver_ (0x0) {
+        }
         void Precomputation::setProblemSolver
         (const ProblemSolverPtr_t& problemSolver)
         {
           problemSolver_ = problemSolver;
         }
 
-        hpp::floatSeq* Precomputation::shootRandomConfig() throw (hpp::Error){
-
+        vector_t Precomputation::shootRandomConfigVector() throw (hpp::Error){
           DevicePtr_t robot = problemSolver_->robot ();
 
           hpp::core::BasicConfigurationShooter confShooter(robot);
@@ -43,6 +45,11 @@ namespace hpp
           hpp::model::ConfigurationIn_t config = *configPtr.get();
           robot->currentConfiguration(config);
           vector_t q = robot->currentConfiguration();
+          return q;
+        }
+
+        hpp::floatSeq* Precomputation::shootRandomConfig() throw (hpp::Error){
+          vector_t q = shootRandomConfigVector();
           return vectorToFloatSeq(q);
         }
 
@@ -96,6 +103,11 @@ namespace hpp
           }
         }
 
+        hpp::floatSeq* Precomputation::getApproximateIrreducibleConfiguration () throw (hpp::Error)
+        {
+          vector_t q = shootRandomConfigVector();
+
+        }
         hpp::floatSeq* Precomputation::projectUntilIrreducibleConstraint () throw (hpp::Error)
         {
           try {
@@ -106,9 +118,9 @@ namespace hpp
             double lambda = 0.1; //update value
             computeProjectedConvexHullFromCurrentConfiguration ();
 
-            ConstraintManifoldOperator Cop(problemSolver_);
-            Cop.reset();
-            Cop.init();
+            cnstrOp_.reset( new ConstraintManifoldOperator(problemSolver_) );
+            cnstrOp_->deleteConstraints();
+            cnstrOp_->init();
 
             std::vector<ProjectedCapsulePoint> cvxCapsOld;
             cvxCapsOld = cvxCaps_;
@@ -117,15 +129,15 @@ namespace hpp
               Configuration_t qq = this->getGradientVector();
               Configuration_t q = this->step(qq, lambda);
 
-              Cop.apply(q);
+              cnstrOp_->apply(q);
 
-              if(Cop.success()){
+              if(cnstrOp_->success()){
                 //new configuration was successfully projected back on the given
                 //contraint manifold
                 this->setCurrentConfiguration(q);
                 computeProjectedConvexHullFromCurrentConfiguration ();
 
-                if(isSubsetOf(cvxCaps_, cvxCapsOld)){
+                if(isSmallerVolume(cvxCaps_, cvxCapsOld)){
                   double C = this->getVolume();
                   error = fabs(C-oldC);
                   oldC = C;
@@ -207,26 +219,8 @@ namespace hpp
 
         double Precomputation::getVolume () throw (hpp::Error)
         {
-          //assume that hull are points on a convex hull, which are sorted
-          //counter-clockwise.
-          using namespace Eigen;
-          Vector2f x1(cvxCaps_.at(0).y, cvxCaps_.at(0).z);
-          double volume = 0;
-          //compute volume by iterating over all embeded triangles
-          for(int i=0; i<cvxCaps_.size()-2; i++){
-            Vector2f x2(cvxCaps_.at(i+1).y, cvxCaps_.at(i+1).z);
-            Vector2f x3(cvxCaps_.at(i+2).y, cvxCaps_.at(i+2).z);
-            Vector2f v12 = x2-x1;
-            Vector2f v13 = x3-x1;
-            double b = v12.norm();
-            Vector2f h_vec = v13 - v13.dot(v12)*v12;
-            double h = h_vec.norm();
-            double d = 0.5*b*h;
-            volume += d;
-          }
-          return volume;
+          return capsules::getVolume(cvxCaps_);
         }
-
 
         void Precomputation::computeProjectedConvexHullFromCurrentConfiguration () 
           throw (hpp::Error)
@@ -300,7 +294,7 @@ namespace hpp
           using std::string;
           try {
 
-            using namespace hpp::corbaServer::precomputation;
+            using namespace hpp::corbaserver::motionprior;
             ConfigurationPtr_t config = dofSeqToConfig (problemSolver_, dofArray);
             const DevicePtr_t& robot (problemSolver_->robot ());
             if (!robot) {

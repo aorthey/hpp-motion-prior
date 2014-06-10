@@ -7,6 +7,8 @@ namespace hpp
   {
     namespace motionprior
     {
+      namespace capsules
+      {
         std::vector<ProjectedCapsulePoint> computeConvexHullFromProjectedCapsulePoints (const std::vector<ProjectedCapsulePoint> &capsVec) 
         {
           return ::hpp::corbaserver::motionprior::convexhull::convex_hull(capsVec);
@@ -20,6 +22,33 @@ namespace hpp
             }
           }
           return true;
+        }
+        bool isSmallerVolume(const std::vector<ProjectedCapsulePoint> &lhs, const std::vector<ProjectedCapsulePoint> &rhs) 
+        {
+          double lv = getVolume(lhs);
+          double rv = getVolume(rhs);
+          return lv <= rv;
+        }
+
+        double getVolume(const std::vector<ProjectedCapsulePoint> &pts){
+          //assume that hull are points on a convex hull, which are sorted
+          //counter-clockwise.
+          using namespace Eigen;
+          Vector2f x1(pts.at(0).y, pts.at(0).z);
+          double volume = 0;
+          //compute volume by iterating over all embeded triangles
+          for(int i=0; i<pts.size()-2; i++){
+            Vector2f x2(pts.at(i+1).y, pts.at(i+1).z);
+            Vector2f x3(pts.at(i+2).y, pts.at(i+2).z);
+            Vector2f v12 = x2-x1;
+            Vector2f v13 = x3-x1;
+            double b = v12.norm();
+            Vector2f h_vec = v13 - v13.dot(v12)*v12;
+            double h = h_vec.norm();
+            double d = 0.5*b*h;
+            volume += d;
+          }
+          return volume;
         }
 
         bool ProjectedCapsulePoint::isInsideConvexHull(const std::vector<ProjectedCapsulePoint> &ptsOnCvxHullCounterClockwise) const
@@ -213,6 +242,7 @@ namespace hpp
             throw hpp::Error (exc.what ());
           }
         }
+      } // end of namespace capsules
     } // end of namespace motionprior
   } // end of namespace corbaServer.
 } // end of namespace hpp.

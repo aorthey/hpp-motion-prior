@@ -34,6 +34,8 @@ namespace hpp
   {
     namespace motionprior
     {
+      namespace capsules
+      {
         /// \brief A capsule point represents the center of the top or bottom
         ///  part of the cylinder included in the capsule representation. 
         ///
@@ -67,6 +69,12 @@ namespace hpp
         /// is inside of the projected volume rhs
         bool isSubsetOf(const std::vector<ProjectedCapsulePoint> &lhs, const std::vector<ProjectedCapsulePoint> &rhs);
 
+        /// \brief computes volume of projected cvx capsule points
+        double getVolume(const std::vector<ProjectedCapsulePoint> &pts);
+
+        /// \brief lhs volume < rhs volume ?
+        bool isSmallerVolume(const std::vector<ProjectedCapsulePoint> &lhs, const std::vector<ProjectedCapsulePoint> &rhs);
+
         /// \brief Parse capsule points from the robot geometry and return them
         ///  in a vector
         std::vector<CapsulePoint> parseCapsulePoints (DevicePtr_t robot) throw (hpp::Error);
@@ -81,7 +89,7 @@ namespace hpp
            throw (hpp::Error);
         hpp::floatSeq* capsulePointsToFloatSeq (const std::vector<ProjectedCapsulePoint> &capsVector) 
            throw (hpp::Error);
-
+      } // end of namespace capsules
     } // end of namespace motionprior
   } // end of namespace corbaServer.
 } // end of namespace hpp.

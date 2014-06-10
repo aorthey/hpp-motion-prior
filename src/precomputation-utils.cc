@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <vector>
 #include "precomputation-utils.hh"
+#include "capsule-parser.hh"
 
 namespace hpp
 {
@@ -20,6 +21,7 @@ namespace hpp
   {
     namespace motionprior
     {
+      using namespace hpp::corbaserver::motionprior::capsules;
       hpp::floatSeq* vectorToFloatSeq(const vector_t& q){
         hpp::floatSeq* p = new hpp::floatSeq;
         p->length (q.size());

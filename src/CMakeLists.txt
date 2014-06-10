@@ -34,8 +34,6 @@ ADD_LIBRARY(${LIBRARY_NAME}
   constraint-manifold-operator.hh
   capsule-parser.cc
   capsule-parser.hh
-  natural-constraints.cc
-  natural-constraints.hh
   precomputation.impl.cc
   precomputation.impl.hh
   precomputation-utils.cc

@@ -59,6 +59,9 @@ namespace hpp {
       typedef constraints::RelativePosition RelativePosition;
       typedef constraints::RelativePositionPtr_t RelativePositionPtr_t;
 
+      class ConstraintManifoldOperator;
+      typedef boost::shared_ptr<ConstraintManifoldOperator> ConstraintManifoldOperatorPtr_t;
+
       class Server;
     } // namespace motionprior
   } // namespace corbaserver

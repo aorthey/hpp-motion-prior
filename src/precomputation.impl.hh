@@ -17,7 +17,6 @@
 
 # include <hpp/corbaserver/motion-prior/fwd.hh>
 
-# include "natural-constraints.hh"
 # include "precomputation.hh"
 # include "capsule-parser.hh"
 
@@ -31,6 +30,7 @@ namespace hpp
       namespace impl
       {
 
+        using hpp::corbaserver::motionprior::capsules::ProjectedCapsulePoint;
         /// \brief Implement CORBA interface ``Precomputation''.
         class Precomputation : public virtual POA_hpp::corbaserver::motion_prior::Precomputation
         {
@@ -50,7 +50,7 @@ namespace hpp
 
           /// \brief get volume of the surface area, inscribed in the convex hull
           /// of the projected capsule points
-          virtual double getVolume () throw (hpp::Error);
+          double getVolume () throw (hpp::Error);
 
           /// \brief Use the current configuration and project it down until it is
           ///  irreducible up to a threshold
@@ -70,6 +70,7 @@ namespace hpp
                  const char* leftAnkle, const char* rightAnkle) throw (hpp::Error);
 
           virtual hpp::floatSeq* shootRandomConfig() throw (hpp::Error);
+          virtual vector_t shootRandomConfigVector() throw (hpp::Error);
 
         private:
           /// \brief Compute q = q + lambda*q', i.e. one update step of gradient
@@ -89,6 +90,8 @@ namespace hpp
           core::ProblemSolverPtr_t problemSolver_;
 
           std::vector<ProjectedCapsulePoint> cvxCaps_;
+          
+          ConstraintManifoldOperatorPtr_t cnstrOp_;
         };
       } // end of namespace impl.
     } // end of namespace motionprior

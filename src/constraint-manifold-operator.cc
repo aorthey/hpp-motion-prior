@@ -154,7 +154,7 @@ namespace hpp
 	}
       }
 
-      void ConstraintManifoldOperator::reset()
+      void ConstraintManifoldOperator::deleteConstraints()
         throw (hpp::Error)
       {
 	try {

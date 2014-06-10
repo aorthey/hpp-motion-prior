@@ -21,7 +21,9 @@ namespace hpp
     namespace motionprior
     {
 
-      struct ProjectedCapsulePoint;
+      namespace capsules{
+        struct ProjectedCapsulePoint;
+      }
 
       vector_t floatSeqToVector(const hpp::floatSeq &q);
 
@@ -37,11 +39,11 @@ namespace hpp
         /// Original source code from
         /// http://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain#C.2B.2B
 
-        double cross(const ProjectedCapsulePoint &O, const ProjectedCapsulePoint &A, const ProjectedCapsulePoint &B);
+        double cross(const capsules::ProjectedCapsulePoint &O, const capsules::ProjectedCapsulePoint &A, const capsules::ProjectedCapsulePoint &B);
          
         // \brief Returns a list of points on the convex hull in counter-clockwise order.
         // Note: the last point in the returned list is the same as the first one.
-        std::vector<ProjectedCapsulePoint> convex_hull(std::vector<ProjectedCapsulePoint> P);
+        std::vector<capsules::ProjectedCapsulePoint> convex_hull(std::vector<capsules::ProjectedCapsulePoint> P);
 
       }// end of namespace convexhull
     } // end of namespace precomputation

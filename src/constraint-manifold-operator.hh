@@ -34,7 +34,7 @@ namespace hpp
         
         double apply( Configuration_t &q ) throw (hpp::Error);
 
-        void reset() throw (hpp::Error);
+        void deleteConstraints() throw (hpp::Error);
 
         bool success();
 
