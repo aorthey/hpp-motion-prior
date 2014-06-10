@@ -69,6 +69,8 @@ namespace hpp
                 (const char* prefix, const hpp::floatSeq& dofArray,
                  const char* leftAnkle, const char* rightAnkle) throw (hpp::Error);
 
+          virtual hpp::floatSeq* shootRandomConfig() throw (hpp::Error);
+
         private:
           /// \brief Compute q = q + lambda*q', i.e. one update step of gradient
           // descent

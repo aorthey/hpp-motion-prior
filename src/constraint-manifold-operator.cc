@@ -50,8 +50,7 @@ namespace hpp
 
         vector3_t zero; zero.setZero ();
         matrix3_t I3; I3.setIdentity ();
-        //const vector3_t& com = robot->positionCenterOfMass ();
-        vector3_t com(0,0,0.75);
+        const vector3_t& com = robot->positionCenterOfMass ();
 
         hpp::model::matrix3_t RZ90;
         RZ90.setEulerZYX(0,0,-M_PI/2);
@@ -61,13 +60,6 @@ namespace hpp
         std::vector< bool > ymask = boost::assign::list_of(false)(true )(true );
         std::vector< bool > xy_translation = boost::assign::list_of(false)(false )(true );
         std::vector< bool > default_mask = boost::assign::list_of(true)(true )(true );
-
-        // --------------------------------------------------------------------
-        // position of center of mass in left ankle frame
-        // --------------------------------------------------------------------
-        matrix3_t R1T (M1.getRotation ()); R1T.transpose ();
-        vector3_t xloc = R1T * (com - M1.getTranslation ());
-        constraintSet.push_back (RelativeCom::create (robot, joint1, xloc));
 
         // --------------------------------------------------------------------
         // Left Foot Constraints 
@@ -83,6 +75,14 @@ namespace hpp
         // --------------------------------------------------------------------
         constraintSet.push_back (Position::create (robot, joint2, zero, zero, I3, xy_translation));
         constraintSet.push_back (Orientation::create (robot, joint2, RZ90, zmask));
+
+        // --------------------------------------------------------------------
+        // position of center of mass in left ankle frame
+        // --------------------------------------------------------------------
+        matrix3_t R1T (M1.getRotation ()); R1T.transpose ();
+        vector3_t xloc = R1T * (com - M1.getTranslation ());
+        constraintSet.push_back (RelativeCom::create (robot, joint1, xloc));
+
         return constraintSet;
       }
 
@@ -140,6 +140,7 @@ namespace hpp
       double ConstraintManifoldOperator::apply( Configuration_t &q )
         throw (hpp::Error)
       {
+        success_ = false;
 	try {
 	  success_ = problemSolver_->constraints ()->apply (q);
 	  if (hpp::core::ConfigProjectorPtr_t configProjector =
@@ -147,7 +148,7 @@ namespace hpp
 	    double residualError = configProjector->residualError ();
             return residualError;
 	  }
-          return -1.0;
+          return NAN;
 	} catch (const std::exception& exc) {
 	  throw hpp::Error (exc.what ());
 	}

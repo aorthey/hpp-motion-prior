@@ -9,9 +9,9 @@
 //
 // See the COPYING file for more information.
 
-#include "precomputation.impl.hh"
-#include "precomputation-utils.hh"
-#include "constraint-manifold-operator.hh"
+# include "precomputation.impl.hh"
+# include "precomputation-utils.hh"
+# include "constraint-manifold-operator.hh"
 
 
 namespace hpp
@@ -33,6 +33,18 @@ namespace hpp
           problemSolver_ = problemSolver;
         }
 
+        hpp::floatSeq* Precomputation::shootRandomConfig() throw (hpp::Error){
+
+          DevicePtr_t robot = problemSolver_->robot ();
+
+          hpp::core::BasicConfigurationShooter confShooter(robot);
+          ConfigurationPtr_t configPtr = confShooter.shoot();
+
+          hpp::model::ConfigurationIn_t config = *configPtr.get();
+          robot->currentConfiguration(config);
+          vector_t q = robot->currentConfiguration();
+          return vectorToFloatSeq(q);
+        }
 
         hpp::floatSeq* Precomputation::getConvexHullCapsules () throw (hpp::Error)
         {

@@ -14,11 +14,6 @@
 #include <vector>
 #include "precomputation-utils.hh"
 
-// --------------------------------------------------------------------
-// Implementation of Andrew's monotone chain 2D convex hull algorithm.
-// Asymptotic complexity: O(n log n).
-// Practical performance: 0.5-1.0 seconds for n=1000000 on a 1GHz machine.
-// Optimized for HPP framework
 namespace hpp
 {
   namespace corbaserver
@@ -54,6 +49,11 @@ namespace hpp
       }
       namespace convexhull
       {
+        // --------------------------------------------------------------------
+        // Implementation of Andrew's monotone chain 2D convex hull algorithm.
+        // Asymptotic complexity: O(n log n).
+        // Practical performance: 0.5-1.0 seconds for n=1000000 on a 1GHz machine.
+        // Optimized for HPP framework
         using namespace std;
         double cross(const ProjectedCapsulePoint &O, const ProjectedCapsulePoint &A, const ProjectedCapsulePoint &B)
         {
