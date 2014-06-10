@@ -71,15 +71,23 @@ namespace hpp
 
           virtual hpp::floatSeq* shootRandomConfig() throw (hpp::Error);
           virtual vector_t shootRandomConfigVector() throw (hpp::Error);
+          hpp::floatSeq* getApproximateIrreducibleConfiguration () throw (hpp::Error);
 
         private:
           /// \brief Compute q = q + lambda*q', i.e. one update step of gradient
           // descent
           virtual Configuration_t step(const Configuration_t &qq, double lambda) throw (hpp::Error);
 
-          virtual Configuration_t getGradientVector();
+          virtual Configuration_t getGradientVector() throw (hpp::Error);
+          virtual Configuration_t getGradientVector(const Configuration_t &q) throw (hpp::Error);
 
           void computeProjectedConvexHullFromCurrentConfiguration() throw (hpp::Error);
+
+          void computeProjectedConvexHullFromConfiguration(vector_t &q) throw (hpp::Error);
+
+          ProjectedCapsulePointVectorPtr getProjectedConvexHullFromConfiguration (vector_t &q);
+          bool projectOntoConstraintManifold(vector_t &q) throw (hpp::Error);
+          bool projectOntoIrreducibleManifold(vector_t &q) throw (hpp::Error);
 
         private:
           /// \brief Pointer to the Server owning this object
@@ -89,7 +97,7 @@ namespace hpp
           /// Instantiated at construction.
           core::ProblemSolverPtr_t problemSolver_;
 
-          std::vector<ProjectedCapsulePoint> cvxCaps_;
+          ProjectedCapsulePointVectorPtr cvxCaps_;
           
           ConstraintManifoldOperatorPtr_t cnstrOp_;
         };

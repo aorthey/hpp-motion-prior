@@ -105,9 +105,46 @@ namespace hpp
 
         hpp::floatSeq* Precomputation::getApproximateIrreducibleConfiguration () throw (hpp::Error)
         {
-          vector_t q = shootRandomConfigVector();
-
+          DevicePtr_t robot = problemSolver_->robot ();
+          while(true){
+            Configuration_t q = shootRandomConfigVector();
+            Configuration_t q_proj;
+            if(projectOntoConstraintManifold(q,q_proj)){
+              Configuration_t q_irr;
+              if(projectOntoIrreducibleManifold(q_proj,q_irr)){
+                return vectorToFloatSeq(q_irr);
+              }
+            }
+          }
         }
+
+        bool Precomputation::projectOntoConstraintManifold (vector_t &q) throw (hpp::Error){
+          if(!cnstrOp_){
+            cnstrOp_.reset( new ConstraintManifoldOperator(problemSolver_) );
+          }
+          cnstrOp_->deleteConstraints();
+          cnstrOp_->init();
+          cnstrOp_->apply(q);
+          return cnstrOp_->success();
+        }
+
+        bool Precomputation::projectOntoIrreducibleManifold (const Configuration_t &q, Configuration_t &q_proj) throw (hpp::Error){
+          const double lambda = 0.1; //gradient step size
+
+          Configuration_t qq = this->getGradientVector(q);
+          q_proj = this->step(qq, lambda);
+
+          ProjectedCapsulePointVectorPtr cvxCapsOld = getProjectedConvexHullFromConfiguration (q);
+          ProjectedCapsulePointVectorPtr cvxCapsNew = getProjectedConvexHullFromConfiguration (q_proj);
+
+          if(isSmallerVolume(cvxCapsNew, cvxCapsOld)){
+            return true;
+          }else{
+            return false;
+          }
+        }
+
+        /*
         hpp::floatSeq* Precomputation::projectUntilIrreducibleConstraint () throw (hpp::Error)
         {
           try {
@@ -164,7 +201,6 @@ namespace hpp
         }
 
 
-
         hpp::floatSeq* Precomputation::projectUntilIrreducibleOneStep () throw (hpp::Error)
         {
           try {
@@ -216,6 +252,7 @@ namespace hpp
             throw hpp::Error (exc.what ());
           }
         }
+        */
 
         double Precomputation::getVolume () throw (hpp::Error)
         {
@@ -226,6 +263,17 @@ namespace hpp
           throw (hpp::Error)
         {
           DevicePtr_t robot = problemSolver_->robot ();
+          std::vector<CapsulePoint> caps = parseCapsulePoints(robot);
+          std::vector<ProjectedCapsulePoint> projCaps = projectCapsulePointsOnYZPlane(caps);
+          cvxCaps_.clear();
+          cvxCaps_ = computeConvexHullFromProjectedCapsulePoints(projCaps);
+        }
+
+        ProjectedCapsulePointVectorPtr Precomputation::getProjectedConvexHullFromConfiguration (vector_t &q)
+          throw (hpp::Error)
+        {
+          DevicePtr_t robot = problemSolver_->robot ();
+          robot->currentConfiguration(q);
           std::vector<CapsulePoint> caps = parseCapsulePoints(robot);
           std::vector<ProjectedCapsulePoint> projCaps = projectCapsulePointsOnYZPlane(caps);
           cvxCaps_.clear();
