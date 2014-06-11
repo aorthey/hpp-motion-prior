@@ -11,6 +11,7 @@
 #pragma once
 # include <hpp/core/fwd.hh>
 # include <hpp/constraints/fwd.hh>
+# include <fcl/math/transform.h>
 
 namespace hpp {
   namespace corbaserver {
@@ -20,6 +21,12 @@ namespace hpp {
       typedef core::ConfigProjectorPtr_t ConfigProjectorPtr_t;
       typedef core::Configuration_t Configuration_t;
       typedef core::ConfigurationPtr_t ConfigurationPtr_t;
+
+      typedef core::LockedDofPtr_t LockedDofPtr_t;
+      typedef core::LockedDof LockedDof;
+
+      typedef fcl::Quaternion3f Quaternion_t;
+
       typedef model::DevicePtr_t DevicePtr_t;
       typedef model::HumanoidRobotPtr_t HumanoidRobotPtr_t;
       typedef model::HumanoidRobot HumanoidRobot;
@@ -58,6 +65,10 @@ namespace hpp {
       typedef constraints::RelativeOrientationPtr_t RelativeOrientationPtr_t;
       typedef constraints::RelativePosition RelativePosition;
       typedef constraints::RelativePositionPtr_t RelativePositionPtr_t;
+
+      typedef core::ConstraintSetPtr_t ConstraintSetPtr_t;
+      typedef core::ConfigProjector ConfigProjector;
+      typedef core::ConfigProjectorPtr_t ConfigProjectorPtr_t;
 
       class ConstraintManifoldOperator;
       typedef boost::shared_ptr<ConstraintManifoldOperator> ConstraintManifoldOperatorPtr_t;

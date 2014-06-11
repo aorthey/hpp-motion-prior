@@ -54,9 +54,8 @@ namespace hpp
         }
 
 
-        Configuration_t Precomputation::step (const Configuration_t &qq, double lambda) throw (hpp::Error){
+        Configuration_t Precomputation::step (const Configuration_t &q, const Configuration_t &qq, double lambda) throw (hpp::Error){
           try {
-            Configuration_t q = problemSolver_->robot ()->currentConfiguration ();
             Configuration_t q_new; q_new.resize (qq.size()+1);
             //fill in CoM
             for(uint i=0; i<7; i++){
@@ -87,22 +86,40 @@ namespace hpp
             ctr++;
           }
         }
+
         hpp::floatSeq* Precomputation::getRandomIrreducibleConfiguration () throw (hpp::Error)
         {
-          uint ctr = 0;
+          const uint max_iter = 5;
           while(true){
-            Configuration_t q = shootRandomConfigVector();
-            if(projectOntoConstraintManifold(q)){
-              if(projectOntoIrreducibleManifold(q)){
-                hppDout(notice, "successful projection after " << ctr << " iterations.");
-                //save internal state for future get methods
-                q_ = q;
-                cvxCaps_ = getProjectedConvexHullFromConfiguration(q_);
-                return vectorToFloatSeq(q);
+            uint ctr = 0;
+            Configuration_t q;
+            Configuration_t q_proj = shootRandomConfigVector();
+
+            for(uint i=0;i<max_iter; i++){
+              if(projectOntoConstraintIrreducibleManifold(q_proj)){
+                ctr++;
+                q = q_proj;
               }
             }
-            ctr++;
+            if(ctr>0){
+              hppDout(notice, "successful projection after " << ctr << " iterations.");
+              //save internal state for future get methods
+              q_ = q;
+              cvxCaps_ = getProjectedConvexHullFromConfiguration(q_);
+
+              return vectorToFloatSeq(q);
+            }
           }
+        }
+
+        bool Precomputation::projectOntoConstraintIrreducibleManifold (Configuration_t &q) throw (hpp::Error)
+        {
+          if(projectOntoIrreducibleManifold(q)){
+            if(projectOntoConstraintManifold(q)){
+                return true;
+            }
+          }
+          return false;
         }
 
         bool Precomputation::projectOntoConstraintManifold (Configuration_t &q) throw (hpp::Error)
@@ -121,22 +138,23 @@ namespace hpp
           const double lambda = 0.1; //gradient step size
 
           Configuration_t qq = this->getGradientFromConfiguration(q);
-          Configuration_t q_proj = this->step(qq, lambda);
+          Configuration_t q_proj = this->step(q, qq, lambda);
 
           ProjectedCapsulePointVectorPtr_t cvxCapsOld = getProjectedConvexHullFromConfiguration (q);
           ProjectedCapsulePointVectorPtr_t cvxCapsNew = getProjectedConvexHullFromConfiguration (q_proj);
 
           if(isSmallerVolume(cvxCapsNew, cvxCapsOld)){
+            q = q_proj;
             return true;
-          }else{
-            return false;
           }
+          return false;
         }
 
         double Precomputation::getVolume () throw (hpp::Error)
         {
           return capsules::getVolume(cvxCaps_);
         }
+
         hpp::floatSeq* Precomputation::getConvexHullCapsules () throw (hpp::Error)
         {
           return capsulePointsToFloatSeq(cvxCaps_);
@@ -147,6 +165,8 @@ namespace hpp
         {
           DevicePtr_t robot = problemSolver_->robot ();
           robot->currentConfiguration(q);
+	  robot->computeForwardKinematics();
+
           CapsulePointVectorPtr_t caps = parseCapsulePoints(robot);
           ProjectedCapsulePointVectorPtr_t projCaps = projectCapsulePointsOnYZPlane(caps);
           ProjectedCapsulePointVectorPtr_t cvxCaps = computeConvexHullFromProjectedCapsulePoints(projCaps);
@@ -158,7 +178,6 @@ namespace hpp
           //Compute gradient wrt outer jacobians
           DevicePtr_t robot = problemSolver_->robot ();
           ProjectedCapsulePointVectorPtr_t cvxCaps = getProjectedConvexHullFromConfiguration (q);
-          cvxCaps_ = cvxCaps;
 
           Configuration_t qgrad(robot->numberDof());
           qgrad.setZero();
@@ -170,35 +189,6 @@ namespace hpp
             qgrad = qgrad + qi;
           }
           return qgrad;
-        }
-
-        //-----------------------------------------------------------------------
-        // TODO: replace function
-        //-----------------------------------------------------------------------
-        static ConfigurationPtr_t dofSeqToConfig
-        (core::ProblemSolverPtr_t problemSolver, const hpp::floatSeq& dofArray)
-        {
-          unsigned int configDim = (unsigned int)dofArray.length();
-          ConfigurationPtr_t config (new Configuration_t (configDim));
-
-          // Get robot in hppPlanner object.
-          DevicePtr_t robot = problemSolver->robot ();
-
-          // Compare size of input array with number of degrees of freedom of
-          // robot.
-          if (configDim != robot->configSize ()) {
-            hppDout (error, "robot configSize (" << robot->configSize ()
-          	   << ") is different from config size ("
-          	   << configDim << ")");
-            throw std::runtime_error
-              ("robot nb dof is different from config size");
-          }
-
-          // Fill dof vector with dof array.
-          for (unsigned int iDof=0; iDof < configDim; ++iDof) {
-            (*config) [iDof] = dofArray [iDof];
-          }
-          return config;
         }
 
       } // end of namespace impl.

@@ -52,11 +52,12 @@ namespace hpp
 
         private:
           virtual hpp::floatSeq* shootRandomConfig() throw (hpp::Error);
+
           virtual vector_t shootRandomConfigVector() throw (hpp::Error);
 
           /// \brief Compute q = q + lambda*q', i.e. one update step of gradient
           // descent
-          virtual Configuration_t step(const Configuration_t &qq, double lambda) throw (hpp::Error);
+          Configuration_t step (const Configuration_t &q, const Configuration_t &qq, double lambda) throw (hpp::Error);
 
           /// \brief compute the gradient wrt to the outer convex hull points and
           /// its associated jacobians
@@ -71,6 +72,7 @@ namespace hpp
 
           bool projectOntoConstraintManifold (Configuration_t &q) throw (hpp::Error);
           bool projectOntoIrreducibleManifold(Configuration_t &q) throw (hpp::Error);
+          bool projectOntoConstraintIrreducibleManifold (Configuration_t &q) throw (hpp::Error);
 
         private:
 

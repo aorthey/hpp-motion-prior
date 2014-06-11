@@ -14,7 +14,10 @@
 #include <hpp/model/joint.hh>
 #include <hpp/core/config-projector.hh>
 #include <hpp/core/problem-solver.hh>
+#include <hpp/core/locked-dof.hh>
 #include <hpp/util/debug.hh>
+
+#include <Eigen/Geometry>
 
 #include <hpp/constraints/orientation.hh>
 #include <hpp/constraints/position.hh>
@@ -59,6 +62,7 @@ namespace hpp
         std::vector< bool > xmask = boost::assign::list_of(true )(false)(true );
         std::vector< bool > ymask = boost::assign::list_of(false)(true )(true );
         std::vector< bool > xy_translation = boost::assign::list_of(false)(false )(true );
+        std::vector< bool > z_translation = boost::assign::list_of(true)(true )(false );
         std::vector< bool > default_mask = boost::assign::list_of(true)(true )(true );
 
         // --------------------------------------------------------------------
@@ -79,9 +83,43 @@ namespace hpp
         // --------------------------------------------------------------------
         // position of center of mass in left ankle frame
         // --------------------------------------------------------------------
+        //matrix3_t R1T (M1.getRotation ()); R1T.transpose ();
+        //vector3_t xloc = R1T * (com - M1.getTranslation ());
+        //constraintSet.push_back (RelativeCom::create (robot, joint1, xloc));
+
         matrix3_t R1T (M1.getRotation ()); R1T.transpose ();
-        vector3_t xloc = R1T * (com - M1.getTranslation ());
+        matrix3_t R2T (M2.getRotation ()); R2T.transpose ();
+
+
+        //Eigen::Quaternion<double> rq1(R1T);
+        //Eigen::Quaternion<double> rq2;
+        //rq2 = M2.getRotation();
+
+        Quaternion_t rq1fcl; rq1fcl.fromRotation (M1.getRotation());
+        Quaternion_t rq2fcl; rq2fcl.fromRotation (M2.getRotation());
+        Eigen::Quaternion<double> rq1(rq1fcl.getW(), rq1fcl.getX(), rq1fcl.getY(), rq1fcl.getZ());
+        Eigen::Quaternion<double> rq2(rq2fcl.getW(), rq2fcl.getX(), rq2fcl.getY(), rq2fcl.getZ());
+
+        Eigen::Quaternion<double> rqc = rq2.slerp(0.5, rq1);
+        Quaternion_t rqcfcl(rqc.w(), rqc.x(), rqc.y(), rqc.z());
+
+        matrix3_t RCT;
+        rqcfcl.toRotation(RCT);
+        RCT.transpose();
+
+        //vector3_t ml = 0.5 * (M1.getTranslation() - M2.getTranslation());
+        //vector3_t xloc = RCT * ml;
+        vector3_t m2v = M2.getTranslation();
+        m2v[0] = 0;
+        m2v[1] = 0;
+        m2v[2] = 0.7;
+
+        vector3_t xloc = R1T * m2v;
+
         constraintSet.push_back (RelativeCom::create (robot, joint1, xloc));
+
+        //vector3_t xc = R1T * (com - M1.getTranslation ());
+        //constraintSet.push_back (RelativeCom::create (robot, joint1, xc));
 
         return constraintSet;
       }
@@ -90,33 +128,29 @@ namespace hpp
         throw (hpp::Error)
       {
 
-        const DevicePtr_t& robot (problemSolver_->robot ());
-
-        const char* constraintSetName = "mv-irr-constraint-set";
-        const char* leftAnkle = "LLEG_JOINT5";
-        const char* rightAnkle = "RLEG_JOINT5";
-
-        JointPtr_t joint1 = robot->getJointByName (leftAnkle);
-        JointPtr_t joint2 = robot->getJointByName (rightAnkle);
-
-        constraintSet_ = getConstraintSet(robot, joint1, joint2);
-
-        std::vector<std::string> cnames;
-
-        std::string p (constraintSetName);
-        std::string slash ("/");
-
-        for(uint i=0;i<constraintSet_.size();i++){
-          DifferentiableFunctionPtr_t dfp = constraintSet_.at(i);
-          std::stringstream ss; ss << i; std::string id = ss.str();
-          cnames.push_back(p+slash+id+dfp->name());
-          problemSolver_->addNumericalConstraint(cnames.at(i), constraintSet_.at(i));
-        }
-
-	using core::ConstraintSetPtr_t;
-	using core::ConfigProjector;
-	using core::ConfigProjectorPtr_t;
 	try {
+          const DevicePtr_t& robot (problemSolver_->robot ());
+  
+          const char* constraintSetName = "mv-irr-constraint-set";
+          const char* leftAnkle = "LLEG_JOINT5";
+          const char* rightAnkle = "RLEG_JOINT5";
+  
+          JointPtr_t joint1 = robot->getJointByName (leftAnkle);
+          JointPtr_t joint2 = robot->getJointByName (rightAnkle);
+  
+          constraintSet_ = getConstraintSet(robot, joint1, joint2);
+  
+          std::vector<std::string> cnames;
+          std::string p (constraintSetName);
+          std::string slash ("/");
+  
+          for(uint i=0;i<constraintSet_.size();i++){
+            DifferentiableFunctionPtr_t dfp = constraintSet_.at(i);
+            std::stringstream ss; ss << i; std::string id = ss.str();
+            cnames.push_back(p+slash+id+dfp->name());
+            problemSolver_->addNumericalConstraint(cnames.at(i), constraintSet_.at(i));
+          }
+  
 	  ConfigProjectorPtr_t configProjector = problemSolver_->constraints()->configProjector ();
 
 	  if (!configProjector) {
@@ -132,6 +166,32 @@ namespace hpp
 	    configProjector->addConstraint (problemSolver_->numericalConstraint
 					    (cnames.at(i)));
           }
+          //add locked dofs
+          // --------------------------------------------------------------------
+          // add locked dofs
+          // --------------------------------------------------------------------
+
+          std::vector<std::string> jnames;
+          jnames.push_back("RHAND_JOINT0");
+          jnames.push_back("RHAND_JOINT1");
+          jnames.push_back("RHAND_JOINT2");
+          jnames.push_back("RHAND_JOINT3");
+          jnames.push_back("RHAND_JOINT4");
+          jnames.push_back("LHAND_JOINT0");
+          jnames.push_back("LHAND_JOINT1");
+          jnames.push_back("LHAND_JOINT2");
+          jnames.push_back("LHAND_JOINT3");
+          jnames.push_back("LHAND_JOINT4");
+
+          for (uint i = 0; i < jnames.size(); i++) {
+            JointPtr_t joint = robot->getJointByName(jnames.at(i).c_str());
+	    LockedDofPtr_t lockedDof (LockedDof::create (jnames.at(i).c_str(), joint, 0));
+	    //problemSolver_->addConstraint (lockedDof);
+	    //configProjector->addConstraint (lockedDof);
+	    problemSolver_->constraints()->addConstraint (lockedDof);
+          }
+
+
 	} catch (const std::exception& exc) {
 	  throw hpp::Error (exc.what ());
 	}
@@ -143,15 +203,30 @@ namespace hpp
         success_ = false;
 	try {
 	  success_ = problemSolver_->constraints ()->apply (q);
+
 	  if (hpp::core::ConfigProjectorPtr_t configProjector =
 	      problemSolver_->constraints ()->configProjector ()) {
+
 	    double residualError = configProjector->residualError ();
-            return residualError;
+
+            if( !isSelfColliding(q) ){
+              return residualError;
+            }else{
+              success_ = false;
+              return residualError;
+            }
 	  }
           return NAN;
 	} catch (const std::exception& exc) {
 	  throw hpp::Error (exc.what ());
 	}
+      }
+
+      bool ConstraintManifoldOperator::isSelfColliding( Configuration_t &q ){
+        DevicePtr_t robot = problemSolver_->robot ();
+        robot->currentConfiguration(q);
+	robot->computeForwardKinematics ();
+        return (robot->collisionTest());
       }
 
       void ConstraintManifoldOperator::deleteConstraints()

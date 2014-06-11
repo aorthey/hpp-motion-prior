@@ -49,7 +49,7 @@ namespace hpp
         {
           double lv = getVolume(lhs);
           double rv = getVolume(rhs);
-          return lv < rv;
+          return lv <= rv;
         }
         bool ProjectedCapsulePoint::isInsideConvexHull(const ProjectedCapsulePointVectorPtr_t ptsOnCvxHullCounterClockwise) const
         {

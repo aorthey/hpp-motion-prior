@@ -14,9 +14,7 @@
 # include <cmath>
 # include <vector>
 # include <hpp/corbaserver/motion-prior/fwd.hh>
-
 # include "precomputation.hh"
-
 
 namespace hpp
 {
@@ -48,6 +46,8 @@ namespace hpp
       private:
 
         bool success_;
+        
+        bool isSelfColliding( Configuration_t &q );
 
         core::ProblemSolverPtr_t problemSolver_;
 
