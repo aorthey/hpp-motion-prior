@@ -38,12 +38,13 @@ namespace hpp
         /// Practical performance: 0.5-1.0 seconds for n=1000000 on a 1GHz machine.
         /// Original source code from
         /// http://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain#C.2B.2B
+        bool lexicographicallyCapsuleSort (const ProjectedCapsulePointPtr_t lhs, const ProjectedCapsulePointPtr_t rhs);
 
-        double cross(const capsules::ProjectedCapsulePoint &O, const capsules::ProjectedCapsulePoint &A, const capsules::ProjectedCapsulePoint &B);
+        double cross(const ProjectedCapsulePointPtr_t O, const ProjectedCapsulePointPtr_t A, const ProjectedCapsulePointPtr_t B);
          
         // \brief Returns a list of points on the convex hull in counter-clockwise order.
         // Note: the last point in the returned list is the same as the first one.
-        std::vector<capsules::ProjectedCapsulePoint> convex_hull(std::vector<capsules::ProjectedCapsulePoint> P);
+        ProjectedCapsulePointVectorPtr_t convex_hull(ProjectedCapsulePointVectorPtr_t P);
 
       }// end of namespace convexhull
     } // end of namespace precomputation

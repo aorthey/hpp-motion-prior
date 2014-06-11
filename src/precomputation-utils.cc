@@ -57,22 +57,27 @@ namespace hpp
         // Practical performance: 0.5-1.0 seconds for n=1000000 on a 1GHz machine.
         // Optimized for HPP framework
         using namespace std;
-        double cross(const ProjectedCapsulePoint &O, const ProjectedCapsulePoint &A, const ProjectedCapsulePoint &B)
+        bool lexicographicallyCapsuleSort(const ProjectedCapsulePointPtr_t lhs, const ProjectedCapsulePointPtr_t rhs)
         {
-          return (A.y - O.y) * (B.z - O.z) - (A.z - O.z) * (B.y - O.y);
+          return *lhs.get() < *rhs.get();
+        }
+
+        double cross(const ProjectedCapsulePointPtr_t O, const ProjectedCapsulePointPtr_t A, const ProjectedCapsulePointPtr_t B)
+        {
+          return (A->y - O->y) * (B->z - O->z) - (A->z - O->z) * (B->y - O->y);
         }
          
         // Returns a list of points on the convex hull in counter-clockwise order.
         // Note: the last point in the returned list is the same as the first one.
 
-        std::vector<ProjectedCapsulePoint> convex_hull(std::vector<ProjectedCapsulePoint> P)//no by-reference, we need to sort P!
+        ProjectedCapsulePointVectorPtr_t convex_hull(ProjectedCapsulePointVectorPtr_t P)
         {
           uint n = P.size();
           uint k = 0;
-          std::vector<ProjectedCapsulePoint> H(2*n);
+          ProjectedCapsulePointVectorPtr_t H(2*n);
          
           // Sort points lexicographically
-          sort(P.begin(), P.end());
+          sort(P.begin(), P.end(), lexicographicallyCapsuleSort);
          
           // Build lower hull
           for (int i = 0; i < n; ++i) {

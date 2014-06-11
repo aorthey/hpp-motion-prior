@@ -47,33 +47,30 @@ namespace hpp
           /// of the projected capsule points
           double getVolume () throw (hpp::Error);
 
-          virtual void setCurrentConfiguration (const hpp::floatSeq& dofArray) throw (hpp::Error);
-          virtual void setCurrentConfiguration (const Configuration_t& q) throw (hpp::Error);
+          hpp::floatSeq* getRandomIrreducibleConfiguration () throw (hpp::Error);
+          hpp::floatSeq* getRandomConfiguration () throw (hpp::Error);
 
+        private:
           virtual hpp::floatSeq* shootRandomConfig() throw (hpp::Error);
           virtual vector_t shootRandomConfigVector() throw (hpp::Error);
 
-          hpp::floatSeq* getRandomIrreducibleConfiguration () throw (hpp::Error);
-
-        private:
-
-          /// \brief compute the gradient wrt to the outer convex hull points and
-          /// its associated jacobians
-          virtual hpp::floatSeq* getGradient () throw (hpp::Error);
           /// \brief Compute q = q + lambda*q', i.e. one update step of gradient
           // descent
           virtual Configuration_t step(const Configuration_t &qq, double lambda) throw (hpp::Error);
 
-          virtual Configuration_t getGradientVector() throw (hpp::Error);
-          virtual Configuration_t getGradientVector(const Configuration_t &q) throw (hpp::Error);
+          /// \brief compute the gradient wrt to the outer convex hull points and
+          /// its associated jacobians
+          virtual Configuration_t getGradientFromConfiguration(const Configuration_t &q) throw (hpp::Error);
 
           void computeProjectedConvexHullFromCurrentConfiguration() throw (hpp::Error);
 
-          void computeProjectedConvexHullFromConfiguration(vector_t &q) throw (hpp::Error);
+          void computeProjectedConvexHullFromConfiguration(Configuration_t &q) throw (hpp::Error);
 
-          ProjectedCapsulePointVectorPtr_t getProjectedConvexHullFromConfiguration (vector_t &q);
-          bool projectOntoConstraintManifold(vector_t &q) throw (hpp::Error);
-          bool projectOntoIrreducibleManifold(vector_t &q) throw (hpp::Error);
+          ProjectedCapsulePointVectorPtr_t getProjectedConvexHullFromConfiguration (const Configuration_t &q)
+          throw (hpp::Error);
+
+          bool projectOntoConstraintManifold (Configuration_t &q) throw (hpp::Error);
+          bool projectOntoIrreducibleManifold(Configuration_t &q) throw (hpp::Error);
 
         private:
 
@@ -84,7 +81,9 @@ namespace hpp
           /// Instantiated at construction.
           core::ProblemSolverPtr_t problemSolver_;
 
+          /// Internal State
           ProjectedCapsulePointVectorPtr_t cvxCaps_;
+          Configuration_t q_;
           
           ConstraintManifoldOperatorPtr_t cnstrOp_;
         };

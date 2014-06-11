@@ -34,6 +34,7 @@ module hpp
          double getVolume () raises (Error);
 
          floatSeq getRandomIrreducibleConfiguration () raises (Error);
+         floatSeq getRandomConfiguration () raises (Error);
 
       };//interface precomputation
     }; //motion_prior module

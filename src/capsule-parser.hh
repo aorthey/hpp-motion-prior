@@ -50,6 +50,11 @@ namespace hpp
           double x,y,z;
           double radius;
           double length;
+          CapsulePoint(double x, double y, double z){
+            this->x = x;
+            this->y = y;
+            this->z = z;
+          };
           hpp::model::JointJacobian_t J;
         };
 
@@ -57,37 +62,45 @@ namespace hpp
           double y,z;
           hpp::model::JointJacobian_t J;
           uint idx;
+          ProjectedCapsulePoint(){};
+          ProjectedCapsulePoint(double y, double z){
+            this->y = y;
+            this->z = z;
+          };
           bool operator <(const ProjectedCapsulePoint &rhs) const {
                   return y < rhs.y || (y == rhs.y && z < rhs.z);
           }
+          bool operator <(const ProjectedCapsulePointPtr_t rhs) const {
+                  return y < rhs->y || (y == rhs->y && z < rhs->z);
+          }
           /// \brief Checks if the point is inside a given convex hull, 
           ///  whereby we assume that the points are ordered counter-clockwise
-          bool isInsideConvexHull(const std::vector<ProjectedCapsulePoint> &ptsOnCvxHullCounterClockwise) const;
+          bool isInsideConvexHull(const ProjectedCapsulePointVectorPtr_t ptsOnCvxHullCounterClockwise) const;
         };
 
         /// \brief Checks if lhs < rhs, i.e. if the projected volume lhs 
         /// is inside of the projected volume rhs
-        bool isSubsetOf(const std::vector<ProjectedCapsulePoint> &lhs, const std::vector<ProjectedCapsulePoint> &rhs);
+        bool isSubsetOf(const ProjectedCapsulePointVectorPtr_t lhs, const ProjectedCapsulePointVectorPtr_t rhs);
 
         /// \brief computes volume of projected cvx capsule points
-        double getVolume(const std::vector<ProjectedCapsulePoint> &pts);
+        double getVolume(const ProjectedCapsulePointVectorPtr_t pts);
 
         /// \brief lhs volume < rhs volume ?
-        bool isSmallerVolume(const std::vector<ProjectedCapsulePoint> &lhs, const std::vector<ProjectedCapsulePoint> &rhs);
+        bool isSmallerVolume(const ProjectedCapsulePointVectorPtr_t lhs, const ProjectedCapsulePointVectorPtr_t rhs);
 
         /// \brief Parse capsule points from the robot geometry and return them
         ///  in a vector
-        std::vector<CapsulePoint> parseCapsulePoints (DevicePtr_t robot) throw (hpp::Error);
+        CapsulePointVectorPtr_t parseCapsulePoints (DevicePtr_t robot) throw (hpp::Error);
 
         /// \brief Project Capsule Points onto ZY Plane including outer points
-        std::vector<ProjectedCapsulePoint> projectCapsulePointsOnYZPlane (const std::vector<CapsulePoint> &capsVec);
-        std::vector<ProjectedCapsulePoint> computeConvexHullFromProjectedCapsulePoints (const std::vector<ProjectedCapsulePoint> &capsVec);
+        ProjectedCapsulePointVectorPtr_t projectCapsulePointsOnYZPlane (const CapsulePointVectorPtr_t capsVec);
+        ProjectedCapsulePointVectorPtr_t computeConvexHullFromProjectedCapsulePoints (const ProjectedCapsulePointVectorPtr_t capsVec);
 
 
         /// \brief Convert capsule point vector to hpp::floatSeq 
-        hpp::floatSeq* capsulePointsToFloatSeq (const std::vector<CapsulePoint> &capsVector) 
+        hpp::floatSeq* capsulePointsToFloatSeq (const CapsulePointVectorPtr_t capsVector) 
            throw (hpp::Error);
-        hpp::floatSeq* capsulePointsToFloatSeq (const std::vector<ProjectedCapsulePoint> &capsVector) 
+        hpp::floatSeq* capsulePointsToFloatSeq (const ProjectedCapsulePointVectorPtr_t capsVector) 
            throw (hpp::Error);
       } // end of namespace capsules
     } // end of namespace motionprior

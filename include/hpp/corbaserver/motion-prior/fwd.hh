@@ -64,10 +64,15 @@ namespace hpp {
 
       namespace capsules{
         class ProjectedCapsulePoint;
+        class CapsulePoint;
       }
       typedef capsules::ProjectedCapsulePoint ProjectedCapsulePoint_t;
       typedef boost::shared_ptr<ProjectedCapsulePoint_t> ProjectedCapsulePointPtr_t;
       typedef std::vector<ProjectedCapsulePointPtr_t> ProjectedCapsulePointVectorPtr_t;
+
+      typedef capsules::CapsulePoint CapsulePoint_t;
+      typedef boost::shared_ptr<CapsulePoint_t> CapsulePointPtr_t;
+      typedef std::vector<CapsulePointPtr_t> CapsulePointVectorPtr_t;
 
       class Server;
     } // namespace motionprior

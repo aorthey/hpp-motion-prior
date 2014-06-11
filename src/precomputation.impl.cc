@@ -53,35 +53,6 @@ namespace hpp
           return vectorToFloatSeq(q);
         }
 
-        hpp::floatSeq* Precomputation::getConvexHullCapsules () throw (hpp::Error)
-        {
-          return capsulePointsToFloatSeq(cvxCaps_);
-        }
-
-        void Precomputation::setCurrentConfiguration(const hpp::floatSeq &dofArray) throw (hpp::Error)
-        {
-          try {
-            vector_t q = floatSeqToVector(dofArray);
-            setCurrentConfiguration(q);
-          } catch (const std::exception& exc) {
-            throw hpp::Error (exc.what ());
-          }
-        }
-        void Precomputation::setCurrentConfiguration(const Configuration_t& q) throw (hpp::Error)
-        {
-          try {
-            DevicePtr_t robot = problemSolver_->robot ();
-            std::size_t deviceDim = robot->configSize ();
-            if(q.size() != deviceDim){
-              hppDout (notice, "config dimension: " << q.size() <<",  deviceDim "<<deviceDim);
-              throw hpp::Error ("dofVector Does not match");
-            }
-            robot->currentConfiguration (q);
-            robot->computeForwardKinematics ();
-          } catch (const std::exception& exc) {
-            throw hpp::Error (exc.what ());
-          }
-        }
 
         Configuration_t Precomputation::step (const Configuration_t &qq, double lambda) throw (hpp::Error){
           try {
@@ -101,25 +72,40 @@ namespace hpp
           }
         }
 
-        hpp::floatSeq* Precomputation::getRandomIrreducibleConfiguration () throw (hpp::Error)
+        hpp::floatSeq* Precomputation::getRandomConfiguration () throw (hpp::Error)
         {
-          DevicePtr_t robot = problemSolver_->robot ();
           uint ctr = 0;
           while(true){
             Configuration_t q = shootRandomConfigVector();
-            Configuration_t q_proj;
-            if(projectOntoConstraintManifold(q,q_proj)){
-              Configuration_t q_irr;
-              if(projectOntoIrreducibleManifold(q_proj,q_irr)){
+            if(projectOntoConstraintManifold(q)){
+              hppDout(notice, "[ConstraintManifoldProjector] successful projection after " << ctr << " iterations.");
+              //save internal state for future get methods
+              q_ = q;
+              cvxCaps_ = getProjectedConvexHullFromConfiguration(q_);
+              return vectorToFloatSeq(q);
+            }
+            ctr++;
+          }
+        }
+        hpp::floatSeq* Precomputation::getRandomIrreducibleConfiguration () throw (hpp::Error)
+        {
+          uint ctr = 0;
+          while(true){
+            Configuration_t q = shootRandomConfigVector();
+            if(projectOntoConstraintManifold(q)){
+              if(projectOntoIrreducibleManifold(q)){
                 hppDout(notice, "successful projection after " << ctr << " iterations.");
-                return vectorToFloatSeq(q_irr);
+                //save internal state for future get methods
+                q_ = q;
+                cvxCaps_ = getProjectedConvexHullFromConfiguration(q_);
+                return vectorToFloatSeq(q);
               }
             }
             ctr++;
           }
         }
 
-        bool Precomputation::projectOntoConstraintManifold (vector_t &q) throw (hpp::Error)
+        bool Precomputation::projectOntoConstraintManifold (Configuration_t &q) throw (hpp::Error)
         {
           if(!cnstrOp_){
             cnstrOp_.reset( new ConstraintManifoldOperator(problemSolver_) );
@@ -130,15 +116,15 @@ namespace hpp
           return cnstrOp_->success();
         }
 
-        bool Precomputation::projectOntoIrreducibleManifold (const Configuration_t &q, Configuration_t &q_proj) throw (hpp::Error)
+        bool Precomputation::projectOntoIrreducibleManifold (Configuration_t &q) throw (hpp::Error)
         {
           const double lambda = 0.1; //gradient step size
 
-          Configuration_t qq = this->getGradientVector(q);
-          q_proj = this->step(qq, lambda);
+          Configuration_t qq = this->getGradientFromConfiguration(q);
+          Configuration_t q_proj = this->step(qq, lambda);
 
-          ProjectedCapsulePointVectorPtr cvxCapsOld = getProjectedConvexHullFromConfiguration (q);
-          ProjectedCapsulePointVectorPtr cvxCapsNew = getProjectedConvexHullFromConfiguration (q_proj);
+          ProjectedCapsulePointVectorPtr_t cvxCapsOld = getProjectedConvexHullFromConfiguration (q);
+          ProjectedCapsulePointVectorPtr_t cvxCapsNew = getProjectedConvexHullFromConfiguration (q_proj);
 
           if(isSmallerVolume(cvxCapsNew, cvxCapsOld)){
             return true;
@@ -151,51 +137,40 @@ namespace hpp
         {
           return capsules::getVolume(cvxCaps_);
         }
-
-        void Precomputation::computeProjectedConvexHullFromCurrentConfiguration () 
-          throw (hpp::Error)
+        hpp::floatSeq* Precomputation::getConvexHullCapsules () throw (hpp::Error)
         {
-          DevicePtr_t robot = problemSolver_->robot ();
-          std::vector<CapsulePoint> caps = parseCapsulePoints(robot);
-          std::vector<ProjectedCapsulePoint> projCaps = projectCapsulePointsOnYZPlane(caps);
-          cvxCaps_.clear();
-          cvxCaps_ = computeConvexHullFromProjectedCapsulePoints(projCaps);
+          return capsulePointsToFloatSeq(cvxCaps_);
         }
 
-        ProjectedCapsulePointVectorPtr Precomputation::getProjectedConvexHullFromConfiguration (vector_t &q)
+        ProjectedCapsulePointVectorPtr_t Precomputation::getProjectedConvexHullFromConfiguration (const Configuration_t &q)
           throw (hpp::Error)
         {
           DevicePtr_t robot = problemSolver_->robot ();
           robot->currentConfiguration(q);
-          std::vector<CapsulePoint> caps = parseCapsulePoints(robot);
-          std::vector<ProjectedCapsulePoint> projCaps = projectCapsulePointsOnYZPlane(caps);
-          cvxCaps_.clear();
-          cvxCaps_ = computeConvexHullFromProjectedCapsulePoints(projCaps);
+          CapsulePointVectorPtr_t caps = parseCapsulePoints(robot);
+          ProjectedCapsulePointVectorPtr_t projCaps = projectCapsulePointsOnYZPlane(caps);
+          ProjectedCapsulePointVectorPtr_t cvxCaps = computeConvexHullFromProjectedCapsulePoints(projCaps);
+          return cvxCaps;
         }
 
-        Configuration_t Precomputation::getGradientVector(){
+        Configuration_t Precomputation::getGradientFromConfiguration(const Configuration_t &q) throw (hpp::Error)
+        {
           //Compute gradient wrt outer jacobians
           DevicePtr_t robot = problemSolver_->robot ();
-          //JointJacobian_t is Eigen::Matrix<double, 6, Eigen::Dynamic> 
+          ProjectedCapsulePointVectorPtr_t cvxCaps = getProjectedConvexHullFromConfiguration (q);
+          cvxCaps_ = cvxCaps;
+
           Configuration_t qgrad(robot->numberDof());
           qgrad.setZero();
 
-          for(uint i=0; i<cvxCaps_.size(); i++){
+          for(uint i=0; i<cvxCaps.size(); i++){
             Configuration_t cvx_pt_eigen(6);
-            cvx_pt_eigen << 0,cvxCaps_.at(i).y,cvxCaps_.at(i).z,0,0,0;
-            Configuration_t qi = cvxCaps_.at(i).J.transpose()*cvx_pt_eigen;
+            cvx_pt_eigen << 0,cvxCaps.at(i)->y,cvxCaps.at(i)->z,0,0,0;
+            Configuration_t qi = cvxCaps.at(i)->J.transpose()*cvx_pt_eigen;
             qgrad = qgrad + qi;
           }
           return qgrad;
         }
-        hpp::floatSeq* Precomputation::getGradient() 
-          throw (hpp::Error)
-        {
-          vector_t qgrad = getGradientVector();
-          return vectorToFloatSeq(qgrad);
-        }
-
-
 
         //-----------------------------------------------------------------------
         // TODO: replace function

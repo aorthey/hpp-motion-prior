@@ -9,37 +9,31 @@ namespace hpp
     {
       namespace capsules
       {
-        std::vector<ProjectedCapsulePoint> computeConvexHullFromProjectedCapsulePoints (const std::vector<ProjectedCapsulePoint> &capsVec) 
+        ProjectedCapsulePointVectorPtr_t computeConvexHullFromProjectedCapsulePoints (const ProjectedCapsulePointVectorPtr_t capsVec)
         {
           return ::hpp::corbaserver::motionprior::convexhull::convex_hull(capsVec);
         }
 
-        bool isSubsetOf(const std::vector<ProjectedCapsulePoint> &lhs, const std::vector<ProjectedCapsulePoint> &rhs) 
+        bool isSubsetOf(const ProjectedCapsulePointVectorPtr_t &lhs, const ProjectedCapsulePointVectorPtr_t &rhs) 
         {
           for(uint i=0 ; i < lhs.size() ; ++i ){
-            if(!lhs.at(i).isInsideConvexHull(rhs)){
+            if(!lhs.at(i)->isInsideConvexHull(rhs)){
               return false;
             }
           }
           return true;
         }
-        bool isSmallerVolume(const std::vector<ProjectedCapsulePoint> &lhs, const std::vector<ProjectedCapsulePoint> &rhs) 
-        {
-          double lv = getVolume(lhs);
-          double rv = getVolume(rhs);
-          return lv <= rv;
-        }
 
-        double getVolume(const std::vector<ProjectedCapsulePoint> &pts){
+        double getVolume(const ProjectedCapsulePointVectorPtr_t pts){
           //assume that hull are points on a convex hull, which are sorted
           //counter-clockwise.
           using namespace Eigen;
-          Vector2f x1(pts.at(0).y, pts.at(0).z);
+          Vector2f x1(pts.at(0)->y, pts.at(0)->z);
           double volume = 0;
           //compute volume by iterating over all embeded triangles
           for(int i=0; i<pts.size()-2; i++){
-            Vector2f x2(pts.at(i+1).y, pts.at(i+1).z);
-            Vector2f x3(pts.at(i+2).y, pts.at(i+2).z);
+            Vector2f x2(pts.at(i+1)->y, pts.at(i+1)->z);
+            Vector2f x3(pts.at(i+2)->y, pts.at(i+2)->z);
             Vector2f v12 = x2-x1;
             Vector2f v13 = x3-x1;
             double b = v12.norm();
@@ -51,22 +45,28 @@ namespace hpp
           return volume;
         }
 
-        bool ProjectedCapsulePoint::isInsideConvexHull(const std::vector<ProjectedCapsulePoint> &ptsOnCvxHullCounterClockwise) const
+        bool isSmallerVolume(const ProjectedCapsulePointVectorPtr_t lhs, const ProjectedCapsulePointVectorPtr_t rhs) 
+        {
+          double lv = getVolume(lhs);
+          double rv = getVolume(rhs);
+          return lv < rv;
+        }
+        bool ProjectedCapsulePoint::isInsideConvexHull(const ProjectedCapsulePointVectorPtr_t ptsOnCvxHullCounterClockwise) const
         {
           for(uint i=0 ; i < ptsOnCvxHullCounterClockwise.size() ; ++i ){
-            ProjectedCapsulePoint v = ptsOnCvxHullCounterClockwise.at(i);
-            ProjectedCapsulePoint vn;
+            ProjectedCapsulePointPtr_t v = ptsOnCvxHullCounterClockwise.at(i);
+            ProjectedCapsulePointPtr_t vn;
         
             if(i==ptsOnCvxHullCounterClockwise.size()-1){
               vn = ptsOnCvxHullCounterClockwise.at(0);
             }else{
               vn = ptsOnCvxHullCounterClockwise.at(i+1);
             }
-            double ey = vn.y - v.y;
-            double ez = vn.z - v.z;
+            double ey = vn->y - v->y;
+            double ez = vn->z - v->z;
         
-            double dy = this->y - v.y;
-            double dz = this->z - v.z;
+            double dy = this->y - v->y;
+            double dz = this->z - v->z;
         
             double dist = ey*dz - ez*dy;
             //hppDout(notice, "cvx v=[" << v.y << " " << v.z << "] vn=[" << vn.y << "," << vn.z << "]" 
@@ -78,7 +78,7 @@ namespace hpp
           return true;
         }
 
-        hpp::floatSeq* capsulePointsToFloatSeq (const std::vector<ProjectedCapsulePoint> &capsVector) 
+        hpp::floatSeq* capsulePointsToFloatSeq (const ProjectedCapsulePointVectorPtr_t capsVector) 
            throw (hpp::Error)
         {
           try {
@@ -87,26 +87,8 @@ namespace hpp
             int ctr = 0;
             for(uint i=0;i<capsVector.size();i++){
               (*capsFloatSeq)[ctr++] = 0;
-              (*capsFloatSeq)[ctr++] = capsVector.at(i).y;
-              (*capsFloatSeq)[ctr++] = capsVector.at(i).z;
-            }
-            return capsFloatSeq;
-          } catch (const std::exception& exc) {
-            hppDout (error, exc.what ());
-            throw hpp::Error (exc.what ());
-          }
-        }
-        hpp::floatSeq* capsulePointsToFloatSeq (const std::vector<CapsulePoint> &capsVector) 
-           throw (hpp::Error)
-        {
-          try {
-            hpp::floatSeq* capsFloatSeq = new hpp::floatSeq;
-            capsFloatSeq->length (3*capsVector.size());
-            int ctr = 0;
-            for(uint i=0;i<capsVector.size();i++){
-              (*capsFloatSeq)[ctr++] = capsVector.at(i).x;
-              (*capsFloatSeq)[ctr++] = capsVector.at(i).y;
-              (*capsFloatSeq)[ctr++] = capsVector.at(i).z;
+              (*capsFloatSeq)[ctr++] = capsVector.at(i)->y;
+              (*capsFloatSeq)[ctr++] = capsVector.at(i)->z;
             }
             return capsFloatSeq;
           } catch (const std::exception& exc) {
@@ -115,14 +97,33 @@ namespace hpp
           }
         }
 
-        std::vector<ProjectedCapsulePoint> projectCapsulePointsOnYZPlane (const std::vector<CapsulePoint> &capsVec) 
+        hpp::floatSeq* capsulePointsToFloatSeq (const CapsulePointVectorPtr_t capsVector) 
+           throw (hpp::Error)
         {
-          std::vector<ProjectedCapsulePoint> projCapsulePointsYZPlane;
+          try {
+            hpp::floatSeq* capsFloatSeq = new hpp::floatSeq;
+            capsFloatSeq->length (3*capsVector.size());
+            int ctr = 0;
+            for(uint i=0;i<capsVector.size();i++){
+              (*capsFloatSeq)[ctr++] = capsVector.at(i)->x;
+              (*capsFloatSeq)[ctr++] = capsVector.at(i)->y;
+              (*capsFloatSeq)[ctr++] = capsVector.at(i)->z;
+            }
+            return capsFloatSeq;
+          } catch (const std::exception& exc) {
+            hppDout (error, exc.what ());
+            throw hpp::Error (exc.what ());
+          }
+        }
+
+        ProjectedCapsulePointVectorPtr_t projectCapsulePointsOnYZPlane (const CapsulePointVectorPtr_t capsVec) 
+        {
+          ProjectedCapsulePointVectorPtr_t projCapsulePointsYZPlane;
           for(uint i=0; i<capsVec.size(); i++){
-            ProjectedCapsulePoint p;
-            p.y = capsVec.at(i).y;
-            p.z = capsVec.at(i).z;
-            p.J = capsVec.at(i).J;
+            ProjectedCapsulePointPtr_t p( new ProjectedCapsulePoint_t() );
+            p->y = capsVec.at(i)->y;
+            p->z = capsVec.at(i)->z;
+            p->J = capsVec.at(i)->J;
             projCapsulePointsYZPlane.push_back(p);
 
             // orthogonal projection by just removing the x-component of the
@@ -133,26 +134,26 @@ namespace hpp
             // of the circle by an inner polygon. Change the t_step size to get
             // a better approximation.
             double t_step = M_PI/6;
-            double yP = capsVec.at(i).y;
-            double zP = capsVec.at(i).z;
-            double radius = capsVec.at(i).radius;
+            double yP = capsVec.at(i)->y;
+            double zP = capsVec.at(i)->z;
+            double radius = capsVec.at(i)->radius;
             for(double theta = 0; theta <= 2*M_PI; theta+=t_step){
-              ProjectedCapsulePoint outerPoint;
-              outerPoint.y = cos(theta)*radius + yP;
-              outerPoint.z = sin(theta)*radius + zP;
-              outerPoint.J = capsVec.at(i).J;
+              ProjectedCapsulePointPtr_t outerPoint( new ProjectedCapsulePoint_t() );
+              outerPoint->y = cos(theta)*radius + yP;
+              outerPoint->z = sin(theta)*radius + zP;
+              outerPoint->J = capsVec.at(i)->J;
               projCapsulePointsYZPlane.push_back(outerPoint);
             }
           }
           return projCapsulePointsYZPlane;
         }
 
-        std::vector<CapsulePoint> parseCapsulePoints (DevicePtr_t robot) throw (hpp::Error)
+        CapsulePointVectorPtr_t parseCapsulePoints (DevicePtr_t robot) throw (hpp::Error)
         {
           try {
             using namespace std;
             using namespace fcl;
-            std::vector<CapsulePoint> capsuleVec;
+            CapsulePointVectorPtr_t capsuleVec;
             JointVector_t jointVec = robot->getJointVector();
             std::stringstream stream; //DEBUG stream
 
@@ -216,13 +217,10 @@ namespace hpp
                     Tx.setTranslation(x);
                     Tx = T*Tx;
                     x = Tx.getTranslation();
-                    CapsulePoint p;
-                    p.x = x[0];
-                    p.y = x[1];
-                    p.z = x[2];
-                    p.radius = radius;
-                    p.length = length;
-                    p.J = jjacobian;
+                    CapsulePointPtr_t p( new CapsulePoint(x[0],x[1],x[2]) );
+                    p->radius = radius;
+                    p->length = length;
+                    p->J = jjacobian;
                     capsuleVec.push_back(p);
                     l += length;
                   }
