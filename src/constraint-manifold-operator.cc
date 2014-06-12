@@ -171,30 +171,27 @@ namespace hpp
           // add locked dofs
           // --------------------------------------------------------------------
 
-          std::vector<std::string> jnames;
-          jnames.push_back("RHAND_JOINT0");
-          jnames.push_back("RHAND_JOINT1");
-          jnames.push_back("RHAND_JOINT2");
-          jnames.push_back("RHAND_JOINT3");
-          jnames.push_back("RHAND_JOINT4");
-          jnames.push_back("LHAND_JOINT0");
-          jnames.push_back("LHAND_JOINT1");
-          jnames.push_back("LHAND_JOINT2");
-          jnames.push_back("LHAND_JOINT3");
-          jnames.push_back("LHAND_JOINT4");
-
-          for (uint i = 0; i < jnames.size(); i++) {
-            JointPtr_t joint = robot->getJointByName(jnames.at(i).c_str());
-	    LockedDofPtr_t lockedDof (LockedDof::create (jnames.at(i).c_str(), joint, 0));
-	    //problemSolver_->addConstraint (lockedDof);
-	    //configProjector->addConstraint (lockedDof);
-	    problemSolver_->constraints()->addConstraint (lockedDof);
-          }
-
+          addLockedDof("RARM_JOINT6" , 0.1);
+          addLockedDof("LARM_JOINT6" , 0.1);
+          addLockedDof("RHAND_JOINT0", 0.0);
+          addLockedDof("RHAND_JOINT1", 0.0);
+          addLockedDof("RHAND_JOINT2", 0.0);
+          addLockedDof("RHAND_JOINT3", 0.0);
+          addLockedDof("RHAND_JOINT4", 0.0);
+          addLockedDof("LHAND_JOINT0", 0.0);
+          addLockedDof("LHAND_JOINT1", 0.0);
+          addLockedDof("LHAND_JOINT2", 0.0);
+          addLockedDof("LHAND_JOINT3", 0.0);
+          addLockedDof("LHAND_JOINT4", 0.0);
 
 	} catch (const std::exception& exc) {
 	  throw hpp::Error (exc.what ());
 	}
+      }
+      void ConstraintManifoldOperator::addLockedDof(const char* name, double value){
+        JointPtr_t joint = problemSolver_->robot()->getJointByName(name);
+	LockedDofPtr_t lockedDof (LockedDof::create (name, joint, value));
+	problemSolver_->constraints()->addConstraint (lockedDof);
       }
 
       double ConstraintManifoldOperator::apply( Configuration_t &q )

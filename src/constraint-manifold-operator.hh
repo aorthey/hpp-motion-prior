@@ -46,12 +46,14 @@ namespace hpp
       private:
 
         bool success_;
-        
-        bool isSelfColliding( Configuration_t &q );
 
         core::ProblemSolverPtr_t problemSolver_;
 
         std::vector <DifferentiableFunctionPtr_t> constraintSet_;
+
+        bool isSelfColliding( Configuration_t &q );
+
+        void addLockedDof(const char* name, double value);
 
       };
     } // end of namespace motionprior.

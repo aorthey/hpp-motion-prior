@@ -12,6 +12,7 @@
 # include "precomputation.impl.hh"
 # include "precomputation-utils.hh"
 # include "constraint-manifold-operator.hh"
+# include "irreducible-configuration-shooter.hh"
 # include "capsule-parser.hh"
 
 
@@ -39,7 +40,8 @@ namespace hpp
         vector_t Precomputation::shootRandomConfigVector() throw (hpp::Error){
           DevicePtr_t robot = problemSolver_->robot ();
 
-          hpp::core::BasicConfigurationShooter confShooter(robot);
+          //hpp::core::BasicConfigurationShooter confShooter(robot);
+          IrreducibleConfigurationShooter confShooter(robot);
           ConfigurationPtr_t configPtr = confShooter.shoot();
 
           hpp::model::ConfigurationIn_t config = *configPtr.get();
