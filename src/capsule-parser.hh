@@ -80,7 +80,7 @@ namespace hpp
 
         /// \brief Checks if lhs < rhs, i.e. if the projected volume lhs 
         /// is inside of the projected volume rhs
-        bool isSubsetOf(const ProjectedCapsulePointVectorPtr_t lhs, const ProjectedCapsulePointVectorPtr_t rhs);
+        bool isSubsetOf(const ProjectedCapsulePointVectorPtr_t &lhs, const ProjectedCapsulePointVectorPtr_t &rhs);
 
         /// \brief computes volume of projected cvx capsule points
         double getVolume(const ProjectedCapsulePointVectorPtr_t pts);

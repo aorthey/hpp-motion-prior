@@ -78,7 +78,7 @@ namespace hpp {
         {
           JointVector_t jv = robot_->getJointVector ();
           ConfigurationPtr_t config (new Configuration_t (robot_->configSize ()));
-          config.zero();
+          config->setZero();
           for (JointVector_t::const_iterator itJoint = jv.begin ();
                itJoint != jv.end (); itJoint++) {
             std::size_t rank = (*itJoint)->rankInConfiguration ();
@@ -91,6 +91,7 @@ namespace hpp {
       private:
         const DevicePtr_t& robot_;
       }; // class IrreducibleConfigurationShooter
+      std::map<std::string, bool> IrreducibleConfigurationShooter::lockedDofs_;
     } //   namespace motionprior
   } //   namespace corbaserver
 } // namespace hpp

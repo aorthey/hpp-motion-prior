@@ -145,7 +145,8 @@ namespace hpp
           ProjectedCapsulePointVectorPtr_t cvxCapsOld = getProjectedConvexHullFromConfiguration (q);
           ProjectedCapsulePointVectorPtr_t cvxCapsNew = getProjectedConvexHullFromConfiguration (q_proj);
 
-          if(isSmallerVolume(cvxCapsNew, cvxCapsOld)){
+          //if(isSmallerVolume(cvxCapsNew, cvxCapsOld)){
+          if(isSubsetOf(cvxCapsNew, cvxCapsOld)){
             q = q_proj;
             return true;
           }
