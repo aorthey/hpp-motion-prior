@@ -75,6 +75,9 @@ namespace hpp
 
         hpp::floatSeq* Precomputation::getRandomConfiguration () throw (hpp::Error)
         {
+          Configuration_t q = shootRandomConfigVector();
+          return vectorToFloatSeq(q);
+          /*
           uint ctr = 0;
           while(true){
             Configuration_t q = shootRandomConfigVector();
@@ -87,6 +90,7 @@ namespace hpp
             }
             ctr++;
           }
+          */
         }
 
         hpp::floatSeq* Precomputation::getRandomIrreducibleConfiguration () throw (hpp::Error)
@@ -168,7 +172,7 @@ namespace hpp
         {
           DevicePtr_t robot = problemSolver_->robot ();
           robot->currentConfiguration(q);
-	  robot->computeForwardKinematics();
+          robot->computeForwardKinematics();
 
           CapsulePointVectorPtr_t caps = parseCapsulePoints(robot);
           ProjectedCapsulePointVectorPtr_t projCaps = projectCapsulePointsOnYZPlane(caps);
