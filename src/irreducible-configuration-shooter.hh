@@ -10,6 +10,7 @@
 // See the COPYING file for more information.
 
 #pragma once
+# include <hpp/model/device.hh>
 # include <hpp/model/joint.hh>
 # include <hpp/model/joint-configuration.hh>
 # include <hpp/core/configuration-shooter.hh>
@@ -167,25 +168,7 @@ namespace hpp {
             rankr = jjr->rankInConfiguration ();
             (*config)[rankr] = (*config)[rankl];
 
-            //##############################################################################
-            //set waist joint position (free flyer)
-            //##############################################################################
 
-            jjr = robot_->getJointByName("base_joint_x");
-            rankr = jjr->rankInConfiguration ();
-            (*config)[rankr] = 0;
-            jjr = robot_->getJointByName("base_joint_y");
-            rankr = jjr->rankInConfiguration ();
-            (*config)[rankr] = 0;
-            jjr = robot_->getJointByName("base_joint_z");
-            rankr = jjr->rankInConfiguration ();
-            (*config)[rankr] = 0;
-            jjr = robot_->getJointByName("base_joint_SO3");
-            rankr = jjr->rankInConfiguration ();
-            (*config)[rankr] = 1;
-            (*config)[rankr+1] = 0;
-            (*config)[rankr+2] = 0;
-            (*config)[rankr+3] = 0;
 
             //##############################################################################
             //set fixed joints
@@ -203,22 +186,27 @@ namespace hpp {
             robot_->currentConfiguration(qq);
             robot_->computeForwardKinematics();
 
-            vector3_t com = robot_->positionCenterOfMass();
-            shoot_try++;
+            //vector3_t com = robot_->positionCenterOfMass();
+            //shoot_try++;
 
-            jjr = robot_->getJointByName("LLEG_JOINT4");
-            //jjr = robot_->getJointByName("CHEST_JOINT0");
-            fcl::Transform3f tf = jjr->currentTransformation();
-            fcl::Transform3f tfinv = tf.inverse();
-            fcl::Vec3f tcom = tfinv.transform(-tf.getTranslation());
-            //fcl::Vec3f tcom = -tf.getTranslation();
-            //fcl::Matrix3f R = tf.getRotation();
-            //fcl::Quaternion3f quat = tf.getQuatRotation();
-            //double roll,p,y;
-            //quat.toEuler(y,p,roll);
-            //fcl::Vec3f tcom = R*t;
-            //double xsole = cos(roll)*tcom[0]
+            //jjr = robot_->getJointByName("LLEG_JOINT4");
+            ////jjr = robot_->getJointByName("CHEST_JOINT0");
+            //fcl::Transform3f jtf = jjr->currentTransformation();
+            //fcl::Transform3f tfinv = jtf.inverse();
+            //fcl::Vec3f tcom = tfinv.transform(-jtf.getTranslation());
+            //
+            //
+            //##############################################################################
+            //set waist joint position (free flyer)
+            //##############################################################################
 
+            computeBaseJointFromLeftSole(config);
+
+            //##############################################################################
+            //##############################################################################
+            //##############################################################################
+
+            /*
             if(comIsInSupportPolygon(tcom)){ 
               shoot_success++;
               hppDout(notice, "random shots: " << shoot_success << "/" << shoot_try << " (" << (double)shoot_success/(double)shoot_try << "%)");
@@ -226,6 +214,8 @@ namespace hpp {
               //hppDout(notice, "rot: " << roll << "," << p << "," << y);
               return config;
             }
+            */
+            return config;
           }
         }
 
@@ -237,6 +227,85 @@ namespace hpp {
           }else{
             return false;
           }
+        }
+
+        void computeBaseJointFromLeftSole(ConfigurationPtr_t &config) const
+        {
+          fcl::Vec3f base(0,0,0); //sole position as init
+          fcl::Transform3f t_base_sole = getBaseSoleTransform(base);
+          fcl::Transform3f t_sole_base = t_base_sole.inverse();
+
+          fcl::Quaternion3f qrot = t_sole_base.getQuatRotation();
+          base = t_sole_base.getTranslation();
+          //hppDout(notice, "base: "<<base[0]<<" "<<base[1]);
+
+          JointPtr_t jjr;
+          std::size_t rankr;
+          jjr = robot_->getJointByName("base_joint_x");
+          rankr = jjr->rankInConfiguration ();
+          (*config)[rankr] = base[0];
+          jjr = robot_->getJointByName("base_joint_y");
+          rankr = jjr->rankInConfiguration ();
+          (*config)[rankr] = base[1];
+          jjr = robot_->getJointByName("base_joint_z");
+          rankr = jjr->rankInConfiguration ();
+          (*config)[rankr] = base[2];
+          jjr = robot_->getJointByName("base_joint_SO3");
+          rankr = jjr->rankInConfiguration ();
+          (*config)[rankr]   = qrot[3];
+          (*config)[rankr+1] = qrot[2];
+          (*config)[rankr+2] = qrot[1];
+          (*config)[rankr+3] = qrot[0];
+
+          fcl::Quaternion3f quat = t_base_sole.getQuatRotation();
+          double roll,p,y;
+          quat.toEuler(y,p,roll);
+          hppDout(notice, "rotation: " << y << " " << p << " " << roll);
+
+        }
+
+        fcl::Transform3f& getBaseSoleTransform(fcl::Vec3f &base) const 
+        {
+          fcl::Transform3f t_base_sole;
+          t_base_sole.setIdentity();
+//t_base_sole.setTranslation(base);
+          fcl::Quaternion3f quat;
+          double roll,p,y;
+
+
+          t_base_sole = t_base_sole*getJointTransform("LLEG_JOINT0") ;
+          quat = t_base_sole.getQuatRotation();
+          quat.toEuler(y,p,roll);
+          hppDout(notice, "rotationB0: " << y << " " << p << " " << roll);
+
+          t_base_sole = t_base_sole*getJointTransform("LLEG_JOINT1") ;
+          quat = t_base_sole.getQuatRotation();
+          quat.toEuler(y,p,roll);
+          hppDout(notice, "rotation01: " << y << " " << p << " " << roll);
+          t_base_sole = t_base_sole*getJointTransform("LLEG_JOINT2") ;
+          quat = t_base_sole.getQuatRotation();
+          quat.toEuler(y,p,roll);
+          hppDout(notice, "rotation12: " << y << " " << p << " " << roll);
+          t_base_sole = t_base_sole*getJointTransform("LLEG_JOINT3") ;
+          quat = t_base_sole.getQuatRotation();
+          quat.toEuler(y,p,roll);
+          hppDout(notice, "rotation23: " << y << " " << p << " " << roll);
+          t_base_sole = t_base_sole*getJointTransform("LLEG_JOINT4") ;
+          quat = t_base_sole.getQuatRotation();
+          quat.toEuler(y,p,roll);
+          hppDout(notice, "rotation34: " << y << " " << p << " " << roll);
+          t_base_sole = t_base_sole*getJointTransform("LLEG_JOINT5") ;
+          quat = t_base_sole.getQuatRotation();
+          quat.toEuler(y,p,roll);
+          hppDout(notice, "rotation45: " << y << " " << p << " " << roll);
+          t_base_sole = t_base_sole*getJointTransform("l_sole_joint");
+          return t_base_sole;
+        }
+        const fcl::Transform3f& getJointTransform(const char *jname) const
+        {
+          JointPtr_t jj;
+          jj = robot_->getJointByName(jname);
+          return jj->currentTransformation();
         }
 
       private:

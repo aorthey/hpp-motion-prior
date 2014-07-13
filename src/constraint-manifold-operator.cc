@@ -26,6 +26,7 @@
 #include <hpp/constraints/relative-position.hh>
 
 #include "constraint-manifold-operator.hh"
+#include "precomputation-utils.hh"
 
 namespace hpp
 {
@@ -124,6 +125,11 @@ namespace hpp
         return constraintSet;
       }
 
+      hpp::Names_t* ConstraintManifoldOperator::getConstraintSet () throw (hpp::Error)
+      {
+        return constraint_names_;
+      }
+
       void ConstraintManifoldOperator::init()
         throw (hpp::Error)
       {
@@ -131,7 +137,7 @@ namespace hpp
 	try {
           const DevicePtr_t& robot (problemSolver_->robot ());
   
-          const char* constraintSetName = "mv-irr-constraint-set";
+          const char* constraintSetName = "stability-constraints";
           const char* leftAnkle = "LLEG_JOINT5";
           const char* rightAnkle = "RLEG_JOINT5";
   
@@ -183,6 +189,8 @@ namespace hpp
           addLockedDof("LHAND_JOINT2", 0.0);
           addLockedDof("LHAND_JOINT3", 0.0);
           addLockedDof("LHAND_JOINT4", 0.0);
+
+          constraint_names_ = stringToNamesT(cnames);
 
 	} catch (const std::exception& exc) {
 	  throw hpp::Error (exc.what ());

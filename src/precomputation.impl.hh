@@ -50,6 +50,11 @@ namespace hpp
           hpp::floatSeq* getRandomIrreducibleConfiguration () throw (hpp::Error);
           hpp::floatSeq* getRandomConfiguration () throw (hpp::Error);
 
+          void invokeIrreduciblePlanner () throw (hpp::Error);
+  
+          Names_t* getNumericalConstraints () throw (hpp::Error);
+
+
         private:
           virtual hpp::floatSeq* shootRandomConfig() throw (hpp::Error);
 

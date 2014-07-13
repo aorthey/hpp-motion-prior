@@ -9,12 +9,12 @@
 //
 // See the COPYING file for more information.
 
+# include <hpp/core/diffusing-planner.hh>
 # include "precomputation.impl.hh"
 # include "precomputation-utils.hh"
 # include "constraint-manifold-operator.hh"
 # include "irreducible-configuration-shooter.hh"
 # include "capsule-parser.hh"
-
 
 namespace hpp
 {
@@ -91,6 +91,23 @@ namespace hpp
             ctr++;
           }
           */
+        }
+        Names_t* Precomputation::getNumericalConstraints () throw (hpp::Error)
+        {
+          if(!cnstrOp_){
+            cnstrOp_.reset( new ConstraintManifoldOperator(problemSolver_) );
+            cnstrOp_->deleteConstraints();
+            cnstrOp_->init();
+          }
+          return cnstrOp_->getConstraintSet();
+        }
+
+        void Precomputation::invokeIrreduciblePlanner () throw (hpp::Error)
+        {
+          DevicePtr_t robot = problemSolver_->robot ();
+          hpp::core::DiffusingPlannerPtr_t planner = boost::static_pointer_cast<hpp::core::DiffusingPlanner>(problemSolver_->pathPlanner());
+          hpp::core::ConfigurationShooterPtr_t irreducibleShooter( new IrreducibleConfigurationShooter(robot) );
+          planner->configurationShooter(irreducibleShooter);
         }
 
         hpp::floatSeq* Precomputation::getRandomIrreducibleConfiguration () throw (hpp::Error)

@@ -37,6 +37,10 @@ module hpp
 
          floatSeq getRandomConfiguration () raises (Error);
 
+         void invokeIrreduciblePlanner () raises (Error);
+
+         Names_t getNumericalConstraints () raises (Error);
+
       };//interface precomputation
     }; //motion_prior module
   }; //corbaserver module

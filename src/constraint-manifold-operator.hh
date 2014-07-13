@@ -43,6 +43,8 @@ namespace hpp
                         const JointPtr_t& joint2)
           throw (hpp::Error);
 
+        hpp::Names_t* getConstraintSet () throw (hpp::Error);
+
       private:
 
         bool success_;
@@ -54,6 +56,8 @@ namespace hpp
         bool isSelfColliding( Configuration_t &q );
 
         void addLockedDof(const char* name, double value);
+
+        hpp::Names_t* constraint_names_;
 
       };
     } // end of namespace motionprior.
