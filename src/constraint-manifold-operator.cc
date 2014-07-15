@@ -43,14 +43,17 @@ namespace hpp
       std::vector< DifferentiableFunctionPtr_t > 
       ConstraintManifoldOperator::getConstraintSet( 
                         const DevicePtr_t &robot,
-                        const JointPtr_t& joint1,
-                        const JointPtr_t& joint2)
+                        const Configuration_t &qinit,
+                        const JointPtr_t& left_sole,
+                        const JointPtr_t& right_sole)
         throw (hpp::Error)
       {
         std::vector< DifferentiableFunctionPtr_t > constraintSet;
+        robot->currentConfiguration (qinit);
+        robot->computeForwardKinematics ();
 
-        const Transform3f& M1 = joint1->currentTransformation ();
-        const Transform3f& M2 = joint2->currentTransformation ();
+        const Transform3f& M1 = left_sole->currentTransformation ();
+        const Transform3f& M2 = right_sole->currentTransformation ();
 
         vector3_t zero; zero.setZero ();
         matrix3_t I3; I3.setIdentity ();
@@ -59,69 +62,68 @@ namespace hpp
         hpp::model::matrix3_t RZ90;
         RZ90.setEulerZYX(0,0,-M_PI/2);
 
-        std::vector< bool > zmask = boost::assign::list_of(true )(true )(false);
-        std::vector< bool > xmask = boost::assign::list_of(true )(false)(true );
-        std::vector< bool > ymask = boost::assign::list_of(false)(true )(true );
+        std::vector< bool > pitchmask = boost::assign::list_of(true )(false)(true );
         std::vector< bool > xy_translation = boost::assign::list_of(false)(false )(true );
         std::vector< bool > z_translation = boost::assign::list_of(true)(true )(false );
         std::vector< bool > default_mask = boost::assign::list_of(true)(true )(true );
 
         // --------------------------------------------------------------------
         // Left Foot Constraints 
-        // (Orientation fixed 90 degree z-axis, Position at origin)
+        // (Orientation completely fixed 90 degree z-axis, Position at free x/y, fixed z=0)
         // --------------------------------------------------------------------
-        constraintSet.push_back (Orientation::create (robot, joint1, RZ90));
-        constraintSet.push_back (Position::create (robot, joint1, zero, zero, I3));
+        //constraintSet.push_back (Position::create (robot, left_sole, zero, M1.getTranslation(), I3, xy_translation));
+        //constraintSet.push_back (Orientation::create (robot, left_sole, I3, default_mask));
 
         // --------------------------------------------------------------------
         // Right Foot Constraints 
-        // (Orientation variable around z-axis, 
-        // translation variable in xy-plane at z=0)
+        // (Orientation fixed according to left foot,
+        // translation variable fixed according to left foot
         // --------------------------------------------------------------------
-        constraintSet.push_back (Position::create (robot, joint2, zero, zero, I3, xy_translation));
-        constraintSet.push_back (Orientation::create (robot, joint2, RZ90, zmask));
-
-        // --------------------------------------------------------------------
-        // position of center of mass in left ankle frame
-        // --------------------------------------------------------------------
-        //matrix3_t R1T (M1.getRotation ()); R1T.transpose ();
-        //vector3_t xloc = R1T * (com - M1.getTranslation ());
-        //constraintSet.push_back (RelativeCom::create (robot, joint1, xloc));
-
         matrix3_t R1T (M1.getRotation ()); R1T.transpose ();
         matrix3_t R2T (M2.getRotation ()); R2T.transpose ();
 
+        matrix3_t reference = R1T * M2.getRotation ();
+        vector3_t local1; local1.setZero ();
+        vector3_t global1 = M1.getTranslation ();
+        vector3_t local2 = R2T * (global1 - M2.getTranslation ());
 
-        //Eigen::Quaternion<double> rq1(R1T);
-        //Eigen::Quaternion<double> rq2;
-        //rq2 = M2.getRotation();
+        //constraintSet.push_back (RelativeOrientation::create (robot, left_sole, right_sole, reference));
+        //constraintSet.push_back (RelativePosition::create (robot, left_sole, right_sole, local1, local2));
 
-        Quaternion_t rq1fcl; rq1fcl.fromRotation (M1.getRotation());
-        Quaternion_t rq2fcl; rq2fcl.fromRotation (M2.getRotation());
-        Eigen::Quaternion<double> rq1(rq1fcl.getW(), rq1fcl.getX(), rq1fcl.getY(), rq1fcl.getZ());
-        Eigen::Quaternion<double> rq2(rq2fcl.getW(), rq2fcl.getX(), rq2fcl.getY(), rq2fcl.getZ());
+        // --------------------------------------------------------------------
+        // fix base_link position X,Y according to left foot
+        // --------------------------------------------------------------------
 
-        Eigen::Quaternion<double> rqc = rq2.slerp(0.5, rq1);
-        Quaternion_t rqcfcl(rqc.w(), rqc.x(), rqc.y(), rqc.z());
+        JointPtr_t base_link_joint = robot->getJointByName ("WAIST");
+        const Transform3f& base_link = base_link_joint->currentTransformation ();
+        matrix3_t RBT (base_link.getRotation ()); RBT.transpose ();
 
-        matrix3_t RCT;
-        rqcfcl.toRotation(RCT);
-        RCT.transpose();
+        //vector3_t local_base = R1T * (base_link.getTranslation() - M1.getTranslation ());
+        //constraintSet.push_back (RelativePosition::create (robot, left_sole, base_link_joint, local1, local_base, z_translation));
 
-        //vector3_t ml = 0.5 * (M1.getTranslation() - M2.getTranslation());
-        //vector3_t xloc = RCT * ml;
-        vector3_t m2v = M2.getTranslation();
-        m2v[0] = 0;
-        m2v[1] = 0;
-        m2v[2] = 0.7;
+//matrix3_t R2T (M2.getRotation ()); R2T.transpose ();
+//vector3_t local2 = R2T * (global1 - M2.getTranslation ());
+        //vector3_t local_base = RBT * (M1.getTranslation() - base_link.getTranslation ());
+        //constraintSet.push_back (RelativePosition::create (robot, left_sole, base_link_joint, local1, local_base, default_mask));
 
-        vector3_t xloc = R1T * m2v;
+        //vector3_t xloc = RBT * (M1.getTranslation() - base_link.getTranslation ());
+        //constraintSet.push_back (RelativeCom::create (robot, left_sole, xloc));
+        //constraintSet.push_back (RelativePosition::create (robot, left_sole, base_link_joint, local1, xloc));
 
-        constraintSet.push_back (RelativeCom::create (robot, joint1, xloc));
+        matrix3_t local_base_rot = R1T * base_link.getRotation ();
+        constraintSet.push_back (RelativeOrientation::create (robot, left_sole, base_link_joint, local_base_rot));
 
-        //vector3_t xc = R1T * (com - M1.getTranslation ());
-        //constraintSet.push_back (RelativeCom::create (robot, joint1, xc));
 
+        // --------------------------------------------------------------------
+        // fix base_link roll/yaw according to left foot
+        // --------------------------------------------------------------------
+        //JointPtr_t base_link_joint_theta = robot->getJointByName ("base_joint_SO3");
+        //const Transform3f& base_link_theta = base_link_joint_theta->currentTransformation ();
+
+        //matrix3_t referenceRot = R1T * base_link_theta.getRotation ();
+
+        //constraintSet.push_back (RelativeOrientation::create (robot, left_sole, base_link_joint_theta, referenceRot, pitchmask));
+  
         return constraintSet;
       }
 
@@ -130,7 +132,7 @@ namespace hpp
         return constraint_names_;
       }
 
-      void ConstraintManifoldOperator::init()
+      void ConstraintManifoldOperator::init(Configuration_t &qinit)
         throw (hpp::Error)
       {
 
@@ -141,10 +143,10 @@ namespace hpp
           const char* leftAnkle = "LLEG_JOINT5";
           const char* rightAnkle = "RLEG_JOINT5";
   
-          JointPtr_t joint1 = robot->getJointByName (leftAnkle);
-          JointPtr_t joint2 = robot->getJointByName (rightAnkle);
+          JointPtr_t left_sole = robot->getJointByName (leftAnkle);
+          JointPtr_t right_sole = robot->getJointByName (rightAnkle);
   
-          constraintSet_ = getConstraintSet(robot, joint1, joint2);
+          constraintSet_ = getConstraintSet(robot, qinit, left_sole, right_sole);
   
           std::vector<std::string> cnames;
           std::string p (constraintSetName);
@@ -172,7 +174,6 @@ namespace hpp
 	    configProjector->addConstraint (problemSolver_->numericalConstraint
 					    (cnames.at(i)));
           }
-          //add locked dofs
           // --------------------------------------------------------------------
           // add locked dofs
           // --------------------------------------------------------------------

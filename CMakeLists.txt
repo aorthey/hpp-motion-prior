@@ -33,6 +33,7 @@ SET(PROJECT_VERSION "0.2 alpha-experimental")
 
 SET(${PROJECT_NAME}_HEADERS
   include/hpp/corbaserver/motion-prior/server.hh
+  include/hpp/corbaserver/motion-prior/irreducible-configuration-shooter.hh
   include/hpp/corbaserver/motion-prior/fwd.hh
 )
 SET(CUSTOM_HEADER_DIR hpp/corbaserver/motion-prior)

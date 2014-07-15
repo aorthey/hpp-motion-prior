@@ -28,7 +28,7 @@ namespace hpp
 
         ConstraintManifoldOperator(hpp::core::ProblemSolverPtr_t &problemSolver);
 
-        void init() throw (hpp::Error);
+        void init(Configuration_t &qinit) throw (hpp::Error);
         
         double apply( Configuration_t &q ) throw (hpp::Error);
 
@@ -39,6 +39,7 @@ namespace hpp
         std::vector< DifferentiableFunctionPtr_t > 
         getConstraintSet( 
                         const DevicePtr_t &robot,
+                        const Configuration_t &qinit,
                         const JointPtr_t& joint1,
                         const JointPtr_t& joint2)
           throw (hpp::Error);

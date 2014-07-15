@@ -52,7 +52,7 @@ namespace hpp
 
           void invokeIrreduciblePlanner () throw (hpp::Error);
   
-          Names_t* getNumericalConstraints () throw (hpp::Error);
+          Names_t* getNumericalConstraints (const hpp::floatSeq& q) throw (hpp::Error);
 
 
         private:

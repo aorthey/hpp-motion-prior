@@ -39,7 +39,7 @@ module hpp
 
          void invokeIrreduciblePlanner () raises (Error);
 
-         Names_t getNumericalConstraints () raises (Error);
+         Names_t getNumericalConstraints (in floatSeq q) raises (Error);
 
       };//interface precomputation
     }; //motion_prior module

@@ -32,7 +32,6 @@ ADD_LIBRARY(${LIBRARY_NAME}
   server.cc
   constraint-manifold-operator.cc
   constraint-manifold-operator.hh
-  irreducible-configuration-shooter.hh
   capsule-parser.cc
   capsule-parser.hh
   precomputation.impl.cc

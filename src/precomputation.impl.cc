@@ -10,10 +10,11 @@
 // See the COPYING file for more information.
 
 # include <hpp/core/diffusing-planner.hh>
+# include <hpp/core/basic-configuration-shooter.hh>
 # include "precomputation.impl.hh"
 # include "precomputation-utils.hh"
 # include "constraint-manifold-operator.hh"
-# include "irreducible-configuration-shooter.hh"
+# include <hpp/corbaserver/motion-prior/irreducible-configuration-shooter.hh>
 # include "capsule-parser.hh"
 
 namespace hpp
@@ -75,29 +76,27 @@ namespace hpp
 
         hpp::floatSeq* Precomputation::getRandomConfiguration () throw (hpp::Error)
         {
-          Configuration_t q = shootRandomConfigVector();
-          return vectorToFloatSeq(q);
-          /*
+          //Configuration_t q = shootRandomConfigVector();
           uint ctr = 0;
           while(true){
             Configuration_t q = shootRandomConfigVector();
             if(projectOntoConstraintManifold(q)){
               hppDout(notice, "[ConstraintManifoldProjector] successful projection after " << ctr << " iterations.");
               //save internal state for future get methods
-              q_ = q;
-              cvxCaps_ = getProjectedConvexHullFromConfiguration(q_);
+              //q_ = q;
+              //cvxCaps_ = getProjectedConvexHullFromConfiguration(q_);
               return vectorToFloatSeq(q);
             }
             ctr++;
           }
-          */
         }
-        Names_t* Precomputation::getNumericalConstraints () throw (hpp::Error)
+        Names_t* Precomputation::getNumericalConstraints (const hpp::floatSeq& q) throw (hpp::Error)
         {
           if(!cnstrOp_){
             cnstrOp_.reset( new ConstraintManifoldOperator(problemSolver_) );
             cnstrOp_->deleteConstraints();
-            cnstrOp_->init();
+            Configuration_t qq = floatSeqToVector(q);
+            cnstrOp_->init(qq);
           }
           return cnstrOp_->getConstraintSet();
         }
@@ -106,7 +105,8 @@ namespace hpp
         {
           DevicePtr_t robot = problemSolver_->robot ();
           hpp::core::DiffusingPlannerPtr_t planner = boost::static_pointer_cast<hpp::core::DiffusingPlanner>(problemSolver_->pathPlanner());
-          hpp::core::ConfigurationShooterPtr_t irreducibleShooter( new IrreducibleConfigurationShooter(robot) );
+          //hpp::core::ConfigurationShooterPtr_t irreducibleShooter( new IrreducibleConfigurationShooter(robot) );
+          hpp::core::ConfigurationShooterPtr_t irreducibleShooter( new hpp::core::BasicConfigurationShooter(robot) );
           planner->configurationShooter(irreducibleShooter);
         }
 
@@ -149,10 +149,10 @@ namespace hpp
         {
           if(!cnstrOp_){
             cnstrOp_.reset( new ConstraintManifoldOperator(problemSolver_) );
+            cnstrOp_->deleteConstraints();
+            cnstrOp_->init(q);
           }
-          cnstrOp_->deleteConstraints();
-          cnstrOp_->init();
-          cnstrOp_->apply(q);
+          hppDout(notice, "residual error: " << cnstrOp_->apply(q));
           return cnstrOp_->success();
         }
 
