@@ -23,7 +23,6 @@
 #include <hpp/core/weighed-distance.hh>
 #include <hpp/corbaserver/server.hh>
 #include <hpp/core/basic-configuration-shooter.hh>
-#include <hpp/core/differentiable-function.hh>
 #include <hpp/corbaserver/fwd.hh>
 #include <hpp/corbaserver/motion-prior/fwd.hh>
 #include "precomputation.hh"

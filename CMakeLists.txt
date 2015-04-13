@@ -31,13 +31,15 @@ SET(PROJECT_DESCRIPTION
 SET(PROJECT_URL "https://github.com/orthez/hpp-motion-prior")
 SET(PROJECT_VERSION "0.2 alpha-experimental")
 
+SET(CMAKE_INSTALL_PREFIX "/home/ijrr-2015/devel/hpp-stable/install")
+
+MESSAGE("${CMAKE_INSTALL_PREFIX}")
 SET(${PROJECT_NAME}_HEADERS
   include/hpp/corbaserver/motion-prior/server.hh
   include/hpp/corbaserver/motion-prior/irreducible-configuration-shooter.hh
   include/hpp/corbaserver/motion-prior/fwd.hh
 )
 SET(CUSTOM_HEADER_DIR hpp/corbaserver/motion-prior)
-
 
 SETUP_PROJECT()
 # Activate hpp-util logging if requested
@@ -46,8 +48,11 @@ IF (HPP_DEBUG)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHPP_DEBUG")
 ENDIF()
 
+MESSAGE("${HEADER_FILES}")
+
 ADD_DOC_DEPENDENCY ("hpp-core >= 3")
 #ADD_REQUIRED_DEPENDENCY("hpp-model-urdf >= 3")
+ADD_REQUIRED_DEPENDENCY("hpp-fcl >= 0")
 ADD_REQUIRED_DEPENDENCY("hpp-constraints >= 3")
 ADD_REQUIRED_DEPENDENCY("hpp-corbaserver >= 2.1")
 ADD_REQUIRED_DEPENDENCY("hpp-model-urdf >= 3")
@@ -70,3 +75,4 @@ ADD_SUBDIRECTORY(src)
 
 SETUP_PROJECT_FINALIZE()
 SETUP_PROJECT_CPACK()
+##################################

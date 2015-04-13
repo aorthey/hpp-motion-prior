@@ -30,14 +30,14 @@ SET(LIBRARY_NAME ${PROJECT_NAME})
 ADD_LIBRARY(${LIBRARY_NAME}
   SHARED
   server.cc
-  constraint-manifold-operator.cc
-  constraint-manifold-operator.hh
-  capsule-parser.cc
-  capsule-parser.hh
-  precomputation.impl.cc
-  precomputation.impl.hh
-  precomputation-utils.cc
-  precomputation-utils.hh
+  #constraint-manifold-operator.cc
+  #constraint-manifold-operator.hh
+  #capsule-parser.cc
+  #capsule-parser.hh
+  #precomputation.impl.cc
+  #precomputation.impl.hh
+  #precomputation-utils.cc
+  #precomputation-utils.hh
   precomputationSK.cc
   ${CMAKE_CURRENT_BINARY_DIR}/hpp/corbaserver/motion_prior/precomputation_idl.py
 )
@@ -95,5 +95,7 @@ TARGET_LINK_LIBRARIES (   hpp-precomputation-corba-server ${LIBRARY_NAME})
 PKG_CONFIG_USE_DEPENDENCY(hpp-precomputation-corba-server hpp-corbaserver)
 PKG_CONFIG_USE_DEPENDENCY(hpp-precomputation-corba-server hpp-template-corba)
 PKG_CONFIG_USE_DEPENDENCY(hpp-precomputation-corba-server hpp-util)
+PKG_CONFIG_USE_DEPENDENCY(hpp-precomputation-corba-server hpp-fcl)
+PKG_CONFIG_USE_DEPENDENCY(hpp-precomputation-corba-server hpp-core)
 
 INSTALL (TARGETS hpp-precomputation-corba-server DESTINATION ${CMAKE_INSTALL_BINDIR})

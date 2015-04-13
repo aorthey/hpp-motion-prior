@@ -22,8 +22,8 @@ namespace hpp {
       typedef core::Configuration_t Configuration_t;
       typedef core::ConfigurationPtr_t ConfigurationPtr_t;
 
-      typedef core::LockedDofPtr_t LockedDofPtr_t;
-      typedef core::LockedDof LockedDof;
+      typedef core::LockedJointPtr_t LockedJointPtr_t;
+      typedef core::LockedJoint LockedJoint;
 
       typedef fcl::Quaternion3f Quaternion_t;
 

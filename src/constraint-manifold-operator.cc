@@ -14,7 +14,7 @@
 #include <hpp/model/joint.hh>
 #include <hpp/core/config-projector.hh>
 #include <hpp/core/problem-solver.hh>
-#include <hpp/core/locked-dof.hh>
+#include <hpp/core/locked-joint.hh>
 #include <hpp/util/debug.hh>
 
 #include <Eigen/Geometry>
@@ -166,30 +166,29 @@ namespace hpp
 	    configProjector = ConfigProjector::create
 	      (robot, constraintSetName, problemSolver_->errorThreshold (),
 	       problemSolver_->maxIterations ());
-
 	    problemSolver_->constraints()->addConstraint (configProjector);
 
 	  }
 	  for (uint i=0; i<cnames.size (); ++i) {
-	    configProjector->addConstraint (problemSolver_->numericalConstraint
+	    configProjector->add(problemSolver_->numericalConstraint
 					    (cnames.at(i)));
           }
           // --------------------------------------------------------------------
-          // add locked dofs
+          // add locked Joints
           // --------------------------------------------------------------------
 
-          addLockedDof("RARM_JOINT6" , 0.1);
-          addLockedDof("LARM_JOINT6" , 0.1);
-          addLockedDof("RHAND_JOINT0", 0.0);
-          addLockedDof("RHAND_JOINT1", 0.0);
-          addLockedDof("RHAND_JOINT2", 0.0);
-          addLockedDof("RHAND_JOINT3", 0.0);
-          addLockedDof("RHAND_JOINT4", 0.0);
-          addLockedDof("LHAND_JOINT0", 0.0);
-          addLockedDof("LHAND_JOINT1", 0.0);
-          addLockedDof("LHAND_JOINT2", 0.0);
-          addLockedDof("LHAND_JOINT3", 0.0);
-          addLockedDof("LHAND_JOINT4", 0.0);
+          addLockedJoint("RARM_JOINT6" , 0.1);
+          addLockedJoint("LARM_JOINT6" , 0.1);
+          addLockedJoint("RHAND_JOINT0", 0.0);
+          addLockedJoint("RHAND_JOINT1", 0.0);
+          addLockedJoint("RHAND_JOINT2", 0.0);
+          addLockedJoint("RHAND_JOINT3", 0.0);
+          addLockedJoint("RHAND_JOINT4", 0.0);
+          addLockedJoint("LHAND_JOINT0", 0.0);
+          addLockedJoint("LHAND_JOINT1", 0.0);
+          addLockedJoint("LHAND_JOINT2", 0.0);
+          addLockedJoint("LHAND_JOINT3", 0.0);
+          addLockedJoint("LHAND_JOINT4", 0.0);
 
           constraint_names_ = stringToNamesT(cnames);
 
@@ -197,10 +196,14 @@ namespace hpp
 	  throw hpp::Error (exc.what ());
 	}
       }
-      void ConstraintManifoldOperator::addLockedDof(const char* name, double value){
+      void ConstraintManifoldOperator::addLockedJoint(const char* name, double value){
         JointPtr_t joint = problemSolver_->robot()->getJointByName(name);
-	LockedDofPtr_t lockedDof (LockedDof::create (name, joint, value));
-	problemSolver_->constraints()->addConstraint (lockedDof);
+	//LockedJointPtr_t lockedJoint (LockedJoint::create (name, joint, value));
+        Eigen::VectorXd V(1);
+        V[0]=value;
+	LockedJointPtr_t lockedJoint (LockedJoint::create (joint, V));
+        ConfigProjectorPtr_t configProjector = problemSolver_->constraints()->configProjector ();
+	configProjector->add(lockedJoint);
       }
 
       double ConstraintManifoldOperator::apply( Configuration_t &q )

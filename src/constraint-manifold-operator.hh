@@ -56,7 +56,7 @@ namespace hpp
 
         bool isSelfColliding( Configuration_t &q );
 
-        void addLockedDof(const char* name, double value);
+        void addLockedJoint(const char* name, double value);
 
         hpp::Names_t* constraint_names_;
 

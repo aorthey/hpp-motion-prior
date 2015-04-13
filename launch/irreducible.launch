@@ -1,0 +1,25 @@
+<launch>
+  <param name="environment_description"
+    textfile="$(find hpp-motion-prior)/urdf/wall.urdf"/>
+  <param name="robot_description"
+	 textfile="$(find hpp-motion-prior)/urdf/hrp2_14_irreducible.urdf"/>
+  <node name="robot_state_publisher"
+	pkg="robot_state_publisher"
+	type="state_publisher"
+	respawn="true">
+    <param name="tf_prefix" value=""/>
+  </node>
+  <node pkg="tf" type="static_transform_publisher"
+	name="environment_link_broadcaster"
+	args="0 0 0 0 0 0 /map /wall/base_link 200">
+  </node>
+  <node pkg="robot_state_chain_publisher" type="state_chain_publisher"
+    name="environment_state_publisher" output="screen">
+    <param name="tf_prefix" value="/wall"/>
+    <param name="publish_frequency" value="2"/>
+    <remap from="robot_description" to="environment_description" />
+  </node>
+  <node name="rviz" pkg="rviz" type="rviz" respawn="false"
+	args="-d $(find hpp-motion-prior)/rviz/config.rviz">
+  </node>
+</launch>
