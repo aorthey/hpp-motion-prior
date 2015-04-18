@@ -5,7 +5,6 @@ import rospy
 from hrp2 import Robot 
 from hpp_ros import ScenePublisher, PathPlayer
 from hpp.corbaserver import ProblemSolver
-from hpp.corbaserver.wholebody_step.client import Client as WsClient
 
 robot = Robot ()
 robot.setTranslationBounds (-0.5, 0.5, -3, 3, 0, 1)

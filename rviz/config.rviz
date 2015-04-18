@@ -8,6 +8,7 @@ Panels:
         - /Status1
         - /RobotModel1
         - /EnvironmentModel1
+        - /Axes1
       Splitter Ratio: 0.5
     Tree Height: 530
   - Class: rviz/Selection
@@ -1093,10 +1094,17 @@ Visualization Manager:
           Value: true
       Name: EnvironmentModel
       Robot Description: environment_description
-      TF Prefix: wall
+      TF Prefix: environment
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 1
+      Name: Axes
+      Radius: 0.05
+      Reference Frame: <Fixed Frame>
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -1121,22 +1129,22 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 10
+      Distance: 8.39639
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: 0.448319
+        Y: -0.622657
+        Z: 1.36106
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.170398
+      Pitch: 0.466813
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.59858
+      Yaw: 4.65229
     Saved: ~
 Window Geometry:
   Displays:

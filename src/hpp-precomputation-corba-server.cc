@@ -20,6 +20,7 @@
 #include <hpp/util/pointer.hh>
 
 #include <hpp/core/basic-configuration-shooter.hh>
+#include <hpp/corbaserver/motion-prior/irreducible-configuration-shooter.hh>
 #include <hpp/core/config-validations.hh>
 #include <hpp/core/connected-component.hh>
 #include <hpp/core/constraint-set.hh>
@@ -31,17 +32,15 @@
 #include "hpp/corbaserver/server.hh"
 
 namespace hpp {
-  namespace tutorial {
+  namespace motionprior {
     // forward declaration of class Planner
     HPP_PREDEF_CLASS (Planner);
     // Planner objects are manipulated only via shared pointers
     typedef boost::shared_ptr <Planner> PlannerPtr_t;
 
-    /// Example of path planner
     class Planner : public core::PathPlanner
     {
     public:
-      /// Create an instance and return a shared pointer to the instance
       static PlannerPtr_t create (const core::Problem& problem,
 				  const core::RoadmapPtr_t& roadmap)
       {
@@ -60,6 +59,7 @@ namespace hpp {
       /// We will see how to implement a basic PRM algorithm.
       virtual void oneStep ()
       {
+        hppDout(notice, "onestep");
 	// Retrieve the robot the problem has been defined for.
 	model::DevicePtr_t robot (problem ().robot ());
 	// Retrieve the path validation algorithm associated to the problem
@@ -103,6 +103,7 @@ namespace hpp {
 	    }
 	  }	  
 	}
+        hppDout(notice, "onestep--");
       }
     protected:
       /// Protected constructor
@@ -120,7 +121,8 @@ namespace hpp {
       }
     private:
       /// Configuration shooter to uniformly shoot random configurations
-      core::BasicConfigurationShooter shooter_;
+//core::BasicConfigurationShooter shooter_;
+      hpp::corbaserver::motionprior::IrreducibleConfigurationShooter shooter_;
       /// weak pointer to itself
       PlannerWkPtr_t weakPtr_;
     }; // class Planner
@@ -133,10 +135,11 @@ int main (int argc, const char* argv[])
   // create a ProblemSolver instance.
   // This class is a container that does the interface between hpp-core library
   // and component to be running in a middleware like CORBA or ROS.
+  hppDout(notice, "Creating IrreduciblePlanner--");
   hpp::core::ProblemSolverPtr_t problemSolver = new hpp::core::ProblemSolver;
   // Add the new planner type in order to be able to select it from python
   // client.
-  problemSolver->addPathPlannerType ("PRM", hpp::tutorial::Planner::create);
+  problemSolver->addPathPlannerType ("IrreduciblePlanner", hpp::motionprior::Planner::create);
   // Create the CORBA server.
   hpp::corbaServer::Server server (problemSolver, argc, argv, true);
   // Start the CORBA server.

@@ -21,12 +21,12 @@ if len(sys.argv) < 2:
 
 import re
 for i in range(1,len(sys.argv)):
-        m = re.search('([0-9]+)-([0-9]+)\.', sys.argv[i])
-        minutes = str(int(m.group(2))*60/100)
-        print minutes
-        posText = [2,1,0]
+        #m = re.search('([0-9]+)-([0-9]+)\.', sys.argv[i])
+        #minutes = str(int(m.group(2))*60/100)
+        #print minutes
+        #posText = [2,1,0]
         #publisher.addText(">>Replaying Trajectory\nPlanning Time: "+m.group(1)+"h"+minutes+"m", posText)
-        publisher.publishObjects()
-        time.sleep(1)
-        publisher.publishObjects()
+        #publisher.publishObjects()
+        #time.sleep(1)
+        #publisher.publishObjects()
         pathplayer.fromFile(sys.argv[i])

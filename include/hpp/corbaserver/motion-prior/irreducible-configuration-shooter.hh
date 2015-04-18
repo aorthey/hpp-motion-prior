@@ -16,7 +16,7 @@
 # include <hpp/model/joint-configuration.hh>
 # include <hpp/core/configuration-shooter.hh>
 
-#define DEBUG 0
+#define DEBUG 1
 namespace hpp {
   namespace corbaserver {
     namespace motionprior {
@@ -32,9 +32,9 @@ namespace hpp {
           static bool firstRun = true;
           if(firstRun){
             firstRun = false;
-            lockedDofs_["base_joint_x"]   = 1;
-            lockedDofs_["base_joint_y"]   = 1;
-            lockedDofs_["base_joint_z"]   = 1;
+            lockedDofs_["base_joint_xyz"]   = 0;
+            //lockedDofs_["base_joint_y"]   = 1;
+            //lockedDofs_["base_joint_z"]   = 1;
             lockedDofs_["base_joint_SO3"] = 1;
             lockedDofs_["CHEST_JOINT0"]   = 1;
             lockedDofs_["CHEST_JOINT1"]   = 0;
@@ -174,6 +174,16 @@ namespace hpp {
             //##############################################################################
             //set fixed joints
             //##############################################################################
+            //set SO(3), config is set to zero
+            fcl::Quaternion3f quat;
+            quat.fromEuler(0.0,0.0,0.0);
+
+            JointPtr_t jj = robot_->getJointByName("base_joint_SO3");
+            std::size_t rank = jj->rankInConfiguration ();
+            (*config)[rank] = quat[0];
+            (*config)[rank+1] = quat[1];
+            (*config)[rank+2] = quat[2];
+            (*config)[rank+3] = quat[3];
 
             if(DEBUG) hppDout(notice, "fixed joints");
             for (std::map<std::string,double>::iterator it=lockedDofsFixedValue_.begin(); it!=lockedDofsFixedValue_.end(); ++it){
@@ -184,10 +194,12 @@ namespace hpp {
               (*config)[rank] = value;
             }
 
+
             if(DEBUG) hppDout(notice, "update");
             hpp::model::ConfigurationIn_t qq = *config.get();
             robot_->currentConfiguration(qq);
             robot_->computeForwardKinematics();
+
             if(DEBUG) hppDout(notice, "done");
 
             //##############################################################################
@@ -231,45 +243,36 @@ namespace hpp {
         {
            JointPtr_t jj;
            std::size_t rank;
-           jj = robot_->getJointByName("base_joint_x");
+           jj = robot_->getJointByName("base_joint_xyz");
            rank = jj->rankInConfiguration ();
            double value = (*config)[rank];
-           //double lb = jj->lowerBound(rank);
-           //double ub = jj->upperBound(rank);
            if(value < -0.5 || value > 0.5) return false;
-
-           jj = robot_->getJointByName("base_joint_y");
-           rank = jj->rankInConfiguration ();
-           value = (*config)[rank];
-           //lb = jj->lowerBound(rank);
-           //ub = jj->upperBound(rank);
-
+           value = (*config)[rank+1];
            if(value < -3 || value > 3) return false;
-
-           jj = robot_->getJointByName("base_joint_z");
-           rank = jj->rankInConfiguration ();
-           value = (*config)[rank];
+           value = (*config)[rank+2];
            if(value < 0.4 || value > 1) return false;
 
            return true;
 
         }
+        //void setRandomYawRotBaseJoints(ConfigurationPtr_t &config, fcl::Vec3f &base) const
         void setRandomXYBaseJoints(ConfigurationPtr_t &config, fcl::Vec3f &base) const
         {
-            JointPtr_t jj = robot_->getJointByName("base_joint_x");
+            JointPtr_t jj = robot_->getJointByName("base_joint_xyz");
             std::size_t rank = jj->rankInConfiguration ();
             jj->configuration ()->uniformlySample (rank, *config);
+            jj->configuration ()->uniformlySample (rank+1, *config);
             base[0] = (*config)[rank];
+            base[1] = (*config)[rank+1];
+            if(DEBUG) hppDout(notice, "sole is set to" << base[0] << "," << base[1]);
 
-            jj = robot_->getJointByName("base_joint_y");
-            rank = jj->rankInConfiguration ();
-            jj->configuration ()->uniformlySample (rank, *config);
-            base[1] = (*config)[rank];
         }
         fcl::Vec3f& computeBaseJointFromLeftSole(ConfigurationPtr_t &config, fcl::Vec3f &base) const
         {
+
           JointPtr_t jj;
           jj = robot_->getJointByName("l_sole_joint");
+
           fcl::Transform3f t_base_sole = jj->currentTransformation()*base;
 
           fcl::Transform3f t_sole_base = t_base_sole.inverse();
@@ -278,27 +281,33 @@ namespace hpp {
 
           JointPtr_t jjr;
           std::size_t rankr;
-          jjr = robot_->getJointByName("base_joint_x");
+          jjr = robot_->getJointByName("base_joint_xyz");
           rankr = jjr->rankInConfiguration ();
           (*config)[rankr] = base[0];
-          jjr = robot_->getJointByName("base_joint_y");
-          rankr = jjr->rankInConfiguration ();
-          (*config)[rankr] = base[1];
-          jjr = robot_->getJointByName("base_joint_z");
-          rankr = jjr->rankInConfiguration ();
-          (*config)[rankr] = base[2];
+          (*config)[rankr+1] = base[1];
+          (*config)[rankr+2] = base[2];
+
           jjr = robot_->getJointByName("base_joint_SO3");
           rankr = jjr->rankInConfiguration ();
-          (*config)[rankr]   = qrot[0];
-          (*config)[rankr+1] = qrot[1];
-          (*config)[rankr+2] = qrot[2];
-          (*config)[rankr+3] = qrot[3];
+          //jjr->configuration ()->uniformlySample (rankr, *config);
 
           fcl::Quaternion3f quat = t_base_sole.getQuatRotation();
-          double roll,p,y;
-          quat.toEuler(y,p,roll);
-          if(DEBUG) hppDout(notice, "rotation: " << y << " " << p << " " << roll);
-          //hppDout(notice, "translation: " << base[0] << " " << base[1] << " " << base[2]);
+          double r,p,y;
+          quat.toEuler(y,p,r);
+
+          double yaw = (rand()/RAND_MAX)*2*M_PI - M_PI;
+          quat.fromEuler(y,p,r);
+
+          (*config)[rankr]   = quat[0];
+          (*config)[rankr+1] = quat[1];
+          (*config)[rankr+2] = quat[2];
+          (*config)[rankr+3] = quat[3];
+
+          if(DEBUG) {
+                  quat.toEuler(y,p,r);
+                  hppDout(notice, "rotation: " << y << " " << p << " " << r);
+                  hppDout(notice, "translation: " << base[0] << " " << base[1] << " " << base[2]);
+          }
 
           hpp::model::ConfigurationIn_t qq = *config.get();
           robot_->currentConfiguration(qq);
