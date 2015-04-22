@@ -287,6 +287,7 @@ namespace hpp {
 
            jj = robot_->getJointByName("base_joint_SO3");
            rank = jj->rankInConfiguration ();
+
            double q1=(*config)[rank];
            double q2=(*config)[rank+1];
            double q3=(*config)[rank+2];

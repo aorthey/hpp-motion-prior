@@ -110,8 +110,8 @@ namespace hpp
         //constraintSet.push_back (RelativeCom::create (robot, left_sole, xloc));
         //constraintSet.push_back (RelativePosition::create (robot, left_sole, base_link_joint, local1, xloc));
 
-        matrix3_t local_base_rot = R1T * base_link.getRotation ();
-        constraintSet.push_back (RelativeOrientation::create (robot, left_sole, base_link_joint, local_base_rot));
+        //matrix3_t local_base_rot = R1T * base_link.getRotation ();
+        //constraintSet.push_back (RelativeOrientation::create (robot, left_sole, base_link_joint, local_base_rot));
 
 
         // --------------------------------------------------------------------
