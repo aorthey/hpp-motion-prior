@@ -19,21 +19,17 @@
 from hpp.corbaserver.robot import Robot as Parent
 
 class Robot (Parent):
-    urdfName = "hrp2_14_irreducible"
-    packageName = "hpp-motion-prior"
-    #urdfName = "hrp2_14_capsule"
-    urdfSuffix = ""
-    srdfSuffix = ""
-    tf_root = "base_link"
-    rootJointType = "freeflyer"
+        urdfName = "hrp2_14_capsule"
+        packageName = "hrp2_irreducible"
+        urdfSuffix = ""
+        srdfSuffix = ""
+        tf_root = "base_link"
+        rootJointType = "freeflyer"
 
-    def __init__ (self, load = True):
-        Parent.__init__ (self, 'hrp2', self.rootJointType, load)
+        def __init__ (self, load = True):
+                Parent.__init__ (self, 'hrp2', self.rootJointType, load)
 
-        #{"base_joint_x": 0.0,
-         #"base_joint_y": 0.0,
-         #"base_joint_z": 0.648702,
-    halfSitting = \
+        halfSitting = \
         {"base_joint_xyz": (0.0,0.0,0.648702),
          "base_joint_SO3": (1.0, 0.0, 0.0, 0.0),
          "CHEST_JOINT0": 0.0,
@@ -77,6 +73,7 @@ class Robot (Parent):
          "RLEG_JOINT4": -0.418879,
          "RLEG_JOINT5": 0.0
          }
+
     #def getInitialConfig (self):
     #    q = []
     #    for n in self.jointNames:
@@ -86,6 +83,17 @@ class Robot (Parent):
     #        else:
     #            q.append (dof)
     #    return q
+
+        #original from antonio
+        def getInitialConfig(self):
+                zfloor=0.64870180180254433111
+                q1=[0,1.5,zfloor,0.9249114088877176,0,0,-0.38018270043406405,0,0,0,0,0.26179900000000000393,0.1745299999999999907,0,-0.52359900000000003661,0,0,0.1745319999999999927,-0.1745319999999999927,0.1745319999999999927,-0.1745319999999999927,0.1745319999999999927,-0.1745319999999999927,0.26179900000000000393,-0.1745299999999999907,0,-0.52359900000000003661,0,0,0.1745319999999999927,-0.1745319999999999927,0.1745319999999999927,-0.1745319999999999927,0.1745319999999999927,-0.1745319999999999927,0,0,-0.45378600000000002268,0.87266500000000002402,-0.41887900000000000134,0,0,0,-0.45378600000000002268,0.87266500000000002402,-0.41887900000000000134,0]
+                return q1
+        ##original from antonio
+        def getGoalConfig(self):
+                zfloor=0.64870180180254433111
+                q2=[0,-2.5,zfloor, 0.7101853756232854, 0, 0, -0.7040147244559684, 0,0,0,0,0.26179900000000000393, 0.1745299999999999907,0,-0.52359900000000003661,0,0,0.1745319999999999927, -0.1745319999999999927,0.1745319999999999927,-0.1745319999999999927, 0.1745319999999999927,-0.1745319999999999927,0.26179900000000000393, -0.1745299999999999907,0,-0.52359900000000003661,0,0,0.1745319999999999927, -0.1745319999999999927,0.1745319999999999927,-0.1745319999999999927, 0.1745319999999999927,-0.1745319999999999927,0,0,-0.45378600000000002268, 0.87266500000000002402,-0.41887900000000000134,0,0,0,-0.45378600000000002268, 0.87266500000000002402,-0.41887900000000000134,0]
+                return q2
 
     #def leftHandClosed (self) :
     #    dofs = {"LARM_JOINT6": 0.1,

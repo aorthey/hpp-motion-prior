@@ -16,7 +16,7 @@
 # include <hpp/model/joint-configuration.hh>
 # include <hpp/core/configuration-shooter.hh>
 
-#define DEBUG 1
+#define DEBUG 0
 namespace hpp {
   namespace corbaserver {
     namespace motionprior {
@@ -26,6 +26,7 @@ namespace hpp {
       static std::map<std::string, bool> lockedDofs_;
       static std::map<std::string, bool> variableDofs_;
       static std::map<std::string, double> lockedDofsFixedValue_;
+      static std::map<std::string, double> lockedDofsFixedValueSubspace_;
       public:
         IrreducibleConfigurationShooter (const DevicePtr_t& robot) : robot_ (robot)
         {
@@ -76,17 +77,20 @@ namespace hpp {
             lockedDofs_["RLEG_JOINT3"   ] = 1;
             lockedDofs_["RLEG_JOINT4"   ] = 1;
             lockedDofs_["RLEG_JOINT5"   ] = 1;
+
             //--------------------------------------------------
 
-
-            variableDofs_["HEAD_JOINT1"]   = 0;
+            //variableDofs_["HEAD_JOINT1"]   = 0;
             variableDofs_["CHEST_JOINT1"]  = 0;
             variableDofs_["LLEG_JOINT2"]   = 0;
             variableDofs_["LLEG_JOINT3"]   = 0;
             variableDofs_["LLEG_JOINT4"]   = 0;
 
+            //--------------------------------------------------
+
             lockedDofsFixedValue_["CHEST_JOINT0"]   = 0.0;
             lockedDofsFixedValue_["HEAD_JOINT0"]    = 0.0;
+            lockedDofsFixedValue_["HEAD_JOINT1"]    = 0.0;
             lockedDofsFixedValue_["LARM_JOINT0"   ] = 0.0;
             lockedDofsFixedValue_["LARM_JOINT1"   ] = M_PI/2;
             lockedDofsFixedValue_["LARM_JOINT2"   ] = 0.0;
@@ -118,6 +122,17 @@ namespace hpp {
             lockedDofsFixedValue_["RLEG_JOINT0"   ] = 0.0;
             lockedDofsFixedValue_["RLEG_JOINT1"   ] = 0.0;
             lockedDofsFixedValue_["RLEG_JOINT5"   ] = 0.0;
+
+            //--------------------------------------------------
+
+            lockedDofsFixedValueSubspace_["CHEST_JOINT0"]   = 0.0;
+            lockedDofsFixedValueSubspace_["HEAD_JOINT0"]    = 0.0;
+            lockedDofsFixedValueSubspace_["HEAD_JOINT1"]    = 0.0;
+            lockedDofsFixedValueSubspace_["LLEG_JOINT0"   ] = 0.0;
+            lockedDofsFixedValueSubspace_["LLEG_JOINT1"   ] = 0.0;
+            lockedDofsFixedValueSubspace_["LLEG_JOINT5"   ] = 0.0;
+
+            //--------------------------------------------------
           }
           if(DEBUG) hppDout(notice, "Invoked IrreducibleConfigurationShooter");
         }
@@ -153,23 +168,48 @@ namespace hpp {
             std::size_t rankl;
             std::size_t rankr;
 
-            jjl = robot_->getJointByName("LLEG_JOINT2");
-            rankl = jjl->rankInConfiguration ();
-            jjr = robot_->getJointByName("RLEG_JOINT2");
-            rankr = jjr->rankInConfiguration ();
-            (*config)[rankr] = (*config)[rankl];
+            uint N = robot_->configSize();
+            //hppDout(notice, "config size" << N);
 
-            jjl = robot_->getJointByName("LLEG_JOINT3");
-            rankl = jjl->rankInConfiguration ();
-            jjr = robot_->getJointByName("RLEG_JOINT3");
-            rankr = jjr->rankInConfiguration ();
-            (*config)[rankr] = (*config)[rankl];
+            if (N > 40){
+                    //full body setting
 
-            jjl = robot_->getJointByName("LLEG_JOINT4");
-            rankl = jjl->rankInConfiguration ();
-            jjr = robot_->getJointByName("RLEG_JOINT4");
-            rankr = jjr->rankInConfiguration ();
-            (*config)[rankr] = (*config)[rankl];
+                    jjl = robot_->getJointByName("LLEG_JOINT2");
+                    rankl = jjl->rankInConfiguration ();
+                    jjr = robot_->getJointByName("RLEG_JOINT2");
+                    rankr = jjr->rankInConfiguration ();
+                    (*config)[rankr] = (*config)[rankl];
+
+                    jjl = robot_->getJointByName("LLEG_JOINT3");
+                    rankl = jjl->rankInConfiguration ();
+                    jjr = robot_->getJointByName("RLEG_JOINT3");
+                    rankr = jjr->rankInConfiguration ();
+                    (*config)[rankr] = (*config)[rankl];
+
+                    jjl = robot_->getJointByName("LLEG_JOINT4");
+                    rankl = jjl->rankInConfiguration ();
+                    jjr = robot_->getJointByName("RLEG_JOINT4");
+                    rankr = jjr->rankInConfiguration ();
+                    (*config)[rankr] = (*config)[rankl];
+
+                    if(DEBUG) hppDout(notice, "fixed joints");
+                    for (std::map<std::string,double>::iterator it=lockedDofsFixedValue_.begin(); it!=lockedDofsFixedValue_.end(); ++it){
+                      const std::string& jn = it->first;
+                      double value = it->second;
+                      JointPtr_t jj = robot_->getJointByName(jn);
+                      std::size_t rank = jj->rankInConfiguration ();
+                      (*config)[rank] = value;
+                    }
+            }else{
+                    //set only irreducible subspace
+                    for (std::map<std::string,double>::iterator it=lockedDofsFixedValueSubspace_.begin(); it!=lockedDofsFixedValueSubspace_.end(); ++it){
+                      const std::string& jn = it->first;
+                      double value = it->second;
+                      JointPtr_t jj = robot_->getJointByName(jn);
+                      std::size_t rank = jj->rankInConfiguration ();
+                      (*config)[rank] = value;
+                    }
+            }
 
             //##############################################################################
             //set fixed joints
@@ -184,16 +224,6 @@ namespace hpp {
             (*config)[rank+1] = quat[1];
             (*config)[rank+2] = quat[2];
             (*config)[rank+3] = quat[3];
-
-            if(DEBUG) hppDout(notice, "fixed joints");
-            for (std::map<std::string,double>::iterator it=lockedDofsFixedValue_.begin(); it!=lockedDofsFixedValue_.end(); ++it){
-              const std::string& jn = it->first;
-              double value = it->second;
-              JointPtr_t jj = robot_->getJointByName(jn);
-              std::size_t rank = jj->rankInConfiguration ();
-              (*config)[rank] = value;
-            }
-
 
             if(DEBUG) hppDout(notice, "update");
             hpp::model::ConfigurationIn_t qq = *config.get();
@@ -220,7 +250,7 @@ namespace hpp {
             shoot_try++;
             if(checkBaseLinkBounds(config)){// && comIsInSupportPolygon(base, sole)){ 
               shoot_success++;
-              hppDout(notice, "random shots: " << shoot_success << "/" << shoot_try << " (" << (double)shoot_success/(double)shoot_try << "%)");
+              if(DEBUG) hppDout(notice, "random shots: " << shoot_success << "/" << shoot_try << " (" << (double)shoot_success/(double)shoot_try << "%)");
               return config;
             }
           }
@@ -245,12 +275,56 @@ namespace hpp {
            std::size_t rank;
            jj = robot_->getJointByName("base_joint_xyz");
            rank = jj->rankInConfiguration ();
-           double value = (*config)[rank];
-           if(value < -0.5 || value > 0.5) return false;
-           value = (*config)[rank+1];
-           if(value < -3 || value > 3) return false;
-           value = (*config)[rank+2];
-           if(value < 0.4 || value > 1) return false;
+           double xb = (*config)[rank];
+           double yb = (*config)[rank+1];
+           double zb = (*config)[rank+2];
+
+           jj = robot_->getJointByName("l_sole_joint");
+        //rank = jj->rankInConfiguration ();
+           fcl::Vec3f sole_translation = jj->currentTransformation().getTranslation();
+           double xs = sole_translation[0];
+           double ys = sole_translation[1];
+
+           jj = robot_->getJointByName("base_joint_SO3");
+           rank = jj->rankInConfiguration ();
+           double q1=(*config)[rank];
+           double q2=(*config)[rank+1];
+           double q3=(*config)[rank+2];
+           double q4=(*config)[rank+3];
+           fcl::Quaternion3f quat(q1,q2,q3,q4);
+
+           double r,p,yaw;
+           quat.toEuler(yaw,p,r);
+           if(DEBUG) hppDout(notice, "yaw pitch roll: "<<yaw << p << r);
+
+        //hppDout(notice, "xb yb zb"<<xb<<yb<<zb);
+        //hppDout(notice, "xs ys "<<xs<<ys);
+
+           //compute the zmp in perfect condition
+           double t=yaw+M_PI*0.5;
+           double xt = cos(t)*1 - sin(t)*0;
+           double yt = sin(t)*1 + cos(t)*0;
+
+           double d_sole_zmp = 0.1;
+           xt *= d_sole_zmp;
+           yt *= d_sole_zmp;
+
+           //compute the real zmp
+           double xr = -xs;
+           double yr = -ys;
+
+           double dist = sqrtf( (xr-xt)*(xr-xt) + (yr-yt)*(yr-yt));
+
+           //double epsilon = 0.05;
+           //if(sqrtf(p*p)>epsilon || sqrtf(r*r)>epsilon){
+           //        return false;
+           //}
+           if(dist > 0.15){
+                   return false;
+           }
+           if(zb < 0.5){
+                   return false;
+           }
 
            return true;
 
@@ -295,8 +369,8 @@ namespace hpp {
           double r,p,y;
           quat.toEuler(y,p,r);
 
-          double yaw = (rand()/RAND_MAX)*2*M_PI - M_PI;
-          quat.fromEuler(y,p,r);
+          double yaw = ((float)rand()/(float)RAND_MAX)*2.0*M_PI - M_PI;
+          quat.fromEuler(yaw,p,r);
 
           (*config)[rankr]   = quat[0];
           (*config)[rankr+1] = quat[1];
@@ -304,6 +378,7 @@ namespace hpp {
           (*config)[rankr+3] = quat[3];
 
           if(DEBUG) {
+                  hppDout(notice, "yaw: " << yaw );
                   quat.toEuler(y,p,r);
                   hppDout(notice, "rotation: " << y << " " << p << " " << r);
                   hppDout(notice, "translation: " << base[0] << " " << base[1] << " " << base[2]);
@@ -326,6 +401,7 @@ namespace hpp {
       std::map<std::string, bool> IrreducibleConfigurationShooter::lockedDofs_;
       std::map<std::string, bool>  IrreducibleConfigurationShooter::variableDofs_;
       std::map<std::string, double> IrreducibleConfigurationShooter::lockedDofsFixedValue_;
+      std::map<std::string, double> IrreducibleConfigurationShooter::lockedDofsFixedValueSubspace_;
     } //   namespace motionprior
   } //   namespace corbaserver
 } // namespace hpp

@@ -59,7 +59,7 @@ namespace hpp {
       /// We will see how to implement a basic PRM algorithm.
       virtual void oneStep ()
       {
-        hppDout(notice, "onestep");
+        hppDout(notice, "onestep--");
 	// Retrieve the robot the problem has been defined for.
 	model::DevicePtr_t robot (problem ().robot ());
 	// Retrieve the path validation algorithm associated to the problem
@@ -75,9 +75,11 @@ namespace hpp {
 	core::RoadmapPtr_t r (roadmap ());
 	// shoot a valid random configuration
 	core::ConfigurationPtr_t qrand;
+        hppDout(notice, "shoot configuration");
 	do {
 	  qrand = shooter_.shoot ();
 	} while (!configValidations->validate (*qrand));
+        hppDout(notice, "configuration valid--");
 	// Add qrand as a new node
 	core::NodePtr_t newNode = r->addNode (qrand);
 	// try to connect the random configuration to each connected component
