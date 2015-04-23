@@ -1,0 +1,11 @@
+<package>
+  <name>hpp-motion-prior</name>
+  <version>0.1.0</version>
+  <description>
+
+  </description>
+  <author>Andreas Orthey</author>
+  <maintainer email="aorthey@laas.fr">Andreas Orthey</maintainer>
+  <license>LGPL v2</license>
+  <build_depend>hpp-corbaserver</build_depend>
+</package>
