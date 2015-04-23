@@ -1,13 +1,12 @@
 from numpy import dot
 import numpy as np
 from pylab import *
-from cvxpy import *
+#from cvxpy import *
 from mpl_toolkits.mplot3d import Axes3D
 from math import pi,cos,sin,acos,asin,atan
 
 from scipy.interpolate import interp1d,splev,splrep,splprep
 from scipy.misc import derivative
-
 
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.patches import FancyArrowPatch

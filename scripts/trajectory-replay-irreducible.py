@@ -1,6 +1,7 @@
 #/usr/bin/env python
 import time
 import sys
+import numpy as np
 #from hpp.corbaserver.motion_prior.client import Client as MPClient
 #from hpp.corbaserver.wholebody_step.client import Client as WsClient
 import rospy
@@ -50,9 +51,13 @@ else:
 import re
 #fromFile(publisher,fname)
 tau = getTrajFromFile(fname)
-for tauK in tau:
-        for q in tauK:
-                print q[0:3]
+
+tau = np.array(tau)
+M = len(tau[0])
+N = len(tau[0][0])
+A = np.array(tau).flatten().reshape(M,N)
+print A[0:8,0:3]
+
 
 
 for tauK in tau:
@@ -68,7 +73,7 @@ for tauK in tau:
                 #publisher.robotConfig = q
                 #publisher.publishRobots ()
                 publisher(q)
-                q=setLeftArm(qq)
-                Z= zip(qq,robot.getJointNames())
+                #q=setLeftArm(qq)
+                Z= zip(q,robot.getJointNames())
                 sys.exit(0)
                 time.sleep (dt)
