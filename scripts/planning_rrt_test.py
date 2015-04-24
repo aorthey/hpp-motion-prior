@@ -4,7 +4,8 @@ from hpp.corbaserver.motion_prior.client import Client as MPClient
 import rospy
 import sys
 
-from hrp2_irreducible import Robot 
+#from hrp2_irreducible import Robot 
+from hrp2 import Robot 
 robot = Robot ()
 robot.setJointBounds ("base_joint_xyz", [-1, 1, -3, 3, 0, 2])
 
@@ -55,7 +56,7 @@ qG = robot.getGoalConfig()
 
 #solver.loadObstacleFromUrdf("hpp-motion-prior","floor","")
 #solver.loadObstacleFromUrdf("hpp-motion-prior","floor_obstacle","")
-#solver.loadObstacleFromUrdf("hpp-motion-prior","wall","")
+solver.loadObstacleFromUrdf("hpp-motion-prior","wall","")
 ## Add constraints
 #qI[1]=1.0
 

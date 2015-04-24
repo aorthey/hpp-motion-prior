@@ -5,9 +5,11 @@ import numpy as np
 #from hpp.corbaserver.motion_prior.client import Client as MPClient
 #from hpp.corbaserver.wholebody_step.client import Client as WsClient
 import rospy
+from math import atan2,pi,asin
 import pickle as pk
 from hrp2 import Robot 
 from hpp_ros import ScenePublisher, PathPlayer
+from irreducible_projector import IrreducibleProjector
 
 dt = 0.01
 
@@ -44,6 +46,7 @@ if len(sys.argv) < 2:
         #print "usage: traj-replay.py <TRAJECTORY-FILE-NAME>"
         fname = "../data-traj/rrt-wall.tau"
         fname = "../data-traj/rrt-floor-irreducible.tau"
+        fname = "../data-traj/rrt-wall-0-time-3-62.tau"
         #sys.exit()
 else:
         fname = sys.argv[1]
@@ -55,25 +58,56 @@ tau = getTrajFromFile(fname)
 tau = np.array(tau)
 M = len(tau[0])
 N = len(tau[0][0])
-A = np.array(tau).flatten().reshape(M,N)
-print A[0:8,0:3]
+X = np.array(tau).flatten().reshape(M,N)
 
+L = np.array((0.25,0.25,0.25))
+D = np.array((0.08,0.08,0.08,0.08))
+P = IrreducibleProjector(X[:,0:3],L,D)
 
+t0,t1 = P.getTimeInterval()
 
-for tauK in tau:
-        for q in tauK:
-                #qq = q[::]
-                #qq[0] = qq[0:3]
-                #qq[1] = qq[3:7]
-                #for i in range(2,7):
-                #        del qq[i]
-                ##to change
-                ### LARM_JOINT3
-                ### LARM_JOINT5
-                #publisher.robotConfig = q
-                #publisher.publishRobots ()
-                publisher(q)
-                #q=setLeftArm(qq)
-                Z= zip(q,robot.getJointNames())
-                sys.exit(0)
-                time.sleep (dt)
+def setLARM(q,theta,yaw):
+        q[11]=-1.57
+        q[12]=theta[0]+1.57+yaw+3.14
+        q[13]=-1.57
+        q[14]=theta[1]
+        q[15]=0.0
+        q[16]=theta[2]
+        q[17]=0.1
+        return q
+
+def setRARM(q,theta,yaw):
+        q[23]=-1.57
+        q[24]=theta[0]-1.57+(yaw+3.14)
+        q[25]=-1.57
+        q[26]=theta[1]
+        q[27]=0.0
+        q[28]=theta[2]
+        q[29]=0.1
+        return q
+
+##map [0,N] -> [t0,t1]
+N = X.shape[0]
+for i in range(0,N):
+        ##[0,N] -> [0,N]/N -> [0,1]*(t1-t0) -> [0,t1-t0] -> [t0,t1]
+        t=i*(1/N)*(t1-t0)+t0
+        [theta,gamma]=P.getJointAnglesAtT(t)
+
+        q = X[i,:]
+        qt = q[3:7]
+
+        x=qt[0]
+        y=qt[1]
+        z=qt[2]
+        w=qt[3]
+        roll = atan2(-2*y*z+2*x*w,1-2*x*x-2*y*y)
+        pitch = asin(2*x*z+2*y*w)
+        yaw = atan2(-2*x*y+2*z*w, 1-2*y*y-2*z*z)
+        print yaw,roll,pitch,qt
+        #theta[0]=theta[0]+yaw-pi/2
+        q = setLARM(q,theta,roll)
+        q = setRARM(q,theta,roll)
+        #sys.exit(0)
+
+        publisher(q)
+        time.sleep (dt)
