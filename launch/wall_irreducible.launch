@@ -1,6 +1,6 @@
 <launch>
   <param name="environment_description"
-    textfile="$(find hpp-motion-prior)/urdf/wall.urdf"/>
+    textfile="$(find hpp-motion-prior)/urdf/wall_texture.urdf"/>
   <param name="robot_description"
 	 textfile="$(find hrp2_irreducible)/urdf/hrp2_14_capsule_irreducible.urdf"/>
   <node name="robot_state_publisher"

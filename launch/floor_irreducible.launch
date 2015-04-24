@@ -2,7 +2,7 @@
   <param name="environment_description"
     textfile="$(find hpp-motion-prior)/urdf/floor.urdf"/>
   <param name="robot_description"
-	 textfile="$(find hrp2_irreducible)/urdf/hrp2_14_capsule_irreducible.urdf"/>
+	 textfile="$(find hrp2_irreducible)/urdf/hrp2_14_capsule.urdf"/>
   <node name="robot_state_publisher"
 	pkg="robot_state_publisher"
 	type="state_publisher"
