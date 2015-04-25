@@ -22,7 +22,7 @@
       </geometry>
       <origin rpy="0 0 0" xyz="0.0 0.0 -0.1"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -47,7 +47,7 @@
       </geometry>
       <origin rpy="0 0 0" xyz="0.0 -1.5 0.0"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -71,7 +71,7 @@
       </geometry>
       <origin rpy="0 0 0" xyz="0.0 1.5 1.5"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -94,7 +94,7 @@
       </geometry>
       <origin rpy="0 0 0" xyz="0.0 -1.5 1.5"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -123,7 +123,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.881096 0.001900 1.031809"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -146,7 +146,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.839493 0.001900 0.917724"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -169,7 +169,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.668039 0.001900 1.032588"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -192,7 +192,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.337760 0.001900 1.010439"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -215,7 +215,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.196181 0.001900 1.131102"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -238,7 +238,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.841478 0.001900 0.858704"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -261,7 +261,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.350722 0.001900 0.798006"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -284,7 +284,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.289887 0.001900 0.623176"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -307,7 +307,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.279463 0.001900 0.444432"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -330,7 +330,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.712452 0.001900 0.444432"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -353,7 +353,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.293353 0.001900 1.090411"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -376,7 +376,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.757292 0.001900 0.797778"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -399,7 +399,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.969851 0.001900 0.797778"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -422,7 +422,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.746165 0.001900 0.623176"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -445,7 +445,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.493117 0.001900 0.444432"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -468,7 +468,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.474637 0.001900 0.444432"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -491,7 +491,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.497251 0.001900 1.090411"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -514,7 +514,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.765040 0.001900 0.622229"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -537,7 +537,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.976122 0.001900 0.446851"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -560,7 +560,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.993155 0.001900 0.620963"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -583,7 +583,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.734359 0.001900 0.444432"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -606,7 +606,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.282977 0.001900 0.444432"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -629,7 +629,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.801618 0.001900 0.681605"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -652,7 +652,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.552560 0.001900 0.204567"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -675,7 +675,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.540365 0.001900 0.204567"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -698,7 +698,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.766214 0.001900 0.204567"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -721,7 +721,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.302551 0.001900 0.204567"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -744,7 +744,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="1.007456 0.001900 0.204567"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -767,7 +767,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.109887 0.001900 0.204567"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -790,7 +790,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.870461 0.001900 1.032878"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -813,7 +813,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.779190 0.001900 0.801157"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -836,7 +836,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.386149 0.001900 0.808573"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -859,7 +859,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.494825 0.001900 0.324118"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -882,7 +882,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.704989 0.001900 0.324118"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -905,7 +905,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.710321 0.001900 0.324118"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -928,7 +928,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.465333 0.001900 0.324118"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -951,7 +951,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.948136 0.001900 0.324118"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -974,7 +974,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.227519 0.001900 0.324118"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -997,7 +997,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.367186 0.001900 0.682390"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1020,7 +1020,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.654482 0.001900 0.971514"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1043,7 +1043,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.632180 0.001900 0.918695"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1066,7 +1066,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.338705 0.001900 0.740034"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1089,7 +1089,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.299132 0.001900 0.561291"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1112,7 +1112,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.779111 0.001900 0.561291"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1135,7 +1135,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.071018 0.001900 1.298161"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1158,7 +1158,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.730836 0.001900 1.207270"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1181,7 +1181,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.406791 0.001900 1.270767"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1204,7 +1204,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.411585 0.001900 1.331667"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1227,7 +1227,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.698998 0.001900 0.914637"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1250,7 +1250,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.423380 0.001900 1.036865"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1273,7 +1273,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.732904 0.001900 0.740034"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1296,7 +1296,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.711681 0.001900 0.561291"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1319,7 +1319,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.541297 0.001900 0.561291"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1342,7 +1342,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.739973 0.001900 1.087937"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1365,7 +1365,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.170224 0.001900 1.310616"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1388,7 +1388,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.275824 0.001900 1.187165"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1411,7 +1411,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.221300 0.001900 1.258849"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1434,7 +1434,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.272879 0.001900 1.207270"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1457,7 +1457,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.917195 0.001900 0.914637"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1480,7 +1480,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.644115 0.001900 1.032667"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1503,7 +1503,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.951576 0.001900 0.563709"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1526,7 +1526,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.968609 0.001900 0.737822"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1549,7 +1549,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.334596 0.001900 0.561291"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1572,7 +1572,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.399448 0.001900 0.084253"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1595,7 +1595,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.451465 0.001900 1.210264"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1618,7 +1618,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.639801 0.001900 0.084253"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1641,7 +1641,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.679579 0.001900 1.329597"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1664,7 +1664,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.602360 0.001900 0.084253"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1687,7 +1687,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.654377 0.001900 1.210264"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1710,7 +1710,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.401987 0.001900 0.084253"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1733,7 +1733,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.334671 0.001900 1.369374"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1756,7 +1756,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.843602 0.001900 0.084253"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1779,7 +1779,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.895618 0.001900 1.210264"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1802,7 +1802,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.188664 0.001900 0.084253"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1825,7 +1825,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.138737 0.001900 1.372434"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1848,7 +1848,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.894758 0.001900 1.094263"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1871,7 +1871,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.639737 0.001900 0.862542"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1894,7 +1894,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.559906 0.001900 0.805610"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1917,7 +1917,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.449203 0.001900 0.385503"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1940,7 +1940,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.752081 0.001900 0.385503"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1963,7 +1963,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.633803 0.001900 0.385503"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -1986,7 +1986,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.512425 0.001900 0.385503"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2009,7 +2009,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.871617 0.001900 0.385503"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2032,7 +2032,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.274611 0.001900 0.385503"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2055,7 +2055,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.520616 0.001900 0.145638"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2078,7 +2078,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.520616 0.001900 1.390982"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2101,7 +2101,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.625619 0.001900 0.145638"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2124,7 +2124,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.573602 0.001900 1.390982"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2147,7 +2147,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.734271 0.001900 0.145638"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2170,7 +2170,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.654715 0.001900 1.268589"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2193,7 +2193,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.387805 0.001900 0.145638"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2216,7 +2216,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.087943 0.001900 1.366503"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2239,7 +2239,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.975512 0.001900 0.145638"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2262,7 +2262,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.902077 0.001900 1.271649"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2285,7 +2285,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.170726 0.001900 0.145638"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2308,7 +2308,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.881850 0.001900 1.345084"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2331,7 +2331,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.863905 0.001900 0.973949"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2354,7 +2354,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.694746 0.001900 0.742228"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2377,7 +2377,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.526620 0.001900 0.265189"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2400,7 +2400,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.593476 0.001900 0.265189"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2423,7 +2423,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.722779 0.001900 0.265189"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2446,7 +2446,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.353820 0.001900 0.265189"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2469,7 +2469,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.960593 0.001900 0.265189"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2492,7 +2492,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.116006 0.001900 0.265189"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2515,7 +2515,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.491072 0.001900 0.747145"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2538,7 +2538,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.310139 0.001900 0.681105"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2561,7 +2561,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.275734 0.001900 0.502362"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2584,7 +2584,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.771035 0.001900 0.502362"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2607,7 +2607,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.696599 0.001900 1.094323"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2630,7 +2630,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.742872 0.001900 1.148341"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2653,7 +2653,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.341404 0.001900 1.075893"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2676,7 +2676,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.194999 0.001900 1.069458"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2699,7 +2699,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.262173 0.001900 1.148341"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2722,7 +2722,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.534834 0.001900 0.620818"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2745,7 +2745,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.694705 0.001900 0.973738"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2768,7 +2768,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.742436 0.001900 0.681105"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2791,7 +2791,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.533221 0.001900 0.502362"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2814,7 +2814,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.359983 0.001900 1.129658"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2837,7 +2837,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.466071 0.001900 1.148341"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2860,7 +2860,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.764053 0.001900 0.855708"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2883,7 +2883,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="1.001328 0.001900 0.855708"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2906,7 +2906,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.912902 0.001900 0.973738"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2929,7 +2929,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.972393 0.001900 0.504780"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2952,7 +2952,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.973711 0.001900 0.678893"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2975,7 +2975,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.730630 0.001900 0.502362"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -2998,7 +2998,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.326520 0.001900 0.502362"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3021,7 +3021,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.321609 0.001900 0.024525"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3044,7 +3044,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.333848 0.001900 1.389202"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3067,7 +3067,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.665731 0.001900 0.025323"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3090,7 +3090,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.702449 0.001900 1.273727"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3113,7 +3113,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.524908 0.001900 0.025323"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3136,7 +3136,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.662600 0.001900 1.331864"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3159,7 +3159,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.427917 0.001900 0.025323"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3182,7 +3182,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.262687 0.001900 1.246189"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3205,7 +3205,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="1.002957 0.001900 0.025323"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3228,7 +3228,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.944821 0.001900 1.151335"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3251,7 +3251,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.766150 0.001900 0.025323"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3274,7 +3274,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="0.708013 0.001900 1.151335"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3297,7 +3297,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.210839 0.001900 0.025323"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3320,7 +3320,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.290394 0.001900 1.304325"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3343,7 +3343,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.343177 0.001900 0.622380"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3366,7 +3366,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.583012 0.001900 0.681720"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3389,7 +3389,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.323396 0.001900 0.748478"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>
@@ -3412,7 +3412,7 @@
       </geometry>
     <origin rpy="0 0 0" xyz="-0.953396 0.001900 0.14"/>
     <material name="wall_colored">
-      <mesh filename="package://hpp-motion-prior/urdf/meshes/brick-wall.jpg"/>
+      <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>

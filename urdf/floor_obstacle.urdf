@@ -21,9 +21,9 @@
         <box size="4.0 6.0 0.1"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0.0 0.0 -0.1"/>
-    <material name="wall_colored">
-      <color rgba="1.000000 0.188235 0.003922 1.000000"/>
-    </material>
+      <material name="wall_colored">
+              <color rgba="0.700000 0.700000 0.700000 1.000000"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -44,8 +44,8 @@
         <box size="1.5 1.0 2.0"/>
       </geometry>
       <origin rpy="0 0 0" xyz="1.0 0.0 -0.05"/>
-    <material name="wall_colored">
-      <color rgba="1.000000 0.388235 0.003922 1.000000"/>
+    <material name="obscolor">
+              <color rgba="0.500000 0.500000 0.500000 1.000000"/>
     </material>
     </visual>
     <collision>

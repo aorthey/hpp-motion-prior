@@ -55,8 +55,8 @@ qG = robot.getGoalConfig()
 #qG = q2
 
 #solver.loadObstacleFromUrdf("hpp-motion-prior","floor","")
-#solver.loadObstacleFromUrdf("hpp-motion-prior","floor_obstacle","")
-solver.loadObstacleFromUrdf("hpp-motion-prior","wall","")
+solver.loadObstacleFromUrdf("hpp-motion-prior","floor_obstacle","")
+#solver.loadObstacleFromUrdf("hpp-motion-prior","wall","")
 ## Add constraints
 #qI[1]=1.0
 
@@ -84,11 +84,13 @@ seconds = end_time - start_time
 hours = seconds/3600
 print("--- %s seconds ---" % seconds)
 print("--- %s hours   ---" % hours)
-fname = "../data-traj/rrt-wall.tau"
+fname0 = "../data-traj/rrt-wall0.tau"
+fname1 = "../data-traj/rrt-wall1.tau"
 
 pathplayer = PathPlayer (robot.client, publisher)
 
 pathplayer(0)
 pathplayer(1)
-pathplayer.toFile(1,fname)
+pathplayer.toFile(0,fname0)
+pathplayer.toFile(1,fname1)
 print "path was written to file",fname

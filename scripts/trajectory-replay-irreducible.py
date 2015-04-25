@@ -51,20 +51,7 @@ if len(sys.argv) < 2:
 else:
         fname = sys.argv[1]
 
-import re
-#fromFile(publisher,fname)
-tau = getTrajFromFile(fname)
 
-tau = np.array(tau)
-M = len(tau[0])
-N = len(tau[0][0])
-X = np.array(tau).flatten().reshape(M,N)
-
-L = np.array((0.25,0.25,0.25))
-D = np.array((0.08,0.08,0.08,0.08))
-P = IrreducibleProjector(X[:,0:3],L,D)
-
-t0,t1 = P.getTimeInterval()
 
 def setLARM(q,theta,yaw):
         q[11]=-1.57
@@ -86,28 +73,43 @@ def setRARM(q,theta,yaw):
         q[29]=0.1
         return q
 
-##map [0,N] -> [t0,t1]
-N = X.shape[0]
-for i in range(0,N):
-        ##[0,N] -> [0,N]/N -> [0,1]*(t1-t0) -> [0,t1-t0] -> [t0,t1]
-        t=i*(1/N)*(t1-t0)+t0
-        [theta,gamma]=P.getJointAnglesAtT(t)
 
-        q = X[i,:]
-        qt = q[3:7]
+def publishTrajectoryProjectedIrreducibility(tau):
+        tau = np.array(tau)
+        M = len(tau[0])
+        N = len(tau[0][0])
+        X = np.array(tau).flatten().reshape(M,N)
 
-        x=qt[0]
-        y=qt[1]
-        z=qt[2]
-        w=qt[3]
-        roll = atan2(-2*y*z+2*x*w,1-2*x*x-2*y*y)
-        pitch = asin(2*x*z+2*y*w)
-        yaw = atan2(-2*x*y+2*z*w, 1-2*y*y-2*z*z)
-        print yaw,roll,pitch,qt
-        #theta[0]=theta[0]+yaw-pi/2
-        q = setLARM(q,theta,roll)
-        q = setRARM(q,theta,roll)
-        #sys.exit(0)
+        L = np.array((0.25,0.25,0.25))
+        D = np.array((0.08,0.08,0.08,0.08))
+        P = IrreducibleProjector(X[:,0:3],L,D)
 
-        publisher(q)
-        time.sleep (dt)
+        t0,t1 = P.getTimeInterval()
+        ##map [0,N] -> [t0,t1]
+        N = X.shape[0]
+        for i in range(0,N):
+                ##[0,N] -> [0,N]/N -> [0,1]*(t1-t0) -> [0,t1-t0] -> [t0,t1]
+                t=i*(1/N)*(t1-t0)+t0
+                [theta,gamma]=P.getJointAnglesAtT(t)
+
+                q = X[i,:]
+                qt = q[3:7]
+
+                x=qt[0]
+                y=qt[1]
+                z=qt[2]
+                w=qt[3]
+                roll = atan2(-2*y*z+2*x*w,1-2*x*x-2*y*y)
+                pitch = asin(2*x*z+2*y*w)
+                yaw = atan2(-2*x*y+2*z*w, 1-2*y*y-2*z*z)
+                print yaw,roll,pitch,qt
+                #theta[0]=theta[0]+yaw-pi/2
+                q = setLARM(q,theta,roll)
+                q = setRARM(q,theta,roll)
+                #sys.exit(0)
+
+                publisher(q)
+                time.sleep (dt)
+
+tau = getTrajFromFile(fname)
+publishTrajectoryProjectedIrreducibility(tau)

@@ -351,7 +351,7 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
-    - Alpha: 0.7
+    - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: true
       Enabled: true
@@ -366,12 +366,727 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        floor:
+        box10:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        obstacle:
+        box100:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box101:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box102:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box103:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box104:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box105:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box106:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box107:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box108:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box109:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box11:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box110:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box111:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box112:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box113:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box114:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box115:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box116:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box117:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box118:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box119:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box12:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box120:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box121:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box122:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box123:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box124:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box125:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box126:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box127:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box128:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box129:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box13:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box130:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box131:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box132:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box133:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box134:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box135:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box136:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box137:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box138:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box139:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box14:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box140:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box141:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box142:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box143:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box144:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box145:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box146:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box15:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box16:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box17:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box18:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box19:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box20:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box21:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box22:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box23:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box24:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box25:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box26:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box27:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box28:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box29:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box3:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box30:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box31:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box32:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box33:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box34:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box35:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box36:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box37:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box38:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box39:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box4:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box40:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box41:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box42:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box43:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box44:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box45:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box46:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box47:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box48:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box49:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box5:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box50:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box51:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box52:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box53:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box54:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box55:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box56:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box57:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box58:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box59:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box6:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box60:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box61:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box62:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box63:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box64:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box65:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box66:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box67:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box68:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box69:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box7:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box70:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box71:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box72:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box73:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box74:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box75:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box76:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box77:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box78:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box79:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box8:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box80:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box81:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box82:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box83:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box84:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box85:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box86:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box87:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box88:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box89:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box9:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box90:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box91:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box92:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box93:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box94:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box95:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box96:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box97:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box98:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        box99:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wall_floor1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -413,22 +1128,22 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 6.98977
+      Distance: 5.96164
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 1.37195
-        Y: -1.24684
-        Z: 0.429329
+        X: 0.0815244
+        Y: -0.841182
+        Z: 0.311238
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.539796
+      Pitch: 0.129796
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.35548
+      Yaw: 4.61548
     Saved: ~
 Window Geometry:
   Displays:

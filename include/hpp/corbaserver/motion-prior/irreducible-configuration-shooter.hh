@@ -250,27 +250,18 @@ namespace hpp {
             shoot_try++;
             if(checkBaseLinkBounds(config)){// && comIsInSupportPolygon(base, sole)){ 
               shoot_success++;
-              if(DEBUG) hppDout(notice, "random shots: " << shoot_success << "/" << shoot_try << " (" << (double)shoot_success/(double)shoot_try << "%)");
+              if(DEBUG && shoot_success%100==0) hppDout(notice, "random shots: " << shoot_success << "/" << shoot_try << " (" << (double)shoot_success/(double)shoot_try << "%)");
               return config;
             }
           }
         }
 
-        bool comIsInSupportPolygon (const fcl::Vec3f &base, const fcl::Vec3f &sole) const{
-          double b = base[0];
-          double s = sole[0];
-          if(DEBUG) hppDout(notice, "sole: " << sole[0] << "," <<sole[1]<< "," << sole[2]);
-          if(DEBUG) hppDout(notice, "base: " << base[0] << "," <<base[1]<< "," << base[2]);
-
-          if(fabs(b-s)<0.05 && base[2]>0.6){
-            return true;
-          }else{
-            return false;
-          }
-        }
 
         bool checkBaseLinkBounds(ConfigurationPtr_t &config) const
         {
+           //compute if ZMP (approximated as projection of base_joint_xyz) is in support polygon
+           // support polygon is described by epsilon ball around the center
+           // between the feet
            JointPtr_t jj;
            std::size_t rank;
            jj = robot_->getJointByName("base_joint_xyz");
@@ -280,14 +271,12 @@ namespace hpp {
            double zb = (*config)[rank+2];
 
            jj = robot_->getJointByName("l_sole_joint");
-        //rank = jj->rankInConfiguration ();
            fcl::Vec3f sole_translation = jj->currentTransformation().getTranslation();
            double xs = sole_translation[0];
            double ys = sole_translation[1];
 
            jj = robot_->getJointByName("base_joint_SO3");
            rank = jj->rankInConfiguration ();
-
            double q1=(*config)[rank];
            double q2=(*config)[rank+1];
            double q3=(*config)[rank+2];
@@ -296,41 +285,40 @@ namespace hpp {
 
            double r,p,yaw;
            quat.toEuler(yaw,p,r);
-           if(DEBUG) hppDout(notice, "yaw pitch roll: "<<yaw << p << r);
-
-        //hppDout(notice, "xb yb zb"<<xb<<yb<<zb);
-        //hppDout(notice, "xs ys "<<xs<<ys);
+           if(DEBUG) {
+                   hppDout(notice, "yaw pitch roll: "<<yaw << "|"<< p << "|"<< r);
+                   hppDout(notice, "x y z" << xb << "|"<< yb << "|"<< zb);
+                   hppDout(notice, "xs ys " << xs << "|" << ys);
+                   hppDout(notice, "---------------------------");
+           }
 
            //compute the zmp in perfect condition
            double t=yaw+M_PI*0.5;
-           double xt = cos(t)*1 - sin(t)*0;
-           double yt = sin(t)*1 + cos(t)*0;
+           double xrot = 1.0;
+           double yrot = 0.0;
+           double xt = cos(t)*xrot - sin(t)*yrot;
+           double yt = sin(t)*xrot + cos(t)*yrot;
 
-           double d_sole_zmp = 0.1;
+           double d_sole_zmp = -0.1;
            xt *= d_sole_zmp;
            yt *= d_sole_zmp;
 
            //compute the real zmp
-           double xr = -xs;
-           double yr = -ys;
+           double xr = xs+xt;
+           double yr = ys+yt;
 
-           double dist = sqrtf( (xr-xt)*(xr-xt) + (yr-yt)*(yr-yt));
+           double dist = sqrtf( (xr-xb)*(xr-xb) + (yr-yb)*(yr-yb));
 
-           //double epsilon = 0.05;
-           //if(sqrtf(p*p)>epsilon || sqrtf(r*r)>epsilon){
-           //        return false;
-           //}
-           if(dist > 0.15){
+           if(dist > 0.03){
                    return false;
            }
-           if(zb < 0.5){
+           if(zb < 0.3){
                    return false;
            }
 
            return true;
 
         }
-        //void setRandomYawRotBaseJoints(ConfigurationPtr_t &config, fcl::Vec3f &base) const
         void setRandomXYBaseJoints(ConfigurationPtr_t &config, fcl::Vec3f &base) const
         {
             JointPtr_t jj = robot_->getJointByName("base_joint_xyz");
