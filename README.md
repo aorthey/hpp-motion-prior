@@ -11,8 +11,9 @@ Ideally, one would provide an environment, a mechanical system, and the module
 provides a simplified motion planning problem, which can be solved faster.
 #Python Irreducible Scripts
 #### Depends
-*python-scipy
-*python-numpy
+ * python-scipy
+ * python-numpy
+ * matplotlib
 
 sudo apt-get install python-numpy python-scipy
 
@@ -40,6 +41,6 @@ To compute the configurations over the complete trajectory of L0 and display eac
     
 ## Irreducible Motion Planning from Data Points (quick-and-dirty)
 
-Please see the script in scripts/irreducible-sublink-projector.py
+Given a set of data points [X_1,...,X_M] for the root link L_0, the maximum curvature kappa, and the radius of L_0, delta_0, we can compute the maximum number N of sublinks, and its configuration for each discrete root link position (by spline interpolating the shape of the underlying function, so make sure that the points are dense).  This has been implemented in the following script: scripts/irreducible-sublink-projector.py
 
-You can provide a txt file (see example in data-traj/spheretraj.txt), and obtain the sublink configurations for each discrete data point
+You can provide a txt file (see example in data-traj/spheretraj.txt), and obtain the sublink configurations for each discrete data point in another txt file. From there, you can plot the sublinks, or use them inside of a controller.
