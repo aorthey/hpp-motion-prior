@@ -51,7 +51,7 @@ class IrreduciblePlotter():
                 N = p.shape[0]
                 ## create 
                 M = 50
-                tnew = np.linspace(t0,t1,M)
+                tnew = np.linspace(0,t1,M)
                 taunew = splev(tnew,tau)
                 plt.plot(taunew[0],taunew[1],taunew[2],'-',linewidth=35,solid_capstyle="round",alpha=0.2)
 

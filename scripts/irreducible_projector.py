@@ -1,6 +1,7 @@
 from numpy import dot
 import numpy as np
 from math import pi,cos,sin,acos,asin,atan
+import time
 
 from scipy.interpolate import interp1d,splev,splrep,splprep
 from scipy.misc import derivative
@@ -168,7 +169,6 @@ class IrreducibleProjector():
                 t0 = 0.0
                 t1 = 1.0
                 [f0,df0,ddf0] = funcEval(tau,t0)
-                [f1,df1,ddf1] = funcEval(tau,t1)
 
                 L0 = np.sum(Lall)
                 fI = f0-L0*df0
@@ -184,15 +184,19 @@ class IrreducibleProjector():
 
                 XX = np.vstack((Xpre,X))
 
-                tau,tmp = splprep(XX.T)
+                tau,tmp = splprep(XX.T,s=0.001)
 
                 ##find starting time and ending time
                 self.tauStart = 0.0
 
-                while np.linalg.norm(f0-funcEval(tau,self.tauStart)[0]) > 0.02:
-                        self.tauStart = self.tauStart+0.01
+                while np.linalg.norm(f0-funcEval(tau,self.tauStart)[0]) > 0.03:
+                        #print np.linalg.norm(f0-funcEval(tau,self.tauStart)[0])
+                        self.tauStart = self.tauStart+0.001
 
-                self.tauEnd = 1.0
+                self.tauEnd =1.0
+
+                print self.tauStart,self.tauEnd
+                #self.tauEnd = 1.0
                 return tau
 
         def getJointAnglesAtT(self, t0):
@@ -213,8 +217,60 @@ class IrreducibleProjector():
                 spheres = forwardKinematics(f0,df0,ddf0,theta,gamma,self.L,self.D)
                 irrplot.plotLinearLinkage(self.tau, self.tauStart, self.tauEnd, self.L, self.D, spheres)
 
+
+        def plotLinearLinkageAtStart(self):
+                return self.plotLinearLinkageAtT(self.tauStart)
+        def plotLinearLinkageAtGoal(self):
+                return self.plotLinearLinkageAtT(self.tauEnd)
+
         def getTimeInterval(self):
                 return [self.tauStart,self.tauEnd]
+
+        def getSublinksPositionAtT(self, t0):
+                [theta,gamma] = self.getJointAnglesAtT(t0)
+                [f0,df0,ddf0] = funcEval(self.tau,t0)
+                S = forwardKinematics(f0,df0,ddf0,theta,gamma,self.L,self.D)
+
+                S = np.array(S).squeeze()
+                S = np.delete(S,3,axis=1)
+                SL = np.hstack ((S[1:,:],self.L))
+                SL = np.hstack ((SL, self.D[1:]))
+                return SL
+
+        def evaluateAtT(self, t0):
+                return funcEval(self.tau,t0)[0]
+
+        def getSublinksPositionAtRootPosition(self, froot):
+                ### get time value at which function is equal to froot
+                t = self.tauStart
+                while np.linalg.norm(froot-funcEval(self.tau,t)[0]) > 0.03:
+                        #print np.linalg.norm(froot-funcEval(self.tau,t)[0]),t,self.evaluateAtT(t),froot
+                        t = t+0.001
+                        if t>self.tauEnd:
+                                break
+                print "root link",froot,"time",t
+
+                return self.getSublinksPositionAtT(t)
+
+        def checkNearestPoints(self, X):
+                for i in range(0,X.shape[0]):
+                        xx = X[i,:]
+                        dmin = 1000.0
+                        tmin = 0.0
+                        taumin = []
+                        t = self.tauStart
+                        while t<self.tauEnd:
+                                d = np.linalg.norm(xx-funcEval(self.tau,t)[0])
+                                if d<dmin:
+                                        dmin = d
+                                        tmin = t
+                                        taumin = funcEval(self.tau,t)[0]
+                                t = t+0.001
+
+                        print xx,taumin,tmin,dmin
+
+
+
 
         def visualizeLinearLinkageProjection(self, timeToShowLinkage):
                 tstep = 0.05
