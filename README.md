@@ -9,6 +9,12 @@ information, the goal is to lower the complexity of the motion planning problem.
 
 Ideally, one would provide an environment, a mechanical system, and the module
 provides a simplified motion planning problem, which can be solved faster.
+#Python Irreducible Scripts
+#### Depends
+*python-scipy
+*python-numpy
+
+sudo apt-get install python-numpy python-scipy
 
 ##Irreducible Motion Planning for Linear Linkages
 
@@ -32,3 +38,8 @@ To compute the configurations over the complete trajectory of L0 and display eac
 
     P.visualizeLinearLinkageProjection(0.0001)
     
+## Irreducible Motion Planning from Data Points (quick-and-dirty)
+
+Please see the script in scripts/irreducible-sublink-projector.py
+
+You can provide a txt file (see example in data-traj/spheretraj.txt), and obtain the sublink configurations for each discrete data point
